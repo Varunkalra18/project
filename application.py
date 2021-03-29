@@ -49,7 +49,7 @@ def login() :
     else : 
         pass
 
-        
+
 #source venv/scripts/activate
 #export FLASK_APP=application.py
 #flask run

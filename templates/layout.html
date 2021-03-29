@@ -67,6 +67,7 @@
   </head>
   <body>
     <!-- Image and text -->
+    {% if not session.user %}
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <a class="navbar-brand" href="#">Logo of Auction WebApp</a>
       <button
@@ -92,6 +93,8 @@
         </ul>
       </div>
     </nav>
-    {% block main %}{% endblock %}
+    {% else %}
+    <nav>This is new navbar after login</nav>
+    {% endif %} {% block main %}{% endblock %}
   </body>
 </html>
