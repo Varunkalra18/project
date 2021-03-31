@@ -28,6 +28,30 @@ Session(app)
 if __name__ == "__main__":
     app.run(debug = True)
 
+
+@app.route('/', methods=['GET']) 
+def home() : 
+    return redirect("/login")
+
+@app.route('/register', methods=['GET', 'POST']) 
+def register() : 
+    print("I am in register route")
+    if request.method == "GET":
+        return render_template("register.html") 
+    else : 
+        # TODO : Add register functionality here
+        pass
+
+@app.route('/login', methods=['GET', 'POST'])
+def login() : 
+    print("here in login route") 
+    if request.method == "GET" : 
+        return render_template("login.html")
+    else : 
+        # TODO : Add login functionality here
+        pass
+
+
 #source venv/scripts/activate
 #export FLASK_APP=application.py
 #flask run
