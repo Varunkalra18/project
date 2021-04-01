@@ -67,7 +67,16 @@
   </head>
   <body>
     <!-- Image and text -->
-    {% if not session.user %}
+    {% if session.user_id %}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" >
+      <ul class="bl-navbar-elements navbar-nav ml-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/logout">Logout</a>
+        </li>
+      </ul>
+    </nav>This is new navbar after login
+
+    {% else %}
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
       <a class="navbar-brand" href="#">Logo of Auction WebApp</a>
       <button
@@ -93,8 +102,10 @@
         </ul>
       </div>
     </nav>
-    {% else %}
-    <nav>This is new navbar after login</nav>
-    {% endif %} {% block main %}{% endblock %}
+
+    
+    {% endif %}
+    
+    {% block main %}{% endblock %}
   </body>
 </html>
