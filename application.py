@@ -33,7 +33,7 @@ db = SQL("sqlite:///test.db")
 
 @app.route('/', methods=['GET']) 
 def home() : 
-    return render_template("index.html")
+    return redirect("/login")
 
 @app.route('/register', methods=['GET', 'POST']) 
 def register() : 
@@ -49,7 +49,7 @@ def register() :
         if not username or not emailId or not password or not confirmation :
             return render_template("sorry.html", text="Please Enter complete details")
         if password != confirmation:
-            return render_template("sorry.html", text = "Please enter the same password")
+            return render_template("sorry.html", text = "Password doesn't match .. !!")
         user = db.execute("SELECT * FROM users WHERE username=:username", username = username)
         if len(user) != 0:
             return render_template("sorry.html", text = "Username Already Exists")
@@ -71,9 +71,9 @@ def login() :
         password = request.form.get("password")
         rows = db.execute("SELECT * FROM users WHERE emailID = :email", email = email)
         if len(rows) == 0:
-            return render_template("sorry.html", text = "Email Not Found")
+            return render_template("sorry.html", text = "Invalid User")
         if not check_password_hash(rows[0]["pasword"], password):
-            return render_template("sorry.html", text="Wrong Password")
+            return render_template("sorry.html", text="Invalid User")
         session["user_id"] = rows[0]["id"]
         return redirect("/")
 
