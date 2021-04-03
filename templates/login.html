@@ -31,7 +31,8 @@
   <div class="col-md-9 bg-dark image-col p-0 h-100">
     <img
       class="w-100 h-100"
-      src="https://media.istockphoto.com/photos/gavel-on-auction-word-picture-id917901978?k=6&m=917901978&s=612x612&w=0&h=xCylR78onIYx2mU-as2L3PBEADDeFqGFP5U6rJJhwu8="
+      style="background-size: cover;"
+      src="../static//image//home_image.jpg"
       alt="No image found"
     />
   </div>
@@ -43,12 +44,14 @@
       <h3 class="moto-line">Just make a bid and you done 🤩</h3>
     </div>
     <div>
+      <form action="/login" method = "POST">
       <p class="login-text">login</p>
       <div class="mb-3">
         <label for="email" class="form-label">Email ID</label>
         <input
           type="email"
           class="form-control"
+          name="email"
           id="email"
           placeholder="name@example.com"
         />
@@ -58,6 +61,7 @@
         <input
           type="password"
           class="form-control"
+          name = "password"
           id="password"
           placeholder="Enter password"
         />
@@ -68,11 +72,12 @@
           <a href='/register'>Click Here</a>
         </span>
         <button
-          onclick="submitlogin()"
+        type = "submit"
           class="btn btn-primary ml-auto mr-2 px-3"
         >
           login
         </button>
+      </form>
       </div>
     </div>
   </div>
