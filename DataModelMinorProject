@@ -1,0 +1,67 @@
+User : 
+
+Id
+Username 
+Email
+Password (s)
+Contact Number
+Adhaar Number
+GovId
+ProfileImage(Optional)
+DOB(Optional)
+Occupation(Optional)
+TimeStamp(Auto-Generated)
+
+
+
+Asset : 
+
+Id
+SellerId
+BuyerId
+Name
+Description
+Image
+status ("PENDING" - default, "ACCEPTED", "REJECTED")
+isActivated (false-default)
+isRemoved (false-default)
+Activation time- activetime
+Timestamp(Auto-Generated)
+Target Bid - tarbid
+Max Bid - maxbid
+Bidding Time - bidtime (Will not implement for now)
+isSold (false-default)
+
+
+Transaction : 
+
+Id
+sellerId (Seller)
+buyerId (Buyer)
+Amount
+AssetId
+TimeStamp(Auto-Generated)
+
+
+Request : 
+
+assetId
+sellerId
+TimeStamp(Auto-Generated)
+
+Logs : 
+
+Id
+assetId
+sellerId
+status ("ACCEPTED" or "REMOVED")
+
+
+
+
+CREATE TABLE IF NOT EXISTS 'User' ('Id' INTEGER AUTO INCREMENT NOT NULL PRIMARY KEY, 'Username' TEXT NOT NULL, 'Email' TEXT NOT NULL, 'Passwords' TEXT NOT NULL, 'ContactNumber' INTEGER NOT NULL, 'AdharNumber' INTEGER NOT NULL, 'GovId' VARCHAR NOT NULL, 'profileImage' TEXT, 'DOB' DATE, 'occupation' TEXT, 'Timestamp' TIMESTAMP NOT NULL);        
+CREATE TABLE IF NOT EXISTS 'Assets' ('Id' INTEGER AUTO INCREMENT NOT NULL PRIMARY KEY, 'SellerId' INTEGER NOT NULL, 'BuyerId' INTEGER NOT NULL, 'Name' TEXT NOT NULL, 'Description' TEXT NOT NULL, 'Image' TEXT NOT NULL, 'status' TEXT NOT NULL DEFAULT "Pending", 'isActivated' BOOLEAN NOT NULL DEFAULT False, 'isRemoved' BOOLEAN NOT NULL DEFAULT False, 'AT' TIME NOT NULL, 'TimeStamp' TIMESTAMP NOT NULL, 'tarBid' REAL NOT NULL, 'maxBid' REAL NOT NULL, 'isSold' BOOLEAN NOT NULL DEFAULT False);
+
+CREATE TABLE IF NOT EXISTS 'Transactions' ('Id' INTEGER AUTO INCREMENT NOT NULL, 'SellerId' INTEGER NOT NULL, 'BuyerId' INTEGER  NOT NULL, 'Amount' REAL NOT NULL, 'AssetId' INTEGER NOT NULL, 'TimeStamp' TIMESTAMP NOT NULL );      
+CREATE TABLE IF NOT EXISTS 'Requests'('assetId' INTEGER NOT NULL, 'sellerId' INTEGER NOT NULL, 'TimeStamp' TIMESTAMP NOT NULL);
+CREATE TABLE IF NOT EXISTS 'Logs' ('Id' INTEGER AUTO INCREMENT NOT NULL, 'SellerId' INTEGER NOT NULL, 'BuyerId' INTEGER NOT NULL, 'status' TEXT NOT NULL );

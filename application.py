@@ -32,7 +32,8 @@ db = SQL("sqlite:///test.db")
 
 
 @app.route('/', methods=['GET']) 
-def home() : 
+@login_required 
+def home() :
     return render_template("index.html")
 
 @app.route('/register', methods=['GET', 'POST']) 
