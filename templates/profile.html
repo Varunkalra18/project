@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>
+            Complete your profile
+        </title>
+        <style>
+            fieldset{
+                border-radius: 30px;
+                border: none;
+                width: 650px;
+                margin: auto;
+                height: 700px;
+                padding: 10px;
+            }
+            .id_photo{
+                margin-left: 180px;
+                margin-bottom: 30px;
+                border-radius: 30px;
+                border: 2px solid gray;
+                height: 150px;
+                width: 150px;
+            }
+            th{
+                float: left;
+                padding-left: 100px;
+            }
+            td{
+                float: right;
+            }
+            input{
+                height: 25px;
+                width: 200px;
+            }
+            select{
+                height: 30px;
+                width: 208px;
+            }
+            button{
+                float:right;
+                height: 30px;
+                width: 120px;
+                margin: 20px 12px;
+            }
+        </style>
+    </head>
+    <body>
+        <fieldset>
+            <input type='file' class="id_photo" placeholder="Tap to select photo"/>
+            <legend><h1><strong>Personal Information</strong></h1></legend>
+            <form>
+                <table width = '500px' cellpadding='5' cellspacing='2'>
+                    <tr>
+                        <th><label for="ui">UserId</legend></td>
+                        <td><input type="text" id="ui" placeholder="UserId"/></td>
+                    </tr>
+                    <tr>
+                        <th><label for="un">Username</label></th>
+                        <td><input type="text" id="un" placeholder="Username"/></td>
+                    </tr>
+                    <tr>
+                        <th><label for="email">Email</label></th>
+                        <td><input type="Email" id="email" placeholder="Email"/></td>
+                    </tr>
+                    <tr>
+                        <th><label for="pwd">Password</label></th>
+                        <td><input type="password" id="pwd" placeholder="Password"/></td>
+                    </tr>
+                    <tr>
+                        <th><label for="no">Contact Number</label></th>
+                        <td><input type="number" id="no" placeholder="Contact Number"/></td>
+                    </tr>
+                    <tr>
+                        <th>Government Id</th>
+                        <td>
+                            <select name="Government Id">
+                                <option>Aadhar Card</option>
+                                <option>Pan Card</option>
+                                <option>Voter Id</option>
+                            </select><br/>
+                            <input type="number" placeholder="Id Number">
+                        </td>
+                    </tr>
+                    <tr>
+                        <th><label for="dob">Date Of Birth</label></th>
+                        <td><input type="date" id="dob" placeholder="Date Of Birth"/></td>
+                    </tr>
+                    <tr>
+                        <th>Occupation</th>
+                        <td>
+                            <select name="Occupation">
+                                <option>Business Man</option>
+                                <option>Government Servant</option>
+                                <option>Private Job</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+            </form>
+            <legend>
+                <button type="submit" value="Submit">Update</button>
+                <button type="reset" value="Reset">Reset Form</button>
+            </legend>
+        </fieldset>
+    </body>
+</html>
