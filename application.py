@@ -83,11 +83,12 @@ def login() :
 
 @app.route('/profile', methods=['GET']) 
 def profile() : 
-    return render_template('profile.html', profile=abc) 
+    # Create an API to get the current user and send it to profile
+    return render_template('profile.html') 
 
 @app.route('/profile/update', methods=['PUT']) 
 def updateProfile() : 
-    # 
+    # Add functionality to update user profile and redirect to profile page with respective data
     redirect('/profile')
 
 

@@ -1,7 +1,7 @@
 {% extends "layout.html" %} {% block style %}
 <style>
   .row {
-    height: 90vh;
+    height: 100vh;
   }
 
   .register-form {
@@ -69,6 +69,16 @@
           class="form-control"
           id="password"
           placeholder="Enter password"
+        />
+      </div>
+      <div class="mb-3">
+        <label for="password" class="form-label">Adhar Number</label>
+        <input
+          type="AdharNumber"
+          name = "AdharNumber"
+          class="form-control"
+          id="AdharNumbe"
+          placeholder="Enter Adhar Number ..."
         />
       </div>
       <div class="mb-3">
