@@ -1,14 +1,14 @@
 {% extends "layout.html" %} {% block style %}
 <style>
   .row {
-    height: 95vh;
+    height: 90vh;
   }
 
   .register-form {
     background-color: whitesmoke;
   }
   .register-text {
-    font-size: 25px;
+    font-size: 22px;
     font-weight: 600;
   }
   .note-symbol{
@@ -29,20 +29,20 @@
   <div class="col-md-9 bg-dark image-col p-0 h-100">
     <img
       class="w-100 h-100"
-      src="https://media.istockphoto.com/photos/gavel-on-auction-word-picture-id917901978?k=6&m=917901978&s=612x612&w=0&h=xCylR78onIYx2mU-as2L3PBEADDeFqGFP5U6rJJhwu8="
+      src="https://thumbs.dreamstime.com/b/business-man-use-finger-touch-interface-screen-auction-modern-wireless-network-g-technologies-background-hammer-retro-alarm-151494697.jpg"
       alt="No image found"
     />
   </div>
   <div class="col-md register-form d-flex flex-column justify-content-center">
     <div class="d-flex justify-content-center border-bottom mb-3"> 
-      <h2 class="text-muted">Hello Visitor(s) .. !!</h2>
+      <h2 class="text-muted"><em>Welcome!</em></h2>
       
     </div>
     <form action="/register" method="POST">
     <div>
         <p class="register-text">Register Here</p>
       <div class="mb-3">
-        <label for="username" class="form-label">Username (<span class="note-symbol">* This username will be directly visible to client</span></label> )
+        <label for="username" class="form-label">Username (<span class="note-symbol">* This username will be directly visible to client</span> )</label>
         <input
           type="text"
           name = "username"
@@ -83,11 +83,11 @@
       </div>
       <div class="mb-3 d-flex">
         <span class='d-flex align-items-center'>
-          <p class="m-0 mr-2">Already have an account?</p>
-          <a href='/login'>Click Here</a>
+          <p class="m-0 mr-2">Already have an account?<br/>
+          <a href='/login'>Click Here</a></p>
         </span>
           <button class="btn btn-primary ml-auto mr-2 px-3">
-            register
+            Register
           </button>
       </div>
     </div>
