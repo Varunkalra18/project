@@ -1,0 +1,156 @@
+{% extends "layout.html" %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        
+        <style>
+            footer{
+                background-color:rgb(82, 82, 82);
+                color: rgb(163, 161, 161);
+                position: fixed;
+                left: 0;
+                bottom: 0;
+                width: 100%;
+                padding-bottom: 50px;
+            }
+            .f_link{
+                text-decoration: none;
+                color: rgb(151, 151, 151);
+            }
+            .f_link:hover{
+                text-decoration: underline;
+                color: rgb(209, 207, 207);
+            }
+            .back_to_top{
+                float: right;
+                background: black;
+                color: white;
+                padding: none;
+                text-decoration: none;
+            }
+            .d1{
+                padding-top: 30px;
+                height: 150px;
+                width: 700px;
+                margin-left: 400px;
+            }
+            .d2{
+                width: 20%;
+                float: left;
+                margin-left: 250px; 
+                margin-top: 50px;
+            }
+            .d3{
+                width: 20%;
+                float: left;
+                margin-top: 30px;
+            }
+            .d4{
+                width: 20%;
+                float: left;
+                margin-top: 30px;
+            }
+            .d5{
+                width: 20%;
+                float: left;
+                margin-top: 30px;
+            }
+            .fa {
+            padding: 10px;
+            font-size: 30px;
+            width: 30px;
+            text-align: center;
+            text-decoration: none;
+            }
+            .fa:hover {
+            opacity: 0.7;
+            }
+            .fa-facebook {
+            background: #3B5998;
+            color: white;
+            border-radius: 50px;
+            }
+            .fa-twitter {
+            background: #55ACEE;
+            color: white;
+            border-radius: 50px;
+            }
+            .fa-linkedin {
+            background: #007bb5;
+            color: white;
+            border-radius: 50px;
+            }
+            .fa-youtube {
+            background: #bb0000;
+            color: white;
+            border-radius: 50px;
+            }
+            .fa-instagram{
+            background: rgb(226, 108, 128);
+            color: white;
+            border-radius: 50px;
+            }
+            .fa-google {
+            background: #dd4b39;
+            color: white;
+            border-radius: 50px;
+            }
+
+        </style>
+    </head>
+    <body>
+        <footer>
+            <a href="#" class="back_to_top">BACK TO TOP</a>
+            <div class="d1">
+                <strong>MORE ABOUT US</strong>
+                <p>Our company motive is to provide best 
+                    services for those who want sell their 
+                    asset and bid onto another ones at 
+                    minimum cost with assurance of the 
+                    customer's requirement.<br/><br/>
+                    Copyright &copy; 2021 Auction Inc.
+                    All rights reserved.
+                </p>
+            </div>
+            <hr/>
+            <div class="d2">
+                <a href="#" class="f_link">1800-600-600</a><br/>
+                <a href="#" class="f_link">customer.services@auction.com</a>
+            </div>
+            <div class="d3">
+                <strong>BUYING AND SELLING</strong>
+                <br/>
+                <a href="#" class="f_link">Sell Your Asset</a><br/>
+                <a href="#" class="f_link">Bidding on Asset</a><br/>
+                <a href="#" class="f_link">Bidding Information</a><br/>
+                <a href="#" class="f_link">Purchased Assets</a>
+            </div>
+            <div class="d4">
+                <strong>CUSTOMER SUPPORT</strong>
+                <br/>
+                <a href="#" class="f_link">FAQ and tutorials</a><br/>
+                <a href="#" class="f_link">Contact Support Team</a><br/>
+                <a href="#" class="f_link">Terms and Condition</a><br/>
+                <a href="#" class="f_link">Privacy Policy</a><br/>
+            </div>
+            <div class="d5">
+                <strong>CONNECT US ON</strong>
+                <br/>
+                Appraisal Auction House<br/>
+                <a href="#" class="fa fa-facebook"></a>
+                <a href="#" class="fa fa-twitter"></a>
+                <a href="#" class="fa fa-linkedin"></a><br/>
+                <a href="#" class="fa fa-instagram"></a>
+                <a href="#" class="fa fa-youtube"></a>
+                <a href="#" class="fa fa-google"></a>
+            </div>
+            <hr/>
+        </footer>
+    </body>
+</html>
+
+
+
+
+{% block title %} Best Deals!! {% endblock %}

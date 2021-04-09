@@ -1,7 +1,7 @@
 {% extends "layout.html" %} {% block style %}
 <style>
   .row {
-    height: 95vh;
+    height: 90vh;
   }
 
   .login-form {
@@ -16,7 +16,7 @@
   }
   .moto-line {
     font-family: "Lobster", cursive;
-    font-size: 30px;
+    font-size: 20px;
   }
 </style>
 
@@ -31,7 +31,8 @@
   <div class="col-md-9 bg-dark image-col p-0 h-100">
     <img
       class="w-100 h-100"
-      src="https://media.istockphoto.com/photos/gavel-on-auction-word-picture-id917901978?k=6&m=917901978&s=612x612&w=0&h=xCylR78onIYx2mU-as2L3PBEADDeFqGFP5U6rJJhwu8="
+      style="background-size: cover;"
+      src="https://thumbs.dreamstime.com/b/female-hand-holding-smartphone-to-enter-price-bid-via-wireless-network-blue-bokeh-background-auction-icon-concept-143712639.jpg"
       alt="No image found"
     />
   </div>
@@ -39,16 +40,19 @@
     <div
       class="d-flex flex-column justify-content-center align-items-center border-bottom mb-3"
     >
-      <h2 class="text-muted">Welcome Back ... !!</h2>
+      <h2 class="text-muted">Welcome Back!</h2>
       <h3 class="moto-line">Just make a bid and you done 🤩</h3>
     </div>
     <div>
-      <p class="login-text">login</p>
+      <form action="/login" method = "POST">
+      <div>
+        <p class="login-text">Login</p>
       <div class="mb-3">
         <label for="email" class="form-label">Email ID</label>
         <input
           type="email"
           class="form-control"
+          name="email"
           id="email"
           placeholder="name@example.com"
         />
@@ -58,21 +62,24 @@
         <input
           type="password"
           class="form-control"
+          name = "password"
           id="password"
           placeholder="Enter password"
         />
       </div>
       <div class="mb-3 d-flex">
         <span class='d-flex align-items-center'>
-          <p class="m-0 mr-2">Don't have an account?</p>
-          <a href='/register'>Click Here</a>
+          <p class="m-0 mr-2">Don't have an account?
+          <a href='/register'>Click Here</a></p>
         </span>
         <button
-          onclick="submitlogin()"
           class="btn btn-primary ml-auto mr-2 px-3"
         >
-          login
+          Login
         </button>
+      </div>
+      </div>
+      </form>
       </div>
     </div>
   </div>
