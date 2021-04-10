@@ -46,23 +46,26 @@ def register() :
         username = request.form.get("username")
         emailId = request.form.get("emailId")
         password = request.form.get("password")
-        confirmation = request.form.get("confirm")
-        cn = request.form.get("contactnumber")
-        an = request.form.get("adharnumber")
-        govid = request.form.get("govid")
-        
-        if not username or not emailId or not password or not confirmation :
+        confirmation = request.form.get("confirmation")
+        cn = request.form.get("ContactNumber")
+        an = request.form.get("AdharNumber")
+        govid = request.form.get("Govid")
+        profileImage = request.form.get("profileImage")
+        dob = request.form.get("DOB")
+        occupation = request.form.get("occupation")
+        timestamp = date.today()
+        if not username or not emailId or not password or not confirmation or not cn or not an :
             return render_template("sorry.html", text="Please Enter complete details")
         if password != confirmation:
             return render_template("sorry.html", text = "Password doesn't match .. !!")
         user = db.execute("SELECT * FROM User WHERE username=:username", username = username)
         if len(user) != 0:
             return render_template("sorry.html", text = "Username Already Exists")
-        email = db.execute("SELECT * FROM User WHERE emailId=:email", email = emailId)
+        email = db.execute("SELECT * FROM User WHERE Email=:email", email = emailId)
         if len(email) != 0:
             return render_template("Email Already Used")
         hashed = generate_password_hash(password)
-        db.execute("INSERT INTO User (type, username, emailId, pasword,cash) VALUES(:type, :username, :emailId, :pasword, :cash)",type = "client", username = username, emailId = emailId, pasword = hashed, cash=0.00)
+        db.execute("INSERT INTO User (Username, Email, Passwords, ContactNumber, AdharNumber, GovId, profileImage, DOB, occupation, Timestamp) VALUES( :username, :emailId, :pasword, :contactnumber, :adharnumber, :govid, :profileImage, :dob, :occupation, :timestamp)", username = username, emailId = emailId, pasword = hashed, contactnumber = cn, adharnumber = an, govid = govid, profileImage = profileImage, dob = dob, occupation = occupation, timestamp = timestamp)
         return redirect("/")
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -76,12 +79,12 @@ def login() :
         print("Here in login in Post method") 
         email = request.form.get("email")
         password = request.form.get("password")
-        rows = db.execute("SELECT * FROM users WHERE emailID = :email", email = email)
+        rows = db.execute("SELECT * FROM User WHERE Email = :email", email = email)
         if len(rows) == 0:
             return render_template("sorry.html", text = "Invalid User")
-        if not check_password_hash(rows[0]["pasword"], password):
+        if not check_password_hash(rows[0]["Passwords"], password):
             return render_template("sorry.html", text="Invalid User")
-        session["user_id"] = rows[0]["id"]
+        session["user_id"] = rows[0]["Id"]
         print('user_Id in session : ', session["user_id"])
         return redirect("/")
 
