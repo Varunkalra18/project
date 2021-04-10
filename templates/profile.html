@@ -1,9 +1,8 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>
-            Complete your profile
-        </title>
+{% extends "layout.html" %}
+    {% block title %}
+        Complete your profile
+    {% endblock %} 
+    {% block style %}
         <style>
             body{
                 background: url("https://thumbs.dreamstime.com/b/gavel-auction-hammer-29387274.jpg");
@@ -51,8 +50,8 @@
                 margin: 20px 12px;
             }
         </style>
-    </head>
-    <body>
+    {% endblock %}
+    {% block main %}
         <fieldset>
             <input type="file" class="id_photo"/>
             <legend><h1><strong>Personal Information</strong></h1></legend>
@@ -110,5 +109,4 @@
                 <button type="reset" value="Reset">Reset Form</button>
             </legend>
         </fieldset>
-    </body>
-</html>
+    {% endblock %}
