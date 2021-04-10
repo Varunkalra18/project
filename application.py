@@ -32,8 +32,9 @@ db = SQL("sqlite:///test.db")
 
 
 @app.route('/', methods=['GET']) 
+@login_required
 def home() : 
-    return redirect("/login")
+    return render_template("index.html") 
 
 @app.route('/register', methods=['GET', 'POST']) 
 def register() : 
@@ -63,10 +64,12 @@ def register() :
 @app.route('/login', methods=['GET', 'POST'])
 def login() :
     session.clear() 
-    print("here in login route") 
+    
     if request.method == "GET" : 
+        print("Here in login in Get method") 
         return render_template("login.html")
     else:
+        print("Here in login in Post method") 
         email = request.form.get("email")
         password = request.form.get("password")
         rows = db.execute("SELECT * FROM users WHERE emailID = :email", email = email)
@@ -75,7 +78,19 @@ def login() :
         if not check_password_hash(rows[0]["pasword"], password):
             return render_template("sorry.html", text="Invalid User")
         session["user_id"] = rows[0]["id"]
+        print('user_Id in session : ', session["user_id"])
         return redirect("/")
+
+@app.route('/profile', methods=['GET']) 
+def profile() : 
+    # Create an API to get the current user and send it to profile
+    return render_template('profile.html') 
+
+@app.route('/profile/update', methods=['PUT']) 
+def updateProfile() : 
+    # Add functionality to update user profile and redirect to profile page with respective data
+    redirect('/profile')
+
 
 @app.route("/logout", methods = ["GET","POST"])
 @login_required
