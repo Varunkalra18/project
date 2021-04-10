@@ -46,18 +46,22 @@ def register() :
         emailId = request.form.get("emailId")
         password = request.form.get("password")
         confirmation = request.form.get("confirm")
+        cn = request.form.get("contactnumber")
+        an = request.form.get("adharnumber")
+        govid = request.form.get("govid")
+        
         if not username or not emailId or not password or not confirmation :
             return render_template("sorry.html", text="Please Enter complete details")
         if password != confirmation:
             return render_template("sorry.html", text = "Password doesn't match .. !!")
-        user = db.execute("SELECT * FROM users WHERE username=:username", username = username)
+        user = db.execute("SELECT * FROM User WHERE username=:username", username = username)
         if len(user) != 0:
             return render_template("sorry.html", text = "Username Already Exists")
-        email = db.execute("SELECT * FROM users WHERE emailId=:email", email = emailId)
+        email = db.execute("SELECT * FROM User WHERE emailId=:email", email = emailId)
         if len(email) != 0:
             return render_template("Email Already Used")
         hashed = generate_password_hash(password)
-        db.execute("INSERT INTO users (type, username, emailId, pasword,cash) VALUES(:type, :username, :emailId, :pasword, :cash)",type = "client", username = username, emailId = emailId, pasword = hashed, cash=0.00)
+        db.execute("INSERT INTO User (type, username, emailId, pasword,cash) VALUES(:type, :username, :emailId, :pasword, :cash)",type = "client", username = username, emailId = emailId, pasword = hashed, cash=0.00)
         return redirect("/")
 
 @app.route('/login', methods=['GET', 'POST'])
