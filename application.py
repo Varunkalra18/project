@@ -48,13 +48,13 @@ def register() :
         password = request.form.get("password")
         confirmation = request.form.get("confirmation")
         cn = request.form.get("ContactNumber")
-        an = request.form.get("AdharNumber")
+        pn = request.form.get("PanNumber")
         govid = request.form.get("Govid")
         profileImage = request.form.get("profileImage")
         dob = request.form.get("DOB")
         occupation = request.form.get("occupation")
         timestamp = date.today()
-        if not username or not emailId or not password or not confirmation or not cn or not an :
+        if not username or not emailId or not password or not confirmation or not pn :
             return render_template("sorry.html", text="Please Enter complete details")
         if password != confirmation:
             return render_template("sorry.html", text = "Password doesn't match .. !!")
@@ -65,7 +65,7 @@ def register() :
         if len(email) != 0:
             return render_template("Email Already Used")
         hashed = generate_password_hash(password)
-        db.execute("INSERT INTO User (Username, Email, Passwords, ContactNumber, AdharNumber, GovId, profileImage, DOB, occupation, Timestamp) VALUES( :username, :emailId, :pasword, :contactnumber, :adharnumber, :govid, :profileImage, :dob, :occupation, :timestamp)", username = username, emailId = emailId, pasword = hashed, contactnumber = cn, adharnumber = an, govid = govid, profileImage = profileImage, dob = dob, occupation = occupation, timestamp = timestamp)
+        db.execute("INSERT INTO User (Username, Email, Passwords, ContactNumber, PanNumber, GovId, profileImage, DOB, occupation, Timestamp) VALUES( :username, :emailId, :pasword, :contactnumber, :pannumber, :govid, :profileImage, :dob, :occupation, :timestamp)", username = username, emailId = emailId, pasword = hashed, contactnumber = cn, pannumber = pn, govid = govid, profileImage = profileImage, dob = dob, occupation = occupation, timestamp = timestamp)
         return redirect("/")
 
 @app.route('/login', methods=['GET', 'POST'])
