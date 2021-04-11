@@ -81,6 +81,15 @@
     <!-- Image and text -->
     {% if session.user_id %}
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" >
+      <ul class="bl-navbar-elements navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/addAssets">Add Assets</a>
+        </li>  
+      </ul>
+      
       <ul class="bl-navbar-elements navbar-nav ml-auto">
         <li class="nav-item active">
           <a class="nav-link" href="/logout">Logout</a>

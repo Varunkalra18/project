@@ -99,6 +99,17 @@ def updateProfile() :
     redirect('/profile')
 
 
+@app.route("/addAssets", methods=["GET", "POST"])
+@login_required
+def assets():
+    #For adding the assets from client side
+    if request.method == "GET":
+        return render_template("asset_form.html")
+    else:
+        name = request.form.get("Name")
+        description = request.form.get("Description")
+        
+
 @app.route("/logout", methods = ["GET","POST"])
 @login_required
 def logout():
