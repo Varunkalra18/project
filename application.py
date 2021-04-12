@@ -106,9 +106,16 @@ def assets():
     if request.method == "GET":
         return render_template("asset_form.html")
     else:
+        print("I am at add asset")
         name = request.form.get("Name")
         description = request.form.get("Description")
-        
+        #image = request.files["image"]
+        image = "upcomming"
+        tarBid = request.form.get("tarBid")
+        today = date.today()
+        db.execute("INSERT INTO Assets ( sellerId, Name, Description, Image, TimeStamp, tarBid) VALUES (:id, :name, :description, :image, :timestamp, :tarBid)", id = session["user_id"], name = name, description = description, image = image, timestamp = today, tarBid = tarBid)
+        print("Queries added Successfully")
+    return render_template("sorry.html")
 
 @app.route("/logout", methods = ["GET","POST"])
 @login_required
