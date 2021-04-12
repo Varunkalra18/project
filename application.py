@@ -63,7 +63,7 @@ def register() :
         print("Password : ", password)
         contact = request.form.get("contactnum") 
         print("contact : ", contact)
-        an = request.form.get("AdharNumber")
+        an = request.form.get("PanNo")
         print("adhar : ", an)
         govid = request.form.get("Govid")
         print("govid : ", govid)
@@ -80,7 +80,7 @@ def register() :
             return render_template("register.html", error="Email already exist .. !!")
         print("Coming here 3")
         hashed = generate_password_hash(password)
-        db.execute("INSERT INTO User (Username, Email, Passwords, AdharNumber, GovId,ContactNumber, Timestamp) VALUES( :username, :emailId, :pasword, :adharnumber, :govid, :contact, :timestamp)", username = username, emailId = emailId, pasword = hashed, adharnumber = an, govid = govid,contact=contact, timestamp = timestamp)
+        db.execute("INSERT INTO User (Username, Email, Passwords, PanNumber, GovId,ContactNumber, Timestamp) VALUES( :username, :emailId, :pasword, :adharnumber, :govid, :contact, :timestamp)", username = username, emailId = emailId, pasword = hashed, adharnumber = an, govid = govid,contact=contact, timestamp = timestamp)
         print("Coming here 4")
         return redirect("/")
 
@@ -117,6 +117,24 @@ def updateProfile() :
     # Add functionality to update user profile and redirect to profile page with respective data
     redirect('/profile')
 
+
+@app.route("/addAssets", methods=["GET", "POST"])
+@login_required
+def assets():
+    #For adding the assets from client side
+    if request.method == "GET":
+        return render_template("asset_form.html")
+    else:
+        print("I am at add asset")
+        name = request.form.get("Name")
+        description = request.form.get("Description")
+        #image = request.files["image"]
+        image = "upcomming"
+        tarBid = request.form.get("tarBid")
+        today = date.today()
+        db.execute("INSERT INTO Assets ( sellerId, Name, Description, Image, TimeStamp, tarBid) VALUES (:id, :name, :description, :image, :timestamp, :tarBid)", id = session["user_id"], name = name, description = description, image = image, timestamp = today, tarBid = tarBid)
+        print("Queries added Successfully")
+    return render_template("sorry.html")
 
 @app.route("/logout", methods = ["GET","POST"])
 @login_required
