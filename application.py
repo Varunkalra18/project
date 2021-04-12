@@ -1,14 +1,17 @@
 import os
 from cs50 import SQL
 from flask import Flask, flash, redirect, render_template, request, session, jsonify
-from datetime import date
+from datetime import datetime
 from flask_session import Session
+import json
 from tempfile  import mkdtemp
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from werkzeug.security import check_password_hash, generate_password_hash
 
 
 from support import login_required
+# Check empty function can be used to check weather the passed dictionary has some None value or not
+from utility import getUser, checkEmpty
 
 app = Flask(__name__)
 
@@ -43,34 +46,48 @@ def register() :
         return render_template("register.html") 
     else : 
         # TODO : Add register functionality here
+        # data = json.loads(request.data)
+        # print(data['username'])
+        # username = data["username"]
+        # emailId = data["email"]
+        # password = data["pass"]
+        # contact = data["contact"]
+        # an = data["adharno"]
+        # govid = data["govid"]
+        
         username = request.form.get("username")
+        print("username : ", username)
         emailId = request.form.get("emailId")
+        print("EMail : ", emailId)
         password = request.form.get("password")
-        confirmation = request.form.get("confirmation")
-        cn = request.form.get("ContactNumber")
+        print("Password : ", password)
+        contact = request.form.get("contactnum") 
+        print("contact : ", contact)
         an = request.form.get("AdharNumber")
+        print("adhar : ", an)
         govid = request.form.get("Govid")
-        profileImage = request.form.get("profileImage")
-        dob = request.form.get("DOB")
-        occupation = request.form.get("occupation")
-        timestamp = date.today()
-        if not username or not emailId or not password or not confirmation or not cn or not an :
-            return render_template("sorry.html", text="Please Enter complete details")
-        if password != confirmation:
-            return render_template("sorry.html", text = "Password doesn't match .. !!")
+        print("govid : ", govid)
+        timestamp = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
         user = db.execute("SELECT * FROM User WHERE username=:username", username = username)
+        print("Coming here 1")
+        
         if len(user) != 0:
-            return render_template("sorry.html", text = "Username Already Exists")
+            return render_template("register.html", error="Username already exist .. !!")
+        print("Coming here 2")
         email = db.execute("SELECT * FROM User WHERE Email=:email", email = emailId)
+        print('email : ', email)
         if len(email) != 0:
-            return render_template("Email Already Used")
+            return render_template("register.html", error="Email already exist .. !!")
+        print("Coming here 3")
         hashed = generate_password_hash(password)
-        db.execute("INSERT INTO User (Username, Email, Passwords, ContactNumber, AdharNumber, GovId, profileImage, DOB, occupation, Timestamp) VALUES( :username, :emailId, :pasword, :contactnumber, :adharnumber, :govid, :profileImage, :dob, :occupation, :timestamp)", username = username, emailId = emailId, pasword = hashed, contactnumber = cn, adharnumber = an, govid = govid, profileImage = profileImage, dob = dob, occupation = occupation, timestamp = timestamp)
+        db.execute("INSERT INTO User (Username, Email, Passwords, AdharNumber, GovId,ContactNumber, Timestamp) VALUES( :username, :emailId, :pasword, :adharnumber, :govid, :contact, :timestamp)", username = username, emailId = emailId, pasword = hashed, adharnumber = an, govid = govid,contact=contact, timestamp = timestamp)
+        print("Coming here 4")
         return redirect("/")
 
 @app.route('/login', methods=['GET', 'POST'])
 def login() :
     session.clear() 
+    print("Coming to login after calling register because i am redirected")
     
     if request.method == "GET" : 
         print("Here in login in Get method") 
@@ -89,9 +106,11 @@ def login() :
         return redirect("/")
 
 @app.route('/profile', methods=['GET']) 
+@login_required
 def profile() : 
     # Create an API to get the current user and send it to profile
-    return render_template('profile.html') 
+    user = getUser()
+    return render_template('profile.html', user=user) 
 
 @app.route('/profile/update', methods=['PUT']) 
 def updateProfile() : 

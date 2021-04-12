@@ -2,6 +2,19 @@
     {% block title %}
         Complete your profile
     {% endblock %} 
+
+    {% block script %}
+        <!-- <script>
+            function update(event) {
+            console.log("Calling event : ", event) ;
+        }
+
+        function submit(event) {
+            console.log("Calling event in submit : ", event) ;
+        }
+        </script> -->
+    {% endblock %} 
+    
     {% block style %}
         <style>
             body{
@@ -106,7 +119,6 @@
             </form>
             <legend>
                 <button type="submit" value="Submit">Update</button>
-                <button type="reset" value="Reset">Reset Form</button>
             </legend>
         </fieldset>
     {% endblock %}
