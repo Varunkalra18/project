@@ -21,7 +21,7 @@
       integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
       crossorigin="anonymous"
     />
-
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
     <script
       src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
       integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -74,9 +74,12 @@
       footer{
                 background-color:rgb(82, 82, 82);
                 color: rgb(163, 161, 161);
+                position:absolute;
+                left:0%;
+                bottom: 0%;
                 width: 100%;
-                height:auto;
-                padding-bottom: 200px;
+                
+                padding-bottom: 50px;
             }
             .f_link{
                 text-decoration: none;
@@ -170,22 +173,22 @@
   <body>
     <!-- Image and text -->
     {% if session.user_id %}
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" >
-      <ul class="bl-navbar-elements navbar-nav mr-auto">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed" >
+      <a class="navbar-brand" href="#"><img class = "logo" src="static/image/logo3.png" />
+      </a>
+      <!--data:image/png;base64,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-->
+      <ul class="bl-navbar-elements navbar-nav ml-auto">
         <li class="nav-item active">
           <a class="nav-link" href="/">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="/addAssets">Add Assets</a>
-        </li>  
-      </ul>
-      
-      <ul class="bl-navbar-elements navbar-nav ml-auto">
+          <a class="nav-link" href="/Assets">Assets</a>
+        </li>
         <li class="nav-item active">
           <a class="nav-link" href="/logout">Logout</a>
         </li>
       </ul>
-    </nav>This is new navbar after login
+    </nav>
 
     {% else %}
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark d-flex align-items-center">
