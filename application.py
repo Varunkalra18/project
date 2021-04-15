@@ -120,7 +120,7 @@ def updateProfile() :
 
 @app.route("/addAssets", methods=["GET", "POST"])
 @login_required
-def assets():
+def addassets():
     #For adding the assets from client side
     if request.method == "GET":
         return render_template("asset_form.html")
@@ -135,6 +135,14 @@ def assets():
         db.execute("INSERT INTO Assets ( sellerId, Name, Description, Image, TimeStamp, tarBid) VALUES (:id, :name, :description, :image, :timestamp, :tarBid)", id = session["user_id"], name = name, description = description, image = image, timestamp = today, tarBid = tarBid)
         print("Queries added Successfully")
     return render_template("sorry.html")
+
+@app.route("/Assets", methods=["GET"])
+def assets():
+    rows = db.execute("SELECT * FROM Assets")
+    return render_template("assets.html")
+
+
+
 
 @app.route("/logout", methods = ["GET","POST"])
 @login_required
