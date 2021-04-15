@@ -11,19 +11,10 @@
     font-size: 22px;
     font-weight: 600;
   }
-  .note-symbol{
-      color : red ;
+  .note-symbol {
+    color: red;
   }
 </style>
-
-{% block script %}
-    <!--<script>
-        const submitRegister = () => {
-            console.log("calling submit register") ;
-        }
-    </script>-->
-{% endblock %}
-
 {% endblock %} {% block main %}
 <div class="row">
   <div class="col-md-9 bg-dark image-col p-0 h-100">
@@ -34,124 +25,143 @@
     />
   </div>
   <div class="col-md register-form d-flex flex-column justify-content-center">
-    <div class="d-flex justify-content-center border-bottom mb-3"> 
+    <div class="d-flex justify-content-center border-bottom mb-3">
       <h2 class="text-muted"><em>Welcome!</em></h2>
-      
     </div>
-    <form action="/register" method="POST">
-    <div>
+    <form method="POST" action="/register" onsubmit="return waitingForSubmit()">
+      <div>
         <p class="register-text">Register Here</p>
-      <div class="mb-3">
-        <label for="username" class="form-label">Username (<span class="note-symbol">* This username will be directly visible to client</span> )</label>
-        <input
-          type="text"
-          name = "username"
-          class="form-control"
-          id="username"
-          placeholder="Your Username"
-        />
+        <div class="mb-3">
+          <label for="username" class="form-label"
+            >Username (<span class="note-symbol"
+              >* This username will be directly visible to client</span
+            >
+            )</label
+          >
+          <input
+            type="text"
+            name="username"
+            class="form-control"
+            id="username"
+            placeholder="Your Username"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email ID</label>
+          <input
+            type="email"
+            name="emailId"
+            class="form-control"
+            id="email"
+            placeholder="name@example.com"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">PAN Number</label>
+          <input
+            type="text"
+            name="PanNo"
+            class="form-control"
+            id="PanNo"
+            placeholder="Enter Adhar Number ..."
+          />
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Govt Id Proof</label>
+          <input type="hidden" name="Govid" value="default" id="govidvalue" />
+          <input  type="file" class="form-control" id="govid" multiple onchange = "updateImage();" />
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Contact Number</label>
+          <input
+            type="text"
+            name="contactnum"
+            class="form-control"
+            id="contact"
+            placeholder="Contact Number"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input
+            type="password"
+            name="password"
+            class="form-control"
+            id="password"
+            placeholder="Enter password"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Confirm Password</label>
+          <input
+            type="password"
+            name="confirmation"
+            class="form-control"
+            id="cpassword"
+            placeholder="confirm your password"
+          />
+        </div>
+        <div class="mb-3 d-flex">
+          <span class="d-flex align-items-center">
+            <p class="m-0 mr-2">
+              Already have an account? <a href="/login">Click Here</a>
+            </p>
+          </span>
+          <button class="btn btn-primary ml-auto mr-2 px-3">Register</button>
+        </div>
       </div>
-      <div class="mb-3">
-        <label for="email" class="form-label">Email ID</label>
-        <input
-          type="email"
-          name = "emailId"
-          class="form-control"
-          id="email"
-          placeholder="name@example.com"
-        />
-      </div>
-      <div class="mb-3">
-        <label for="password" class="form-label">Password</label>
-        <input
-          type="password"
-          name = "password"
-          class="form-control"
-          id="password"
-          placeholder="Enter password"
-        />
-      </div>
-      <div class="mb-3">
-        <label for="password" class="form-label">Confirm Password</label>
-        <input
-          type="password"
-          name = "confirmation"
-          class="form-control"
-          id="password"
-          placeholder="confirm your password"
-        />
-      </div>
-      <div class="mb-3">
-        <label for="password" class="form-label">Contact Number</label>
-        <input
-          type="Number"
-          name = "ContactNumber"
-          class="form-control"
-          id="password"
-          placeholder="contact number"
-        />
-      </div>
-      <div class="mb-3">
-        <label for="password" class="form-label">Pan Number</label>
-        <input
-          type="AdharNumber"
-          name = "PanNumber"
-          class="form-control"
-          id="AdharNumbe"
-          placeholder="Enter Adhar Number ..."
-        />
-      </div>
-      <div class="mb-3">
-        <label for="email" class="form-label">Govt Id Proof</label>
-        <input
-          type="text"
-          name = "Govid"
-          class="form-control"
-          id="cpassword"
-          placeholder="Govt Id"
-        />
-      </div>
-      <div class="mb-3">
-        <label for="email" class="form-label">Profile Image</label>
-        <input
-          type="text"
-          name = "profileImage"
-          class="form-control"
-          id="cpassword"
-          placeholder="profile Image"
-        />
-      </div>
-      <div class="mb-3">
-        <label for="email" class="form-label">DOB</label>
-        <input
-          type="text"
-          name = "DOB"
-          class="form-control"
-          id="cpassword"
-          placeholder="Date of Birth"
-        />
-      </div>
-      <div class="mb-3">
-        <label for="email" class="form-label">occupation</label>
-        <input
-          type="text"
-          name = "occupation"
-          class="form-control"
-          id="cpassword"
-          placeholder="Occupation"
-        />
-      </div>
-      <div class="mb-3 d-flex">
-        <span class='d-flex align-items-center'>
-          <p class="m-0 mr-2">Already have an account?
-          <a href='/login'>Click Here</a></p>
-        </span>
-          <button class="btn btn-primary ml-auto mr-2 px-3">
-            Register
-          </button>
-      </div>
-    </div>
     </form>
   </div>
 </div>
-{% endblock %}
+{% block script %}
+
+<script>
+  const waitingForSubmit = () => {
+    const username = document.getElementById("username").value;
+    const email = document.getElementById("email").value;
+    const adharno = document.getElementById("PanNo").value;
+    const contact = document.getElementById("contact").value;
+    const pass = document.getElementById("password").value;
+    const cpass = document.getElementById("cpassword").value;
+
+    if (
+      !(username && email && adharno && govtproof && contact && pass && cpass)
+    ) {
+      // Apply toast here
+      error_toast("All fields are Mandatory");
+      return false;
+    }
+
+    if (pass != cpass) {
+      error_toast("Password doesn't match .. Please check !!");
+      return false;
+    }
+    return true;
+  };
+
+  const updateImage = async () => {
+    const govtproof = document.getElementById("govid").files[0];
+
+    const CLOUDINARY_UPLOAD_PRESET = "hkz2frlf";
+    const CLOUDINARY_URL =
+      "https://api.cloudinary.com/v1_1/blog-zone/image/upload";
+
+    const formData = new FormData();
+    formData.append("file", govtproof);
+    formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+    formData.append("cloud_name", "dyw6pifnj");
+
+    const response = await fetch(CLOUDINARY_URL, {
+      method: "POST",
+      body: formData,
+    });
+    const final_res = await response.json();
+    if (!final_res) {
+      error_toast("Error occured while uploading image internally .. !!");
+      return false;
+    }
+
+    document.getElementById("govidvalue").value = final_res.secure_url;
+  };
+</script>
+{% endblock %} {% endblock %}
