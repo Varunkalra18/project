@@ -1,7 +1,7 @@
 import os
 from cs50 import SQL
 from flask import Flask, flash, redirect, render_template, request, session, jsonify
-from datetime import datetime
+from datetime import date, datetime
 from flask_session import Session
 import json
 from tempfile  import mkdtemp
@@ -37,7 +37,8 @@ db = SQL("sqlite:///test.db")
 @app.route('/', methods=['GET']) 
 @login_required
 def home() : 
-    return render_template("index.html") 
+    rows = db.execute("SELECT * FROM Assets")
+    return render_template("index.html", row = rows) 
 
 @app.route('/register', methods=['GET', 'POST']) 
 def register() : 
@@ -129,17 +130,14 @@ def addassets():
         name = request.form.get("Name")
         description = request.form.get("Description")
         #image = request.files["image"]
-        image = "upcomming"
+        image = request.form.get("assetimage")
+        print(image)
         tarBid = request.form.get("tarBid")
         today = date.today()
         db.execute("INSERT INTO Assets ( sellerId, Name, Description, Image, TimeStamp, tarBid) VALUES (:id, :name, :description, :image, :timestamp, :tarBid)", id = session["user_id"], name = name, description = description, image = image, timestamp = today, tarBid = tarBid)
         print("Queries added Successfully")
-    return render_template("sorry.html")
+    return redirect("/")
 
-@app.route("/Assets", methods=["GET"])
-def assets():
-    rows = db.execute("SELECT * FROM Assets")
-    return render_template("assets.html")
 
 
 

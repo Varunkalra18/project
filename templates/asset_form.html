@@ -37,7 +37,9 @@
         </div>
         <div class="mb-3">
           <h5>Upload image of your asset</h5>
-          <input type="file" id="myfile" name="image">
+          <input  type="file" class="form-control" id="assimage" multiple onchange = "updateImageAsset();" />
+          <input type="hidden" name="assetimage" value="default" id="assetvalue" />
+          
         </div>
         <div class="mb-4">
           <h5>Target Bid</h5>
@@ -60,3 +62,29 @@
   </div>
 </div>
 {% endblock %}
+<script>
+  const updateImageAsset = async () => {
+    const govtproof = document.getElementById("assimage").files[0];
+
+    const CLOUDINARY_UPLOAD_PRESET = "hkz2frlf";
+    const CLOUDINARY_URL =
+      "https://api.cloudinary.com/v1_1/blog-zone/image/upload";
+
+    const formData = new FormData();
+    formData.append("file", assetimage);
+    formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+    formData.append("cloud_name", "dv2aqilgt");
+
+    const response = await fetch(CLOUDINARY_URL, {
+      method: "POST",
+      body: formData,
+    });
+    const final_res = await response.json();
+    if (!final_res) {
+      error_toast("Error occured while uploading image internally .. !!");
+      return false;
+    }
+
+    document.getElementById("assetvalue").value = final_res.secure_url;
+  };
+</script>
