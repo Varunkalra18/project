@@ -38,9 +38,9 @@ db = SQL("sqlite:///test.db")
 @login_required
 def home() : 
     user_id = session["user_id"]
-    rows = db.execute("SELECT * FROM Assets WHERE SellerId !=:sellerId AND isActivated=1 AND isSold=0", sellerId=user_id)
+    rows = db.execute("SELECT * FROM Assets")
     print('rows : ', rows)
-    return render_template("index.html", rows=rows) 
+    return render_template("index.html", row=rows) 
 
 @app.route('/register', methods=['GET', 'POST']) 
 def register() : 
