@@ -10,7 +10,7 @@
         <h2 class="text-muted"><em>Just one step away from best deals</em></h2>
         
       </div>
-      <form action="/addAssets" method="POST">
+      <form action="/addAssets" method="POST" onsubmit="addAsset(event)">
       <div>
           <p class="display-4">Add Your Assets Here</p>
         <div class="mb-3">
@@ -36,8 +36,9 @@
           />
         </div>
         <div class="mb-3">
+          <input type="hidden" name="assetImage" value="default" id="assetimagevalue" />
           <h5>Upload image of your asset</h5>
-          <input type="file" id="myfile" name="image">
+          <input type="file" id="assetimage" name="image" onchange="return updateImage(event)">
         </div>
         <div class="mb-4">
           <h5>Target Bid</h5>
@@ -59,4 +60,59 @@
     </div>
   </div>
 </div>
+{% endblock %}
+
+{% block script %}
+<script>
+  const addAsset = (event) => {
+    console.log("Calling before submit ") ;
+    const assetImage = document.getElementById("assetimage").files[0] ;
+    console.log('assetImage: ', assetImage);
+    const assetName = document.getElementById("name").value ;
+    console.log('assetName: ', assetName);
+    const description = document.getElementById("description").value ;
+    console.log('description: ', description);
+    const targetBid = document.getElementById("tarBid").value ;
+    console.log('targetBid: ', targetBid);
+    if(!(assetName && description && targetBid && assetImage)){
+      error_toast("All fields are mandatory .. !!") ;
+      event.preventDefault() ;
+      return false ;
+    }
+    if(description.length < 60){
+      error_toast("Description should be atleast 60 words") ;
+      event.preventDefault() ;
+      return false ;
+    }
+    console.log("Coming here") ;
+    return true ;
+  }
+
+  const updateImage = async (e) => {
+    const assetImage = document.getElementById("assetimage").files[0] ;
+    console.log('assetImage: ', assetImage);
+
+    const CLOUDINARY_UPLOAD_PRESET = "d5sdp4u8";
+    const CLOUDINARY_URL =
+      "https://api.cloudinary.com/v1_1/blog-zone/image/upload";
+
+    const formData = new FormData();
+    formData.append("file", assetImage);
+    formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+    formData.append("cloud_name", "dyw6pifnj");
+
+    const response = await fetch(CLOUDINARY_URL, {
+      method: "POST",
+      body: formData,
+    });
+    const final_res = await response.json();
+    if (!final_res) {
+      error_toast("Error occured while uploading image internally .. !!");
+      return false;
+    }
+
+    document.getElementById("assetimagevalue").value = final_res.secure_url;
+  };
+
+</script>
 {% endblock %}
