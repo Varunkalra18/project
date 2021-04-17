@@ -88,9 +88,9 @@
       footer{
                 background-color:rgb(82, 82, 82);
                 color: rgb(163, 161, 161);
-                position:absolute;
+                /* position:absolute;
                 left:0%;
-                bottom: 0%;
+                bottom: 0%; */
                 width: 100%;
                 
                 padding-bottom: 50px;
@@ -198,6 +198,9 @@
         <li>
           <a class="nav-link" href="/addAssets">Add Assets</a>
         </li>
+        <li>
+          <a class="nav-link" href="/mybids">My Bids</a>
+        </li>
       </ul>
 
       <ul class="bl-navbar-elements navbar-nav ml-auto">
@@ -209,7 +212,7 @@
         </li>
       </ul>
     </nav>
-    This is new navbar after login {% else %}
+    {% else %}
     <nav
       class="navbar navbar-expand-lg navbar-dark bg-dark d-flex align-items-center fixed-top"
     >

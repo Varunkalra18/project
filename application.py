@@ -37,7 +37,10 @@ db = SQL("sqlite:///test.db")
 @app.route('/', methods=['GET']) 
 @login_required
 def home() : 
-    return render_template("index.html") 
+    user_id = session["user_id"]
+    rows = db.execute("SELECT * FROM Assets WHERE SellerId !=:sellerId AND isActivated=1 AND isSold=0", sellerId=user_id)
+    print('rows : ', rows)
+    return render_template("index.html", rows=rows) 
 
 @app.route('/register', methods=['GET', 'POST']) 
 def register() : 
@@ -104,6 +107,16 @@ def login() :
         session["user_id"] = rows[0]["Id"]
         print('user_Id in session : ', session["user_id"])
         return redirect("/")
+    
+@app.route('/admin/login', methods=['GET', 'POST']) 
+def adminLogin() : 
+    if(request.method == "GET") : 
+        session.clear()
+        return render_template("admin.login.html") 
+    else : 
+        adminEmail = request.form.get("emailAdmin") 
+        adminPass = request.form.get("emailPassword")
+        
 
 @app.route('/profile', methods=['GET']) 
 @login_required
@@ -128,27 +141,39 @@ def addassets():
         print("I am at add asset")
         name = request.form.get("Name")
         description = request.form.get("Description")
-        #image = request.files["image"]
-        image = "upcomming"
+        image = request.form.get("assetImage")
+        # image = "upcomming"
         tarBid = request.form.get("tarBid")
-        today = date.today()
+        today = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+        print("I am here to insert new assets ") 
         db.execute("INSERT INTO Assets ( sellerId, Name, Description, Image, TimeStamp, tarBid) VALUES (:id, :name, :description, :image, :timestamp, :tarBid)", id = session["user_id"], name = name, description = description, image = image, timestamp = today, tarBid = tarBid)
         print("Queries added Successfully")
+        print("Redirecting to /assets")
+        return redirect('/Assets') 
     return render_template("sorry.html")
 
 @app.route("/Assets", methods=["GET"])
+@login_required
 def assets():
-    rows = db.execute("SELECT * FROM Assets")
-    return render_template("assets.html")
+    user_id = session["user_id"]
+    rows = db.execute("SELECT * FROM Assets WHERE Id=:id ", id=user_id) 
+    return render_template("assets.html", rows=rows)
 
 
-
+@app.route("/mybids",methods=['GET', 'POST']) 
+@login_required
+def getMyBids() : 
+    user = session["user_id"]
+    rows= db.execute("SELECT * FROM Transactions WHERE BuyerId=:buyerid", buyerid=user) 
+    return render_template("mybids.html", rows=rows) 
 
 @app.route("/logout", methods = ["GET","POST"])
 @login_required
 def logout():
     session.clear()
     return redirect("/")
+
+
 
 if __name__ == "__main__":
     app.run(debug = True)
