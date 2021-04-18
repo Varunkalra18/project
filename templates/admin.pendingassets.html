@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block title%}
+Best things ahead!!!!
+{% endblock %}
+{% block main %}
+
+{% if rows|length != 0 %}
+  {% for item in rows %}
+    {% print(item) %}
+    <p>something</p>
+  {% endfor %}
+{% else %}
+    <center><h2 class="text-muted my-2">No Pending Assets Till Now .. !!</h2></center>
+{% endif %}
+{% endblock %} 

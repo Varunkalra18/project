@@ -9,7 +9,7 @@ from werkzeug.exceptions import default_exceptions, HTTPException, InternalServe
 from werkzeug.security import check_password_hash, generate_password_hash
 
 
-from support import login_required
+from support import login_required, admin_login_required
 # Check empty function can be used to check weather the passed dictionary has some None value or not
 from utility import getUser, checkEmpty
 
@@ -33,7 +33,7 @@ Session(app)
 
 db = SQL("sqlite:///test.db")
 
-
+# User Routes
 @app.route('/', methods=['GET']) 
 @login_required
 def home() : 
@@ -47,17 +47,7 @@ def register() :
     print("I am in register route")
     if request.method == "GET":
         return render_template("register.html") 
-    else : 
-        # TODO : Add register functionality here
-        # data = json.loads(request.data)
-        # print(data['username'])
-        # username = data["username"]
-        # emailId = data["email"]
-        # password = data["pass"]
-        # contact = data["contact"]
-        # an = data["adharno"]
-        # govid = data["govid"]
-        
+    else :      
         username = request.form.get("username")
         print("username : ", username)
         emailId = request.form.get("emailId")
@@ -107,16 +97,6 @@ def login() :
         session["user_id"] = rows[0]["Id"]
         print('user_Id in session : ', session["user_id"])
         return redirect("/")
-    
-@app.route('/admin/login', methods=['GET', 'POST']) 
-def adminLogin() : 
-    if(request.method == "GET") : 
-        session.clear()
-        return render_template("admin.login.html") 
-    else : 
-        adminEmail = request.form.get("emailAdmin") 
-        adminPass = request.form.get("emailPassword")
-        
 
 @app.route('/profile', methods=['GET']) 
 @login_required
@@ -167,6 +147,54 @@ def getMyBids() :
     rows= db.execute("SELECT * FROM Transactions WHERE BuyerId=:buyerid", buyerid=user) 
     return render_template("mybids.html", rows=rows) 
 
+
+# Admin Routes
+@app.route('/admin', methods=['GET'])
+@admin_login_required
+def adminHome() : 
+    rows = db.execute("SELECT Username, Email, ContactNumber, PanNumber, GovId, profileImage, DOB, occupation FROM User") 
+    return render_template("admin.index.html", rows=rows) 
+
+@app.route('/admin/login', methods=['GET', 'POST']) 
+def adminLogin() : 
+    if(request.method == "GET") : 
+        session.clear()
+        return render_template("admin.login.html") 
+    else : 
+        adminEmail = request.form.get("emailAdmin") 
+        adminPass = request.form.get("passwordAdmin")
+        print("adminEmail : ", adminEmail)
+        print("adminPass : ", adminPass)
+        rows = db.execute("SELECT * FROM Admin WHERE Email = :email", email = adminEmail) 
+        print('admin rows : ', rows)
+        if len(rows) == 0:
+            return render_template("sorry.html", text = "Invalid Admin")
+        print('rows[0]["Passwords"] : ', rows[0]["Passwords"])
+        print('adminPass : ', adminPass)
+        if not (rows[0]["Passwords"] == adminPass):
+            return render_template("sorry.html", text="Invalid Admin")
+        session["user_id"] = rows[0]["Id"]
+        return redirect("/admin")
+
+@app.route("/admin/assets/active")
+@admin_login_required
+def getActiveAssets() : 
+    rows = db.execute("SELECT * FROM Assets WHERE status='Accepted' and isActivated=True")
+    return render_template("admin.activeassets.html",rows=rows)
+
+@app.route("/admin/assets/pending")
+@admin_login_required
+def getPendingAssets() : 
+    rows = db.execute("SELECT * FROM Assets WHERE status='Pending' and isActivated=False")
+    return render_template("admin.pendingassets.html",rows=rows)
+
+@app.route("/admin/assets/accepted")
+@admin_login_required
+def getAcceptedAssets() : 
+    rows = db.execute("SELECT * FROM Assets WHERE status='Accepted'")
+    return render_template("admin.acceptedassets.html", rows=rows) 
+    
+# Logout is common for Admin and normal user
 @app.route("/logout", methods = ["GET","POST"])
 @login_required
 def logout():

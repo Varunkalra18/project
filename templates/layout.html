@@ -182,6 +182,7 @@
   <body id="body">
     <!-- Image and text -->
     {% if session.user_id %}
+      {% if not session.user_id == "mlqerloqrlgqiuwzaqbg" %}
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed" >
       <a class="navbar-brand" href="#"><img class = "logo" src="static/image/logo3.png" />
       </a>
@@ -210,6 +211,31 @@
         </li>
       </ul>
     </nav>
+      {% else %}
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed" >
+        <a class="navbar-brand" href="#"><img class = "logo" src="static/image/logo3.png" />
+        </a>
+        <ul class="bl-navbar-elements navbar-nav mr-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="/admin">Users</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="/admin/assets/pending">Pending Asset Logs</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="/admin/assets/accepted">Accepted Asset Logs</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="/admin/assets/active">Active Auctions</a>
+          </li>
+        </ul>
+        <ul class="bl-navbar-elements navbar-nav ml-auto">
+          <li class="nav-item active">
+            <a class="nav-link" href="/logout">Logout</a>
+          </li>
+        </ul>
+      </nav>
+      {% endif %}
     {% else %}
     <nav
       class="navbar navbar-expand-lg navbar-dark bg-dark d-flex align-items-center fixed-top"
