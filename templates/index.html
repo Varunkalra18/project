@@ -1,21 +1,52 @@
-{% extends "layout.html" %}
-
-{% block title %}
-    After Login
+{% extends "layout.html" %} 
+{% block title %} After Login {% endblock %} 
+{%block script %} {% endblock %} 
+{% block style %}
+  <style>
+    .asset-card{
+      background-color : whitesmoke;
+      width : 700px ;
+    }
+    .user-avatar{
+      height : 50px ;
+      width : 50px ;
+    }
+    .asset-price{
+      font-size: 25px;
+    }
+    .asset-desc > p{
+      font-size: 18px ;
+    }
+  </style>
+{% endblock %}
+{% block main %}  
+<div class="alert alert-primary" role="alert">
+  You're almost there .. Start bidding and get items .. !!!
+</div>
+<div class="container my-2 d-flex justify-content-center">
+    {% for asset in row%}
+    <div class="asset-card">
+        <div class="card-header d-flex align-items-center">
+          <img class="user-avatar rounded-circle" src="https://res.cloudinary.com/blog-zone/image/upload/v1618720846/zaxhr2g6aqcyljhrulhl.png" />
+          <p class="font-weight-bold ml-2 my-auto">Username</p>
+        </div>
+        <div>
+          <img class="w-100" src="https://res.cloudinary.com/blog-zone/image/upload/v1618720846/zaxhr2g6aqcyljhrulhl.png" alt="image not found"/>
+        </div>
+        <div class="amt__bid__section my-2 d-flex align-items-center">
+          <p class="font-weight-bold asset-price ml-2 my-auto">Price : INR 200</p>
+          <button class="btn btn-primary ml-auto mr-2 px-4 py-2">Bid Now !!!</button>
+        </div>
+        <hr/>
+        <div class="asset-desc ml-2 pb-1">
+          <p><span class="font-weight-bold">Description :</span> This is description of the asset .</p>
+        </div>
+    </div>
+    {% endfor %}
+</div>
 {% endblock %}
 
-
-
-{% block script %}
-
-{% endblock %}
-
-
-{% block main %}
-    <div class="container">
-        <div class="row">
-        {% for asset in row%}        
-            <div class="col-4">
+<!-- <div class="col-4">
                 <div class="card" style="width: 18rem;">
                     <img class="card-img-top" src="{{ asset['Image'] }}" alt="Card image cap">
                     <div class="card-body">
@@ -32,8 +63,4 @@
                       <a href="#" class="btn btn-success">Save for Later</a>
                     </div>
                   </div>    
-            </div>
-        {% endfor %}
-        </div>
-    </div>>
-{% endblock %}
+            </div> -->
