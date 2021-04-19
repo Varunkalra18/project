@@ -1,14 +1,52 @@
 {% extends "layout.html" %}
 {% block title%}
-Best things ahead!!!!
+Pending Assets
 {% endblock %}
-{% block main %}
 
+{% block style %}
+    <style>
+        .assetImage{
+            height : 70px ;
+            width : 70px ;
+        }
+      
+    </style>
+{% endblock %}
+
+{% block main %}
+<hr/>
+  <h2 class="text-center">Pending Assets</h2>
+<hr/>
 {% if rows|length != 0 %}
-  {% for item in rows %}
-    {% print(item) %}
-    <p>something</p>
-  {% endfor %}
+    <table class="table text-center my-4">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Product</th>
+          <th scope="col">Seller Name</th>
+          <th scope="col">Description</th>
+          <th scope="col">Image</th>
+          <th scope="col">Created Time</th>
+          <th scope="col">Target Bid</th>
+          <th scope="col">Accpe/Decline</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for asset_detail in rows %}
+        <tr>
+          <th scope="row">{{asset_detail["Name"]}}</th>
+          <td>{{asset_detail["Username"]}}</td>
+          <td width="50%">{{asset_detail["Description"]}}</td>
+          <td><a href="{{ asset_detail['Image'] }}" target="_blank"><img class="assetImage" src="{{asset_detail['Image']}}" /></a></td>
+          <td>{{asset_detail["TimeStamp"]}}</td>
+          <td>{{asset_detail["tarBid"]}}</td>
+          <td class="d-flex justify-content-around">
+            <a class="btn btn-success" href="/admin/toggle/asset/status?status=Accepted&assetId={{asset_detail['Id']}}">Accept</a>
+            <a class="btn btn-danger" href="/admin/toggle/asset/status?status=Declined&assetId={{asset_detail['Id']}}">Decline</a>
+          </td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
 {% else %}
     <center><h2 class="text-muted my-2">No Pending Assets Till Now .. !!</h2></center>
 {% endif %}
