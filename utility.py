@@ -5,9 +5,7 @@ db = SQL("sqlite:///test.db")
 
 def getUser() : 
     user_id = session["user_id"]
-    print("User id of logged in user : ", user_id)
     user = (db.execute("SELECT * FROM User WHERE Id=:id", id=user_id))[0]
-    print("User from database : ", user)
     
     user.pop("Passwords")
     if len(user) == 0 : 
@@ -16,7 +14,6 @@ def getUser() :
 
 
 def checkEmpty(data) : 
-    print("data in the checkEmpty function is : ", data)
     if not data : 
         return "No data came .. !!"
     for data_item in data : 

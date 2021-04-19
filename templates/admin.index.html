@@ -37,6 +37,7 @@
                     <th scope="col">DOB</th>
                     <th scope="col">Occupation</th>
                     <th scope="col">Profile Image</th>
+                    <th scope="col">Block User</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -51,6 +52,7 @@
                     <td>{{user["occupation"]}}</td>
                     <!-- Idhar user ki profile image dikhni hai agr user["profileImage"] exist kre toh aur use profile image class de dena  -->
                     <td>{{user["profileImage"] if user["profileImage"] else 'No Image Selected'}}</td>
+                    <td><a class="btn btn-{{'danger' if user['isBlocked'] != 0 else 'primary'}} text-light" href="/admin/toggle/blockUser?user={{user['Id']}}&td={{user['isBlocked']}}">{{"Block" if user["isBlocked"] == 0 else "Unblock"}}</a></td>
                   </tr>
                 {% endfor %}
                 </tbody>
