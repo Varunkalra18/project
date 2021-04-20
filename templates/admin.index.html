@@ -47,9 +47,9 @@
                     <td>{{user["Email"]}}</td>
                     <td>{{user["PanNumber"]}}</td>
                     <td><a href="{{ user['GovId'] }}" target="_blank"><img class="govIdImage" src="{{user['GovId']}}" /></a></td>
-                    <td>{{user["ContactNumber"]}}</td>
-                    <td>{{user["DOB"]}}</td>
-                    <td>{{user["occupation"]}}</td>
+                    <td>{{user["ContactNumber"] if user["ContactNumber"] else 'Not Updated'}}</td>
+                    <td>{{user["DOB"] if user["DOB"] else 'Not Updated'}}</td>
+                    <td>{{user["occupation"] if user["occupation"] else 'Not Updated'}}</td>
                     <!-- Idhar user ki profile image dikhni hai agr user["profileImage"] exist kre toh aur use profile image class de dena  -->
                     <td>{{user["profileImage"] if user["profileImage"] else 'No Image Selected'}}</td>
                     <td><a class="btn btn-{{'danger' if user['isBlocked'] != 0 else 'primary'}} text-light" href="/admin/toggle/blockUser?user={{user['Id']}}&td={{user['isBlocked']}}">{{"Block" if user["isBlocked"] == 0 else "Unblock"}}</a></td>

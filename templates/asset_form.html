@@ -41,6 +41,16 @@
           <input type="file" id="assetimage" name="image" onchange="return updateImage(event)">
         </div>
         <div class="mb-4">
+          <h5>Start Bid</h5>
+          <input
+            type="number"
+            name = "startBid"
+            class="form-control"
+            id="startBid"
+            placeholder="Start Bid"
+          />
+        </div>  
+        <div class="mb-4">
           <h5>Target Bid</h5>
           <input
             type="number"
@@ -72,15 +82,17 @@
     console.log('assetName: ', assetName);
     const description = document.getElementById("description").value ;
     console.log('description: ', description);
+    const startBid = document.getElementById("startBid").value ;
+    console.log('startBid : ', startBid) ;
     const targetBid = document.getElementById("tarBid").value ;
     console.log('targetBid: ', targetBid);
-    if(!(assetName && description && targetBid && assetImage)){
+    if(!(assetName && description && targetBid && assetImage && startBid)){
       error_toast("All fields are mandatory .. !!") ;
       event.preventDefault() ;
       return false ;
     }
-    if(description.length < 60){
-      error_toast("Description should be atleast 60 words") ;
+    if(description.length >= 20 && description.length <= 60){
+      error_toast("Description should be 20-60 words") ;
       event.preventDefault() ;
       return false ;
     }

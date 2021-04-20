@@ -72,16 +72,6 @@
           <input  type="file" class="form-control" id="govid" multiple onchange = "updateImage();" />
         </div>
         <div class="mb-3">
-          <label for="email" class="form-label">Contact Number</label>
-          <input
-            type="text"
-            name="contactnum"
-            class="form-control"
-            id="contact"
-            placeholder="Contact Number"
-          />
-        </div>
-        <div class="mb-3">
           <label for="password" class="form-label">Password</label>
           <input
             type="password"
@@ -120,12 +110,11 @@
     const username = document.getElementById("username").value;
     const email = document.getElementById("email").value;
     const adharno = document.getElementById("PanNo").value;
-    const contact = document.getElementById("contact").value;
     const pass = document.getElementById("password").value;
     const cpass = document.getElementById("cpassword").value;
 
     if (
-      !(username && email && adharno && govtproof && contact && pass && cpass)
+      !(username && email && adharno && govtproof && pass && cpass)
     ) {
       // Apply toast here
       error_toast("All fields are Mandatory");

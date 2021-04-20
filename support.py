@@ -31,3 +31,19 @@ def admin_login_required(f) :
         return f(*args, **kwargs)
     return decorated_function
 
+def user_first_land(f) : 
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        user_id = session.get('user_id')
+        print('user_id : ', user_id)
+        user = db.execute("SELECT * FROM User WHERE Id=:id", id=1)
+        print(user[0])
+        if int(user[0]["firstLand"]) == 1 : 
+            # Redirect to middle page
+            print('I am here in middle page')
+            return redirect('/midpagedetails')
+        else : 
+            return redirect("/") 
+        return f(*args, **kwargs)
+    return decorated_function
+

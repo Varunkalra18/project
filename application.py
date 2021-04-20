@@ -9,7 +9,7 @@ from werkzeug.exceptions import default_exceptions, HTTPException, InternalServe
 from werkzeug.security import check_password_hash, generate_password_hash
 
 
-from support import login_required, admin_login_required
+from support import login_required, admin_login_required, user_first_land
 # Check empty function can be used to check weather the passed dictionary has some None value or not
 from utility import getUser, checkEmpty
 
@@ -36,9 +36,10 @@ db = SQL("sqlite:///test.db")
 # User Routes
 @app.route('/', methods=['GET']) 
 @login_required
+@user_first_land
 def home() : 
     user_id = session["user_id"]
-    rows = db.execute("SELECT U.Username, A.* FROM Assets AS A INNER JOIN User AS U on U.Id = A.SellerId")
+    rows = db.execute("SELECT U.Username, U.profileImage, A.* FROM Assets AS A INNER JOIN User AS U on U.Id = A.SellerId")
     return render_template("index.html", row=rows) 
 
 @app.route('/register', methods=['GET', 'POST']) 
@@ -49,7 +50,6 @@ def register() :
         username = request.form.get("username")
         emailId = request.form.get("emailId")
         password = request.form.get("password")
-        contact = request.form.get("contactnum") 
         an = request.form.get("PanNo")
         govid = request.form.get("Govid")
         timestamp = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
@@ -61,7 +61,7 @@ def register() :
         if len(email) != 0:
             return render_template("register.html", error="Email already exist .. !!")
         hashed = generate_password_hash(password)
-        db.execute("INSERT INTO User (Username, Email, Passwords, PanNumber, GovId,ContactNumber, Timestamp) VALUES( :username, :emailId, :pasword, :adharnumber, :govid, :contact, :timestamp)", username = username, emailId = emailId, pasword = hashed, adharnumber = an, govid = govid,contact=contact, timestamp = timestamp)
+        db.execute("INSERT INTO User (Username, Email, Passwords, PanNumber, GovId, Timestamp) VALUES( :username, :emailId, :pasword, :adharnumber, :govid, :timestamp)", username = username, emailId = emailId, pasword = hashed, adharnumber = an, govid = govid, timestamp = timestamp)
         return redirect("/")
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -106,9 +106,10 @@ def addassets():
         name = request.form.get("Name")
         description = request.form.get("Description")
         image = request.form.get("assetImage")
+        startBid = request.form.get("startBid")
         tarBid = request.form.get("tarBid")
         today = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
-        db.execute("INSERT INTO Assets ( sellerId, Name, Description, Image, TimeStamp, tarBid) VALUES (:id, :name, :description, :image, :timestamp, :tarBid)", id = session["user_id"], name = name, description = description, image = image, timestamp = today, tarBid = tarBid)
+        db.execute("INSERT INTO Assets ( sellerId, Name, Description, Image, TimeStamp, tarBid, startBid) VALUES (:id, :name, :description, :image, :timestamp, :tarBid, :startBid)", id = session["user_id"], name = name, description = description, image = image, timestamp = today, tarBid = tarBid, startBid = startBid)
         return redirect('/Assets') 
     return render_template("sorry.html")
 
@@ -126,6 +127,26 @@ def getMyBids() :
     user = session["user_id"]
     rows= db.execute("SELECT * FROM Transactions WHERE BuyerId=:buyerid", buyerid=user) 
     return render_template("mybids.html", rows=rows) 
+
+@app.route("/midpagedetails", methods=['GET', 'POST'])
+@login_required
+def midPageRender() : 
+    
+    
+    if(request.method == 'GET') : 
+        session['temp_user'] = session["user_id"]
+        session['first_land'] = "true" 
+        session.pop('user_id') 
+        return render_template('midDetailsPage.html')
+    else : 
+        temp_user = session['temp_user']
+        print('temp_user : ', temp_user)
+        session["user_id"] = temp_user
+        db.execute("UPDATE User SET firstLand=False WHERE Id=:id", id=temp_user)
+        session.pop('temp_user')
+        session.pop('first_land')
+        redirect('/')
+    
 
 
 # Admin Routes

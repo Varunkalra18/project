@@ -12,7 +12,7 @@
       width : 50px ;
     }
     .asset-price{
-      font-size: 25px;
+      font-size: 23px;
     }
     .asset-desc > p{
       font-size: 18px ;
@@ -23,23 +23,26 @@
 <div class="alert alert-primary" role="alert">
   You're almost there .. Start bidding and get items .. !!!
 </div>
-<div class="container my-2 d-flex justify-content-center">
+<div class="container my-2 d-flex flex-column align-items-center">
     {% for asset in row%}
-    <div class="asset-card">
+    <div class="asset-card my-3 rounded">
         <div class="card-header d-flex align-items-center">
-          <img class="user-avatar rounded-circle" src="https://res.cloudinary.com/blog-zone/image/upload/v1618720846/zaxhr2g6aqcyljhrulhl.png" />
-          <p class="font-weight-bold ml-2 my-auto">Username</p>
+          <img class="user-avatar rounded-circle" src="{{asset['profileImage'] if asset['profileImage'] else '../static/image/user-default.jpg'}}" />
+          <p class="font-weight-bold ml-2 my-auto">{{asset["Username"]}}</p>
         </div>
         <div>
-          <img class="w-100" src="https://res.cloudinary.com/blog-zone/image/upload/v1618720846/zaxhr2g6aqcyljhrulhl.png" alt="image not found"/>
+          <img class="w-100" src="{{asset['Image']}}" alt="image not found"/>
         </div>
         <div class="amt__bid__section my-2 d-flex align-items-center">
-          <p class="font-weight-bold asset-price ml-2 my-auto">Price : INR 200</p>
-          <button class="btn btn-primary ml-auto mr-2 px-4 py-2">Bid Now !!!</button>
+          <div class='d-flex'>
+            <p class="font-weight-bold asset-price ml-2 my-auto text-success">Start Price: INR {{asset["tarBid"]}}</p>
+            <p class="font-weight-bold asset-price ml-2 my-auto text-primary">Target Price: INR {{asset["startBid"]}}</p>
+          </div>
+          <a href="#" class="btn btn-primary ml-auto mr-2 px-4 py-2">Bid Now !!!</a>
         </div>
         <hr/>
         <div class="asset-desc ml-2 pb-1">
-          <p><span class="font-weight-bold">Description :</span> This is description of the asset .</p>
+          <p><span class="font-weight-bold">Description :</span> {{asset["Description"]}}.</p>
         </div>
     </div>
     {% endfor %}
