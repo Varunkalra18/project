@@ -302,6 +302,7 @@
         // background-color: yellowgreen;
         const toastContainer = document.createElement("div");
         toastContainer.style.backgroundColor = color;
+        toastContainer.style.zIndex = "999"
         toastContainer.className = "toast d-flex align-items-center px-3";
         toastContainer.innerHTML = `Message : ${text}`;
 

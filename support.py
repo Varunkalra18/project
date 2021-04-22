@@ -36,7 +36,7 @@ def user_first_land(f) :
     def decorated_function(*args, **kwargs):
         user_id = session.get('user_id')
         print('user_id : ', user_id)
-        user = db.execute("SELECT * FROM User WHERE Id=:id", id=1)
+        user = db.execute("SELECT * FROM User WHERE Id=:id", id=user_id)
         print(user[0])
         if int(user[0]["firstLand"]) == 1 : 
             # Redirect to middle page
