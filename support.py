@@ -41,9 +41,10 @@ def user_first_land(f) :
         if int(user[0]["firstLand"]) == 1 : 
             # Redirect to middle page
             print('I am here in middle page')
-            return redirect('/midpagedetails')
+            return render_template("midDetailsPage.html")
         else : 
-            return redirect("/") 
+            rows = db.execute("SELECT U.Username, U.profileImage, A.* FROM Assets AS A INNER JOIN User AS U on U.Id = A.SellerId")
+            return render_template("index.html", row=rows) 
         return f(*args, **kwargs)
     return decorated_function
 

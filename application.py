@@ -36,7 +36,7 @@ db = SQL("sqlite:///test.db")
 # User Routes
 @app.route('/', methods=['GET']) 
 @login_required
-# @user_first_land
+@user_first_land
 def home() : 
     user_id = session["user_id"]
     rows = db.execute("SELECT U.Username, U.profileImage, A.* FROM Assets AS A INNER JOIN User AS U on U.Id = A.SellerId")
@@ -93,7 +93,7 @@ def profile() :
 @app.route('/profile/update', methods=['PUT']) 
 def updateProfile() : 
     # Add functionality to update user profile and redirect to profile page with respective data
-    redirect('/profile')
+    return redirect('/profile')
 
 
 @app.route("/addAssets", methods=["GET", "POST"])
@@ -128,16 +128,27 @@ def getMyBids() :
     rows= db.execute("SELECT * FROM Transactions WHERE BuyerId=:buyerid", buyerid=user) 
     return render_template("mybids.html", rows=rows) 
 
-@app.route("/midpagedetails", methods=['GET', 'POST'])
+@app.route("/midpagedetails", methods=['POST'])
 @login_required
 def midPageRender() : 
-    
-    
-    if(request.method == 'GET') : 
-        return render_template('midDetailsPage.html')
-    else : 
-        db.execute("UPDATE User SET firstLand=False WHERE Id=:id", id=session["user_id"])
-        redirect('/')
+    user = session["user_id"]
+    print('User in mid page : ', user)
+    profileImage = request.form.get('profile-image-url')
+    dob = request.form.get('dob')
+    mob = request.form.get('mob')
+    occupation = request.form.get('occupation')
+    print('profileImage : ', profileImage)
+    print('dob : ', dob)
+    print('mob : ', mob)
+    print('occupation : ', occupation)
+    db.execute('UPDATE User SET profileImage=:image, DOB=:dob, ContactNumber=:contact, occupation=:occupation WHERE Id=:id', image=profileImage, dob=dob, contact=mob, occupation=occupation, id=session["user_id"])
+    db.execute("UPDATE User SET firstLand=False WHERE Id=:id", id=session["user_id"])
+    return redirect('/')
+
+@app.route("/midpage/skip")
+def midpageSkip() : 
+    db.execute("UPDATE User SET firstLand=False WHERE Id=:id", id=session["user_id"])
+    return redirect('/') 
     
 @app.route('/bid', methods=['POST'])
 def bidAsset() : 

@@ -2,6 +2,32 @@
 {% block title%}
 Best things ahead!!!!
 {% endblock %}
+{% block style %}
+<style>
+  .main_div{
+    margin: auto;
+    height: 300px;
+    width: 800px;
+    border: 1px double black;
+  }
+  img{
+      height: 150px;
+      width: 150px;
+    }
+    .card-title{
+      margin-top: 0px;
+      background: gray;
+      color: black;
+      height: 40px;
+      width: 150px;
+      text-align: center;
+      padding-top: 11px;
+    }
+    .img_title{
+      float: left;
+    }
+</style>
+{% endblock %}
 {% block main %}
 <nav class="navbarnavbar-light mt-1" style="background-color: #e3f2fd;">
     
@@ -17,6 +43,48 @@ Best things ahead!!!!
       </li>
     </ul>
   </nav>
+
+  <div class="card main_div">
+    <div class="row no-gutters">
+      <div class="img_title">
+        <div class="col-md-4">
+          <img src="D:\project\static\image\logo3.png" class="card-img" alt="Image is not available">
+        </div>
+        <div class="col-md-8">
+            <h4 class="card-title">ASSET NAME</h4>
+        </div>
+      </div>
+  
+          <div class="card-body">
+          <p class="card-text">
+            <table>
+              <tr>
+                <td><strong>Uploaded Date:</strong></td>
+              </tr>
+              <tr>
+                <td><strong>Bidding Interval:</strong></td>
+              </tr>
+              <tr>
+                <td><strong>Activation Time:</strong></td>
+              </tr>
+              <tr>
+                <td><strong>Status:</strong><i>Pending/Approved/Disapprove</i></td>
+              </tr>
+              <tr>
+                <td><button type="button" value="edit">Edit</button></td>
+                <td><button type="button" value="remove">Remove</button></td>
+              </tr>
+            </table>
+            <hr/>
+            <strong>Start Bid:
+            Target Bid:
+            Maximum Bid:</strong>
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
 
   {% for item in rows %}
     {% print(item) %}
