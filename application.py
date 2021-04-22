@@ -36,7 +36,7 @@ db = SQL("sqlite:///test.db")
 # User Routes
 @app.route('/', methods=['GET']) 
 @login_required
-@user_first_land
+#@user_first_land
 def home() : 
     user_id = session["user_id"]
     rows = db.execute("SELECT U.Username, U.profileImage, A.* FROM Assets AS A INNER JOIN User AS U on U.Id = A.SellerId")

@@ -5,10 +5,73 @@ Extra Details
 
 {% block style %}
     <style>
-      
+        body{
+            background-color: rgb(182, 182, 182);
+        }
+        .mid{
+            margin: auto;
+            margin-top: 100px;
+            padding: 10px;
+            height: auto;
+            width: 500px;
+            border: 2px solid black;
+        }
+        .upload{
+            margin: auto;
+            height: 200px;
+            width: 200px;
+            border-radius: 80px;
+            border: 1px solid black;
+            background: url("static\image\user-default.jpg");
+        }
+      .main_div{
+          background-color: whitesmoke;
+          padding: 20px;
+          height: auto;
+          width: auto;
+      }
+      .btn_upload{
+          margin: 10 150;
+          height: 30px;
+          width: 200px;
+      }
+      input{
+          height: 40px;
+          width: 400px;
+      }
     </style>
 {% endblock %}
 
 {% block main %}
-    <h1>This is middle page</h1>
+    <body>
+        <fieldset class="mid">
+            <div class="main_div col-sm-12 col-md-6 col-sm-3">
+                <div class="upload">
+                    
+                </div>
+                <button type="submit" class="btn_upload">Upload Image</button>
+                
+                <form>
+                    <table>
+                        <tr>
+                            <td>Date of Birth</td>
+                            <td><input type="date"/></td>
+                        </tr>
+                        <tr>
+                            <td>Mobile Number</td>
+                            <td><input type="text"/></td>
+                        </tr>
+                        <tr>
+                            <td>Occupation</td>
+                            <td><input type="text"/></td>
+                        </tr>
+                        <tr>
+                            <td>Address</td>
+                            <td><input type="text"/></td>
+                        </tr>
+                    </table>
+                </form>
+            </div>
+        </fieldset>
+    </body>
 {% endblock %} 
