@@ -36,7 +36,7 @@ db = SQL("sqlite:///test.db")
 # User Routes
 @app.route('/', methods=['GET']) 
 @login_required
-#@user_first_land
+@user_first_land
 def home() : 
     user_id = session["user_id"]
     rows = db.execute("SELECT U.Username, U.profileImage, A.* FROM Assets AS A INNER JOIN User AS U on U.Id = A.SellerId")
@@ -93,7 +93,7 @@ def profile() :
 @app.route('/profile/update', methods=['PUT']) 
 def updateProfile() : 
     # Add functionality to update user profile and redirect to profile page with respective data
-    redirect('/profile')
+    return redirect('/profile')
 
 
 @app.route("/addAssets", methods=["GET", "POST"])
@@ -109,7 +109,7 @@ def addassets():
         startBid = request.form.get("startBid")
         tarBid = request.form.get("tarBid")
         today = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
-        db.execute("INSERT INTO Assets ( sellerId, Name, Description, Image, TimeStamp, tarBid, startBid) VALUES (:id, :name, :description, :image, :timestamp, :tarBid, :startBid)", id = session["user_id"], name = name, description = description, image = image, timestamp = today, tarBid = tarBid, startBid = startBid)
+        db.execute("INSERT INTO Assets ( sellerId, Name, Description, Image, TimeStamp, tarBid, startBid, maxBid) VALUES (:id, :name, :description, :image, :timestamp, :tarBid, :startBid, :maxBid)", id = session["user_id"], name = name, description = description, image = image, timestamp = today, tarBid = tarBid, startBid = startBid, maxBid = int(startBid))
         return redirect('/Assets') 
     return render_template("sorry.html")
 
@@ -128,24 +128,41 @@ def getMyBids() :
     rows= db.execute("SELECT * FROM Transactions WHERE BuyerId=:buyerid", buyerid=user) 
     return render_template("mybids.html", rows=rows) 
 
-@app.route("/midpagedetails", methods=['GET', 'POST'])
+@app.route("/midpagedetails", methods=['POST'])
 @login_required
 def midPageRender() : 
+    user = session["user_id"]
+    print('User in mid page : ', user)
+    profileImage = request.form.get('profile-image-url')
+    dob = request.form.get('dob')
+    mob = request.form.get('mob')
+    occupation = request.form.get('occupation')
+    print('profileImage : ', profileImage)
+    print('dob : ', dob)
+    print('mob : ', mob)
+    print('occupation : ', occupation)
+    db.execute('UPDATE User SET profileImage=:image, DOB=:dob, ContactNumber=:contact, occupation=:occupation WHERE Id=:id', image=profileImage, dob=dob, contact=mob, occupation=occupation, id=session["user_id"])
+    db.execute("UPDATE User SET firstLand=False WHERE Id=:id", id=session["user_id"])
+    return redirect('/')
+
+@app.route("/midpage/skip")
+def midpageSkip() : 
+    db.execute("UPDATE User SET firstLand=False WHERE Id=:id", id=session["user_id"])
+    return redirect('/') 
     
-    
-    if(request.method == 'GET') : 
-        session['temp_user'] = session["user_id"]
-        session['first_land'] = "true" 
-        session.pop('user_id') 
-        return render_template('midDetailsPage.html')
-    else : 
-        temp_user = session['temp_user']
-        print('temp_user : ', temp_user)
-        session["user_id"] = temp_user
-        db.execute("UPDATE User SET firstLand=False WHERE Id=:id", id=temp_user)
-        session.pop('temp_user')
-        session.pop('first_land')
-        redirect('/')
+@app.route('/bid', methods=['POST'])
+def bidAsset() : 
+    assetId = request.form.get('assetId')
+    maxBid = request.form.get('bid_amount') 
+    loggedInUser = session["user_id"]
+    print('asset id : ', assetId, ' and bid amount : ', maxBid)
+    db.execute('UPDATE Assets SET maxBid=:maxBid, maxBidUser=:maxBidUser WHERE Id=:id', maxBid=maxBid, id=assetId, maxBidUser=loggedInUser)
+    asset = db.execute('SELECT * FROM Assets WHERE Id=:id', id=assetId)
+    print('This is the asset to get bidded : ', asset)
+    timestamp = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+    db.execute('INSERT INTO Transactions (SellerId, BuyerId, Amount, AssetId, TimeStamp) VALUES (:sellerid, :buyerid, :amount, :assetId, :timestamp)', sellerid=asset[0]["SellerId"], buyerid=loggedInUser, amount=maxBid, assetId=asset[0]["Id"], timestamp=timestamp)
+    print('Here in assets')
+    return redirect('/') 
     
 
 
