@@ -1,6 +1,6 @@
 {% extends "layout.html" %} 
 {% block title %} After Login {% endblock %} 
-{%block script %} {% endblock %} 
+
 {% block style %}
   <style>
     .asset-card{
@@ -16,6 +16,10 @@
     }
     .asset-desc > p{
       font-size: 18px ;
+    }
+
+    .note-first-bid{
+      font-size : 13px ;
     }
   </style>
 {% endblock %}
@@ -43,14 +47,70 @@
             <p class="font-weight-bold asset-price ml-2 my-auto text-success">Start Price: INR {{asset.startBid}}</p>
             <p class="font-weight-bold asset-price ml-2 my-auto text-primary">Target Price: INR {{asset.tarBid}}</p>
           </div>
-          <a href="#" class="btn btn-primary ml-auto mr-2 px-4 py-2">Bid Now !!!</a>
+          <a href="#" class="btn btn-primary ml-auto mr-2 px-4 py-2" data-toggle="modal" data-target="#exampleModalLong">Bid Now !!!</a>
         </div>
         <hr/>
         <div class="asset-desc ml-2 pb-1">
           <p><span class="font-weight-bold">Description :</span> {{asset.Description}}.</p>
         </div>
     </div>
+    <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <form action="/bid" method="POST" onsubmit="return makeBid('{{asset.Id}}', '{{asset.maxBid}}', event)">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLongTitle">Making a bid .. !!</h5>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>Product : {{asset["Name"]}}</p>
+              <p>Start Price : {{asset["startBid"]}}</p>
+              <p>Last Maximum Bid : {{asset["maxBid"]}}</p>
+              {% if not asset["maxBid"] %}
+              <span class="text-danger note-first-bid">Note : First bid is always equal to Start bid .</span>
+              {% endif %}
+              <p>Enter Your Bid Amount<input id="bid_amount" name='bid_amount' class="form-control" type="number" placeholder="Enter Amount" /></p>
+              <input type='hidden' id='assetId' name='assetId'/>
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-secondary" data-dismiss="modal">Close</button>
+              <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
     {% endfor %}
 </div>
 
-{% endblock %}
+{%block script %} 
+  <script>
+    
+    const makeBid = async(id,lastBid,event) => {
+      console.log(event) ;
+      
+      console.log('Id and lastBid : ', id, " and ", lastBid);
+      document.getElementById('assetId').value = id ;
+      const bidAmount = document.getElementById('bid_amount') ;
+      const bidAmountError = document.getElementById('bid_amount_error') ;
+      if(!bidAmount.value){
+        bidAmount.classList = bidAmount.classList + " is-invalid" ;
+        event.preventDefault() ;
+        error_toast("Amount is required") ;
+        return false ;
+      }
+      console.log(typeof lastBid) ;
+      if(parseInt(bidAmount.value) <= parseInt(lastBid)){
+        error_toast("Amount cannot be equal or less than last maximum bid .. !!") ;
+        event.preventDefault() ;
+        return false ;
+      }
+      console.log('Bid amount : ', bidAmount.value) ;
+
+      return true ;
+    }
+  </script>
+{% endblock %} 
+
