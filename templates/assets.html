@@ -30,18 +30,24 @@ Best things ahead!!!!
 {% endblock %}
 {% block main %}
 <nav class="navbarnavbar-light mt-1" style="background-color: #e3f2fd;">
-    
-    <ul class="bl-navbar-elements navbar-nav ml-auto">
-      <form class="form-inline">
+
+  <div class='row mb-2'>
+    <div class='col-md d-flex align-items-center'>
+      <form class="form-inline ml-auto">
         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
       </form>
-      <li class="nav-item active">
-        <a class="nav-link" href="/addAssets">
+      <span class = "d-flex justify-content-center align-items-center ml-auto mr-2">
+        <a class="nav-link ml-auto" href="/addAssets">
           <i class="fa fa-plus-circle"></i>
         </a>
-      </li>
-    </ul>
+        Want to add assets ?
+      </span>
+    </div>
+    
+      
+  </div>
+    
   </nav>
 
   <div class="card main_div">
