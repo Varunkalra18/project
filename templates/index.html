@@ -23,47 +23,34 @@
 <div class="alert alert-primary" role="alert">
   You're almost there .. Start bidding and get items .. !!!
 </div>
-<div class="container my-2 d-flex flex-column align-items-center">
-    {% for asset in row%}
+ <div class="container my-2  d-flex flex-column align-items-center">
+{% for asset in row%}
+  <div class="row">
     <div class="asset-card my-3 rounded">
         <div class="card-header d-flex align-items-center">
-          <img class="user-avatar rounded-circle" src="{{asset['profileImage'] if asset['profileImage'] else '../static/image/user-default.jpg'}}" />
-          <p class="font-weight-bold ml-2 my-auto">{{asset["Username"]}}</p>
+          {% if asset.profileImage %}
+          <img class="user-avatar rounded-circle" src="{{ asset['profileImage'] }}"/>
+          {% else %}
+          <img class="user-avtar rounded-circle" src="static/image/user-default.jpg">
+          {% endif %}
+          <p class="font-weight-bold ml-2 my-auto">{{asset.Username}}</p>
         </div>
         <div>
           <img class="w-100" src="{{asset['Image']}}" alt="image not found"/>
         </div>
         <div class="amt__bid__section my-2 d-flex align-items-center">
           <div class='d-flex'>
-            <p class="font-weight-bold asset-price ml-2 my-auto text-success">Start Price: INR {{asset["tarBid"]}}</p>
-            <p class="font-weight-bold asset-price ml-2 my-auto text-primary">Target Price: INR {{asset["startBid"]}}</p>
+            <p class="font-weight-bold asset-price ml-2 my-auto text-success">Start Price: INR {{asset.startBid}}</p>
+            <p class="font-weight-bold asset-price ml-2 my-auto text-primary">Target Price: INR {{asset.tarBid}}</p>
           </div>
           <a href="#" class="btn btn-primary ml-auto mr-2 px-4 py-2">Bid Now !!!</a>
         </div>
         <hr/>
         <div class="asset-desc ml-2 pb-1">
-          <p><span class="font-weight-bold">Description :</span> {{asset["Description"]}}.</p>
+          <p><span class="font-weight-bold">Description :</span> {{asset.Description}}.</p>
         </div>
     </div>
     {% endfor %}
 </div>
-{% endblock %}
 
-<!-- <div class="col-4">
-                <div class="card" style="width: 18rem;">
-                    <img class="card-img-top" src="{{ asset['Image'] }}" alt="Card image cap">
-                    <div class="card-body">
-                      <h5 class="card-title">{{asset.Name}}</h5>
-                      <p class="card-text">{{asset.Description}}</p>
-                    </div>
-                    <ul class="list-group list-group-flush">
-                      <li class="list-group-item">{{asset.TimeStamp}}</li>
-                      <li class="list-group-item">{{asset.tarBid}}</li>
-                      <li class="list-group-item">Seller Id: {{asset.SellerId}}</li>
-                    </ul>
-                    <div class="card-body">
-                      <a href="#" class="btn btn-primary">Bid Now</a>
-                      <a href="#" class="btn btn-success">Save for Later</a>
-                    </div>
-                  </div>    
-            </div> -->
+{% endblock %}

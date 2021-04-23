@@ -36,10 +36,10 @@ db = SQL("sqlite:///test.db")
 # User Routes
 @app.route('/', methods=['GET']) 
 @login_required
-@user_first_land
+#@user_first_land
 def home() : 
-    user_id = session["user_id"]
     rows = db.execute("SELECT U.Username, U.profileImage, A.* FROM Assets AS A INNER JOIN User AS U on U.Id = A.SellerId")
+    print(rows) 
     return render_template("index.html", row=rows) 
 
 @app.route('/register', methods=['GET', 'POST']) 
@@ -120,6 +120,24 @@ def assets():
     rows = db.execute("SELECT * FROM Assets WHERE Id=:id ", id=user_id) 
     return render_template("assets.html", rows=rows)
 
+
+@app.route("/bookmark", methods=["GET", "POST"])
+@login_required
+def bookmark():
+    if request.method == "GET":
+        row = db.execute("SELECT * FROM bookmark WHERE userId = :userid", userid = session["user_id"])
+        assets = []
+        num = 0
+        for asset in row:
+            assd = db.execute("SELECT *FROM Assets WHERE Id = :assetid", assetid = asset["assetId"])
+            assets.append(assd)
+        print(assets)
+        print("")
+        return render_template("bookmark.html", row = assets)
+    else:
+        assetid = request.form.get("assetid")
+        db.execute("INSERT INTO bookmark (assetId, userId) VALUES (:assetid, :userid)", assetid = assetid, userid = session["user_id"])
+        return redirect("/")
 
 @app.route("/mybids",methods=['GET', 'POST']) 
 @login_required
