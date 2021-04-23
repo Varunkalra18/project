@@ -5,74 +5,60 @@ ASSET CARD
 
 {% block style %}
     <style>
-      .main_div{
-        margin: auto;
-        height: 300px;
-        width: 800px;
-        border: 1px double black;
-      }
-      img{
-          height: 150px;
-          width: 150px;
+      .container{
+            border: 1px solid black;
         }
-        .card-title{
-          margin-top: 0px;
-          background: gray;
-          color: black;
-          height: 40px;
-          width: 150px;
-          text-align: center;
-          padding-top: 11px;
+        .asset_img{
+            height: 250px;
+            width: 400px;
         }
-        .img_title{
-          float: left;
+        button{
+            border-radius: 10px;
+            height: 35px;
         }
     </style>
 {% endblock %}
 
 {% block main %}
-<div class="card main_div">
-  <div class="row no-gutters">
-    <div class="img_title">
-      <div class="col-md-4">
-        <img src="D:\project\static\image\logo3.png" class="card-img" alt="Image is not available">
+<div class="container mt-3 w-50">
+      <div class="row">
+          <div class="col-sm-12 col-md-6 col-lg-4 pt-2">
+              <div class="card mt-3">
+                  <img src="images/shirt-1.jpg" class="asset_img img-fluid card-img"/>
+                  <div class="card-header bg-dark text-light text-center">
+                      <strong style="letter-spacing: 5px;">Featured</strong>
+                  </div>
+              </div>
+          </div>
+          <div class="col-sm-12 col-md-6 col-lg-3 pt-0">
+              <div class="card-body">
+                  <p class="card-text">
+                      <table>
+                          <tr>
+                            <td><strong>Uploaded Date:</strong></td>
+                          </tr>
+                          <tr>
+                            <td><strong>Bidding Interval:</strong></td>
+                          </tr>
+                          <tr>
+                            <td><strong>Activation Time:</strong></td>
+                          </tr>
+                          <tr>
+                            <td><strong>Status:</strong><i>Pending/Approved/Disapprove</i></td>
+                          </tr>
+                        </table>
+                        <hr/>
+                        <strong>Start Bid:<br/>
+                        Target Bid:<br/>
+                        Maximum Bid:</strong>
+                        <hr/>
+                      <button type="button" class="mt-2" value="edit">Edit</button>
+                      <button type="button" class="mt-2" value="remove">Remove</button>
+                  </p>
+              </div>
+          </div>
       </div>
-      <div class="col-md-8">
-          <h4 class="card-title">ASSET NAME</h4>
-      </div>
-    </div>
-
-        <div class="card-body">
-        <p class="card-text">
-          <table>
-            <tr>
-              <td><strong>Uploaded Date:</strong></td>
-            </tr>
-            <tr>
-              <td><strong>Bidding Interval:</strong></td>
-            </tr>
-            <tr>
-              <td><strong>Activation Time:</strong></td>
-            </tr>
-            <tr>
-              <td><strong>Status:</strong><i>Pending/Approved/Disapprove</i></td>
-            </tr>
-            <tr>
-              <td><button type="button" value="edit">Edit</button></td>
-              <td><button type="button" value="remove">Remove</button></td>
-            </tr>
-          </table>
-          <hr/>
-          <strong>Start Bid:
-          Target Bid:
-          Maximum Bid:</strong>
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
-
-    
+  </div>    
 {% endif %}
 {% endblock %} 
 
