@@ -45,6 +45,7 @@ block style %}
           class="bid__history"
           data-toggle="modal"
           data-target=".bd-example-modal-lg"
+          onclick="bidHistoryModal('{{asset.Id}}')"
           >Bid History</span
         >
       </div>
@@ -72,7 +73,11 @@ block style %}
             </button>
           </div>
           <div class="modal-body">
-            <h2>Maximum Bid : {{asset["maxBid"]}}</h2>
+            <h3>Asset Name : {{asset["Name"]}}</h3>
+            <h3>Maximum Bid : {{asset["maxBid"]}}</h3>
+            <div id="table_bid_history_content" class="mt-3">
+                <!-- Add username and amount to show bid history over here -->
+            </div>
           </div>
         </div>
       </div>
@@ -176,15 +181,53 @@ block style %}
 </div>
 {% endblock %} {%block script %}
 <script>
+  const bidHistoryModal = async (assetId) => {
+
+    let body = ``;
+    let i = 1;
+    const response_raw = await fetch(
+      `http://127.0.0.1:5000/get/bidHistory?assetId=${assetId}`
+    );
+    const response = await response_raw.json();
+    if (response.length != 0) {
+      const table = document.createElement('table') ;
+      table.classList = 'table' ;
+      const tableContent = `
+      <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Amount</th>
+                  </tr>
+                </thead>
+      `;
+      const bidHistoryTBody = document.createElement("tbody");
+      for (var trans_details of response) {
+        bidHistoryTBody.innerHTML = bidHistoryTBody.innerHTML + `<tr>
+           <th scope="row">${i}</th>
+           <td>${trans_details.Username}</td>
+           <td>INR. ${trans_details.Amount}</td>
+          </tr>` ;
+        i = i + 1;
+      }
+      table.innerHTML = tableContent ;
+      table.appendChild(bidHistoryTBody) ;
+      document.getElementById('table_bid_history_content').innerHTML = "" ;
+      return document.getElementById('table_bid_history_content').append(table) ;
+
+    }
+    return (document.getElementById(
+      "table_bid_history_content"
+    ).innerHTML = `<hr/><center><h2 class='my-3 font-weight-bold text-muted'>No bids till date .. !!</h2></center><hr/>`);
+  };
+
   const makeBidModal = (maxBid, startBid, assetName) => {
-    console.log("maxBid, startBid, assetName: ", maxBid, startBid, assetName);
     document.getElementById("asset__name").innerHTML = assetName;
     document.getElementById("asset_start_price").innerHTML = startBid;
     document.getElementById("asset_max_bid").innerHTML = maxBid;
   };
 
   const makeBid = async (id, lastBid, event) => {
-    console.log("id, lastBid, even: ", id, lastBid, event);
     document.getElementById("assetId").value = id;
     const bidAmount = document.getElementById("bid_amount");
     const bidAmountError = document.getElementById("bid_amount_error");
@@ -194,13 +237,11 @@ block style %}
       error_toast("Amount is required");
       return false;
     }
-    console.log(typeof lastBid);
     if (parseInt(bidAmount.value) <= parseInt(lastBid)) {
       error_toast("Amount cannot be equal or less than last maximum bid .. !!");
       event.preventDefault();
       return false;
     }
-    console.log("Bid amount : ", bidAmount.value);
 
     return true;
   };

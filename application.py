@@ -160,6 +160,13 @@ def bidAsset() :
     print('Here in assets')
     return redirect('/') 
     
+@app.route('/get/bidHistory', methods=['GET'])
+@login_required
+def getHistory() : 
+    asset_id = request.args.get('assetId')
+    rows = db.execute("SELECT U.Username, T.* FROM Transactions AS T INNER JOIN User AS U ON U.Id=T.SellerId AND T.AssetId=:assetId", assetId=asset_id)
+    print('This is bid history in backend : ', rows)
+    return jsonify(rows)
 
 
 # Admin Routes
