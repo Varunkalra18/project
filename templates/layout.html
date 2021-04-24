@@ -28,6 +28,7 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
     />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
     <script
       src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
       integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -90,7 +91,7 @@
         overflow-x: hidden;
       }
       footer {
-        background-color: rgb(82, 82, 82);
+        background-color: #1d3883;
         color: rgb(163, 161, 161);
         left: 0%;
         bottom: 0%;
@@ -99,11 +100,12 @@
       }
       .f_link {
         text-decoration: none;
-        color: rgb(151, 151, 151);
+        color: white;
       }
       .f_link:hover {
         text-decoration: underline;
-        color: rgb(209, 207, 207);
+        background-color: white;
+        color: black;
       }
       .back_to_top {
         float: right;
@@ -141,8 +143,9 @@
       }
       .fa {
         padding: 10px;
-        font-size: 30px;
-        width: 30px;
+        font-size: 22px;
+        width: 40px;
+        height:40px;
         text-align: center;
         text-decoration: none;
       }
@@ -152,33 +155,43 @@
       .fa-facebook {
         background: #3b5998;
         color: white;
-        border-radius: 50px;
+        border-radius: 20px;
       }
       .fa-twitter {
         background: #55acee;
         color: white;
-        border-radius: 50px;
+        border-radius: 20px;
       }
       .fa-linkedin {
         background: #007bb5;
         color: white;
-        border-radius: 50px;
+        border-radius: 20px;
       }
       .fa-youtube {
         background: #bb0000;
         color: white;
-        border-radius: 50px;
+        border-radius: 20px;
       }
       .fa-instagram {
         background: rgb(226, 108, 128);
         color: white;
-        border-radius: 50px;
+        border-radius: 20px;
       }
       .fa-google {
         background: #dd4b39;
         color: white;
-        border-radius: 50px;
+        border-radius: 20px;
       }
+      nav{
+        background-color: #1d3883;
+      }
+      li:hover{
+        background-color: aqua;
+      }
+      .ic{
+        padding-right: 5px;
+        padding-left: 5px;
+        font-size: 20px;
     </style>
     <!-- PAGE WISE STYLE -->
     {% block style %}{% endblock %}
@@ -187,7 +200,7 @@
     <!-- Image and text -->
     {% if session.first_land != 'true' %} {% if session.user_id %} {% if not
     session.user_id == "mlqerloqrlgqiuwzaqbg" %}
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed">
+    <nav class="navbar navbar-expand-lg navbar-dark  fixed">
       <a class="navbar-brand" href="#"
         ><img class="logo" src="static/image/logo3.png" />
       </a>
@@ -197,7 +210,7 @@
           <a class="nav-link" href="/">Home</a>
         </li>
         <li class="nav-item active">
-          <a class="nav-link" href="/Assets">Assets</a>
+          <a class="nav-link" href="/Assets">Assets </a>
         </li>
         <li class="nav-item active">
           <a class="nav-link" href="/addAssets">Add Assets</a>
@@ -210,6 +223,9 @@
       <ul class="bl-navbar-elements navbar-nav ml-auto">
         <li class="nav-item active">
           <a class="nav-link" href="/profile">Profile</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="/bookmark">Cart<i class="bi bi-cart-check-fill ic"></i></a>
         </li>
         <li class="nav-item active">
           <a class="nav-link" href="/logout">Logout</a>

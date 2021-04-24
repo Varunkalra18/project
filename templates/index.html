@@ -35,7 +35,7 @@
           {% if asset.profileImage %}
           <img class="user-avatar rounded-circle" src="{{ asset['profileImage'] }}"/>
           {% else %}
-          <img class="user-avtar rounded-circle" src="static/image/user-default.jpg">
+          <img class="user-avatar rounded-circle" src="static/image/user-default.jpg">
           {% endif %}
           <p class="font-weight-bold ml-2 my-auto">{{asset.Username}}</p>
         </div>
@@ -82,8 +82,11 @@
         </div>
       </div>
     </div>
-    {% endfor %}
+    
 </div>
+{% endfor %}
+</div>
+{% endblock %}
 
 {%block script %} 
   <script>
