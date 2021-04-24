@@ -30,6 +30,9 @@ block style %}
   You're almost there .. Start bidding and get items .. !!!
 </div>
 <div class="container my-2 d-flex flex-column align-items-center">
+  {% if row|length == 0 %}
+    <h1 class="font-weight-bold text-muted text-center">No Auctions Available</h1>
+  {% endif %}
   {% for asset in row%}
   <div class="asset-card my-3 rounded">
     <div class="card-header d-flex align-items-center">

@@ -39,7 +39,9 @@ db = SQL("sqlite:///test.db")
 @user_first_land
 def home() : 
     user_id = session["user_id"]
-    rows = db.execute("SELECT U.Username, U.profileImage, A.* FROM Assets AS A INNER JOIN User AS U on U.Id = A.SellerId")
+    print('User id in index.html is : ', user_id)
+    rows = db.execute("SELECT U.Username, U.profileImage, A.* FROM Assets AS A INNER JOIN User AS U on U.Id = A.SellerId AND A.SellerId != :user_id AND A.status = 'Accepted'", user_id=user_id)
+    print('Index.html data : ', rows)
     return render_template("index.html", row=rows) 
 
 @app.route('/register', methods=['GET', 'POST']) 
