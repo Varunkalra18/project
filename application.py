@@ -119,7 +119,7 @@ def addassets():
 @login_required
 def assets():
     user_id = session["user_id"]
-    rows = db.execute("SELECT * FROM Assets WHERE Id=:id ", id=user_id) 
+    rows = db.execute("SELECT * FROM Assets WHERE SellerId=:id ", id=user_id) 
     return render_template("assets.html", rows=rows)
 
 
@@ -170,16 +170,20 @@ def getHistory() :
     print('This is bid history in backend : ', rows)
     return jsonify(rows)
 
-@app.route('/asset/activate', methods=['PUT'])
+@app.route('/asset/activate', methods=['POST'])
 @login_required
 def activateAsset() : 
     asset_id = request.form.get('assetId')
     print('This is asset to be activated : ', asset_id)
+    # timestamp = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+    db.execute('UPDATE Assets SET isActivated=True WHERE Id=:id', id=asset_id) 
+    return redirect('/Assets')
     
 @app.route('/asset/delete', methods=['DELETE'])
 @login_required
 def assetDelete() : 
     asset_id = request.form.get('assetId')  
+    print('This is asset to be deleted : ', asset_id)
     
 
 
