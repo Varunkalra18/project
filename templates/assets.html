@@ -52,7 +52,7 @@ Best things ahead!!!!
                 <div class="card mt-3 ">
                     <img src="{{item.Image}}" class="asset_img img-fluid card-img"/>
                     <div class="card-header bg-dark text-light text-center">
-                        <strong style="letter-spacing: 5px;">Featured</strong>
+                        <strong style="letter-spacing: 5px;">{{item.Name}}</strong>
                     </div>
                 </div>
             </div>
@@ -83,18 +83,22 @@ Best things ahead!!!!
                             <button type="button" class="mt-2 btn btn-primary" value="edit">Edit</button>
                           {% endif %}
   
-                          {% if item.isActivated == 0 %}
-                            <form action="/asset/activate" method="PUT">
-                              <input type='text' name='assetId' hidden value='{{item.Id}}' />
-                              <button type="submit" class="mt-2 btn btn-secondary" value="remove">Remove</button>
-                            </form>
-                            {% if item.status == 'Accepted' %}
-                              <form action="" method="DELETE">
+                          <div class='row'>
+                            <div class='col-md-5 d-flex justify-content-around'>
+                              {% if item.isActivated == 0 %}
+                              <form action="/asset/activate" method="PUT">
                                 <input type='text' name='assetId' hidden value='{{item.Id}}' />
-                                <button type="submit" class="mt-2 btn btn-success" value="activate">Activate</button>
+                                <button type="submit" class="mt-2 btn btn-secondary" value="remove">Remove</button>
                               </form>
+                              {% if item.status == 'Accepted' %}
+                                <form action="" method="DELETE">
+                                  <input type='text' name='assetId' hidden value='{{item.Id}}' />
+                                  <button type="submit" class="mt-2 btn btn-success" value="activate">Activate</button>
+                                </form>
+                              {% endif %}
                             {% endif %}
-                          {% endif %}
+                            </div>
+                          </div>
                         </div>
                     </p>
                 </div>
