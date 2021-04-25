@@ -171,6 +171,7 @@ def bidAsset() :
     assetId = request.form.get('assetId')
     maxBid = request.form.get('bid_amount') 
     loggedInUser = session["user_id"]
+    print('THis is logged in user : ', loggedInUser)
     print('asset id : ', assetId, ' and bid amount : ', maxBid)
     db.execute('UPDATE Assets SET maxBid=:maxBid, maxBidUser=:maxBidUser WHERE Id=:id', maxBid=maxBid, id=assetId, maxBidUser=loggedInUser)
     asset = db.execute('SELECT * FROM Assets WHERE Id=:id', id=assetId)
@@ -184,7 +185,7 @@ def bidAsset() :
 @login_required
 def getHistory() : 
     asset_id = request.args.get('assetId')
-    rows = db.execute("SELECT U.Username, T.* FROM Transactions AS T INNER JOIN User AS U ON U.Id=T.SellerId AND T.AssetId=:assetId", assetId=asset_id)
+    rows = db.execute("SELECT U.Username, T.* FROM Transactions AS T INNER JOIN User AS U ON T.AssetId=:assetId AND U.Id=T.BuyerId", assetId=asset_id)
     print('This is bid history in backend : ', rows)
     return jsonify(rows)
 
