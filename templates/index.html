@@ -25,6 +25,12 @@ block style %}
     cursor: pointer;
     color: #1e3883;
   }
+  #fill{
+    display: block;
+  }
+  #unfill{
+    display: none;
+  }
   
 </style>
 {% endblock %} {% block main %}
@@ -61,20 +67,18 @@ block style %}
           <button type="submit" style="border: none;"><i class="bi bi-bookmark"></i></button>
         </form>
         {% endif %}
-        {% for bo in books %}
-        {% if asset.Id == bo.assetId %}
-        <form action="/removeBookmark" method="POST">
+        {% if asset.Id in books|map(attribute="assetId")%}
+        <form action="/removeBookmark" method="POST" id="fill">
           <input type="hidden" name ="assetid" value = "{{asset.Id}}">
           <button type="submit" style="border: none;"><i class="bi bi-bookmark-fill"></i></button>
         </form>
         {% else %} 
-        <form action="/bookmark" method="POST">
+        <form action="/bookmark" method="POST" id="unfisll">
           <input type="hidden" name ="assetid" value = "{{asset.Id}}">
           <button type="submit" style="border: none;"><i class="bi bi-bookmark"></i></button>
         </form>
         
         {% endif %}
-        {% endfor %}
       </div>
     </div>
     <div
