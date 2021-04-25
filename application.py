@@ -40,7 +40,7 @@ db = SQL("sqlite:///test.db")
 def home() : 
     user_id = session["user_id"]
     print('User id in index.html is : ', user_id)
-    rows = db.execute("SELECT U.Username, U.profileImage, A.* FROM Assets AS A INNER JOIN User AS U on U.Id = A.SellerId AND A.SellerId != :user_id AND A.status = 'Accepted'", user_id=user_id)
+    rows = db.execute("SELECT U.Username, U.profileImage, A.* FROM Assets AS A INNER JOIN User AS U on A.isActivated = True AND U.Id = A.SellerId AND A.SellerId != :user_id AND A.status = 'Accepted'", user_id=user_id)
     print('Index.html data : ', rows)
     return render_template("index.html", row=rows) 
 
@@ -169,6 +169,12 @@ def getHistory() :
     rows = db.execute("SELECT U.Username, T.* FROM Transactions AS T INNER JOIN User AS U ON U.Id=T.SellerId AND T.AssetId=:assetId", assetId=asset_id)
     print('This is bid history in backend : ', rows)
     return jsonify(rows)
+
+@app.route('/asset/activate', methods=['PUT'])
+@login_required
+def activateAsset() : 
+    asset_id = request.form.get('assetId')
+    print('This is asset to be activated : ', asset_id)
 
 
 # Admin Routes

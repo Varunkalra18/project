@@ -44,7 +44,7 @@ def user_first_land(f) :
             return render_template("midDetailsPage.html")
         else : 
             print('user_id while rendering index.html : ', user_id)
-            rows = db.execute("SELECT U.Username, U.profileImage, A.* FROM Assets AS A INNER JOIN User AS U on U.Id = A.SellerId AND A.SellerId != :user_id AND A.status = 'Accepted'", user_id=user_id)
+            rows = db.execute("SELECT U.Username, U.profileImage, A.* FROM Assets AS A INNER JOIN User AS U on A.isActivated = True AND U.Id = A.SellerId AND A.SellerId != :user_id AND A.status = 'Accepted'", user_id=user_id)
             print('rows in index.html : ', rows)
             return render_template("index.html", row=rows) 
         return f(*args, **kwargs)
