@@ -38,8 +38,10 @@ db = SQL("sqlite:///test.db")
 @login_required
 #@user_first_land
 def home() : 
-    rows = db.execute("SELECT U.Username, U.profileImage, A.* FROM Assets AS A INNER JOIN User AS U on U.Id = A.SellerId")
-    print(rows) 
+    user_id = session["user_id"]
+    print('User id in index.html is : ', user_id)
+    rows = db.execute("SELECT U.Username, U.profileImage, A.* FROM Assets AS A INNER JOIN User AS U on A.isActivated = True AND U.Id = A.SellerId AND A.SellerId != :user_id AND A.status = 'Accepted'", user_id=user_id)
+    print('Index.html data : ', rows)
     return render_template("index.html", row=rows) 
 
 @app.route('/register', methods=['GET', 'POST']) 
@@ -164,6 +166,18 @@ def midPageRender() :
         session.pop('temp_user')
         session.pop('first_land')
         redirect('/')
+    
+
+@app.route('/asset/activate', methods=['PUT'])
+@login_required
+def activateAsset() : 
+    asset_id = request.form.get('assetId')
+    print('This is asset to be activated : ', asset_id)
+    
+@app.route('/asset/delete', methods=['DELETE'])
+@login_required
+def assetDelete() : 
+    asset_id = request.form.get('assetId')  
     
 
 

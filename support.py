@@ -43,7 +43,10 @@ def user_first_land(f) :
             print('I am here in middle page')
             return redirect('/midpagedetails')
         else : 
-            return redirect("/") 
+            print('user_id while rendering index.html : ', user_id)
+            rows = db.execute("SELECT U.Username, U.profileImage, A.* FROM Assets AS A INNER JOIN User AS U on A.isActivated = True AND U.Id = A.SellerId AND A.SellerId != :user_id AND A.status = 'Accepted'", user_id=user_id)
+            print('rows in index.html : ', rows)
+            return render_template("index.html", row=rows) 
         return f(*args, **kwargs)
     return decorated_function
 

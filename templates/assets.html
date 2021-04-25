@@ -18,6 +18,13 @@ Best things ahead!!!!
     </ul>
   </nav>
 
+  <hr/>
+  <h1 class='text-center text-muted font-weight-bold'>Your Assets</h1>
+  <hr/>
+
+{% if rows|length == 0 %}
+  <h1 class='text-center text-muted font-weight-bold'>No Assets</h1>
+  {% else %}
   {% for item in rows %}
   <div class="container my-3">
     <!--Body part of layout started here-->
@@ -52,12 +59,24 @@ Best things ahead!!!!
                           Target Bid: INR. {{item.tarBid}}<br/>
                           Maximum Bid: INR. {{item.maxBid}}</strong>
                           <hr/>
-                        <form>
                           <div>
+                          {% if item.status == 'Pending' %}
                             <button type="button" class="mt-2 btn btn-primary" value="edit">Edit</button>
-                          <button type="button" class="mt-2 btn btn-secondary" value="remove">Remove</button>
-                          </div>
-                        </form>
+                          {% endif %}
+  
+                          {% if item.isActivated == 0 %}
+                            <form action="/asset/activate" method="PUT">
+                              <input type='text' name='assetId' hidden value='{{item.Id}}' />
+                              <button type="submit" class="mt-2 btn btn-secondary" value="remove">Remove</button>
+                            </form>
+                            {% if item.status == 'Accepted' %}
+                              <form action="" method="DELETE">
+                                <input type='text' name='assetId' hidden value='{{item.Id}}' />
+                                <button type="submit" class="mt-2 btn btn-success" value="activate">Activate</button>
+                              </form>
+                            {% endif %}
+                          {% endif %}
+                        </div>
                     </p>
                 </div>
             </div>
