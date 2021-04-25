@@ -38,9 +38,12 @@ db = SQL("sqlite:///test.db")
 @login_required
 #@user_first_land
 def home() : 
-    rows = db.execute("SELECT U.Username, U.profileImage, A.* FROM Assets AS A INNER JOIN User AS U on U.Id = A.SellerId")
-    print(rows) 
-    return render_template("index.html", row=rows) 
+    user_id = session["user_id"]
+    print('User id in index.html is : ', user_id)
+    rows = db.execute("SELECT U.Username, U.profileImage, A.* FROM Assets AS A INNER JOIN User AS U on U.Id = A.SellerId AND A.SellerId != :user_id AND A.status = 'Accepted'", user_id=user_id)
+    print('Index.html data : ', rows)
+    book = db.execute("SELECT * FROM bookmark WHERE userId is :userid", userid = session["user_id"])
+    return render_template("index.html", row=rows, books = book) 
 
 @app.route('/register', methods=['GET', 'POST']) 
 def register() : 
@@ -154,10 +157,6 @@ def midPageRender() :
     dob = request.form.get('dob')
     mob = request.form.get('mob')
     occupation = request.form.get('occupation')
-    print('profileImage : ', profileImage)
-    print('dob : ', dob)
-    print('mob : ', mob)
-    print('occupation : ', occupation)
     db.execute('UPDATE User SET profileImage=:image, DOB=:dob, ContactNumber=:contact, occupation=:occupation WHERE Id=:id', image=profileImage, dob=dob, contact=mob, occupation=occupation, id=session["user_id"])
     db.execute("UPDATE User SET firstLand=False WHERE Id=:id", id=session["user_id"])
     return redirect('/')
@@ -181,6 +180,13 @@ def bidAsset() :
     print('Here in assets')
     return redirect('/') 
     
+@app.route('/get/bidHistory', methods=['GET'])
+@login_required
+def getHistory() : 
+    asset_id = request.args.get('assetId')
+    rows = db.execute("SELECT U.Username, T.* FROM Transactions AS T INNER JOIN User AS U ON U.Id=T.SellerId AND T.AssetId=:assetId", assetId=asset_id)
+    print('This is bid history in backend : ', rows)
+    return jsonify(rows)
 
 
 # Admin Routes

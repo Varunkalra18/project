@@ -4,90 +4,89 @@ Best things ahead!!!!
 {% endblock %}
 {% block style %}
 <style>
-  .main_div{
-    margin: auto;
-    height: 300px;
-    width: 800px;
-    border: 1px double black;
-  }
-  img{
-      height: 150px;
-      width: 150px;
-    }
-    .card-title{
-      margin-top: 0px;
-      background: gray;
-      color: black;
-      height: 40px;
-      width: 150px;
-      text-align: center;
-      padding-top: 11px;
-    }
-    .img_title{
-      float: left;
-    }
+  .container{
+            border: 1px solid black;
+            width : 1000px ;
+            line-height: 28px;
+        }
+        .asset_img{
+            height: 250px;
+            width: 400px;
+        }
 </style>
 {% endblock %}
 {% block main %}
 <nav class="navbarnavbar-light mt-1" style="background-color: #e3f2fd;">
-    
-    <ul class="bl-navbar-elements navbar-nav ml-auto">
-      <form class="form-inline">
+
+  <div class='row mb-2'>
+    <div class='col-md d-flex align-items-center'>
+      <form class="form-inline ml-auto">
         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
       </form>
-      <li class="nav-item active">
-        <a class="nav-link" href="/addAssets">
+      <span class = "d-flex justify-content-center align-items-center ml-auto mr-2">
+        <a class="nav-link ml-auto" href="/addAssets">
           <i class="fa fa-plus-circle"></i>
         </a>
-      </li>
-    </ul>
+        Want to add assets ?
+      </span>
+    </div>
+    
+      
+  </div>
+    
   </nav>
 
-  <div class="card main_div">
-    <div class="row no-gutters">
-      <div class="img_title">
-        <div class="col-md-4">
-          <img src="D:\project\static\image\logo3.png" class="card-img" alt="Image is not available">
-        </div>
-        <div class="col-md-8">
-            <h4 class="card-title">ASSET NAME</h4>
-        </div>
-      </div>
-  
-          <div class="card-body">
-          <p class="card-text">
-            <table>
-              <tr>
-                <td><strong>Uploaded Date:</strong></td>
-              </tr>
-              <tr>
-                <td><strong>Bidding Interval:</strong></td>
-              </tr>
-              <tr>
-                <td><strong>Activation Time:</strong></td>
-              </tr>
-              <tr>
-                <td><strong>Status:</strong><i>Pending/Approved/Disapprove</i></td>
-              </tr>
-              <tr>
-                <td><button type="button" value="edit">Edit</button></td>
-                <td><button type="button" value="remove">Remove</button></td>
-              </tr>
-            </table>
-            <hr/>
-            <strong>Start Bid:
-            Target Bid:
-            Maximum Bid:</strong>
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-  
-
+{% if rows|length == 0 %}
+  <h1 class='text-center text-muted font-weight-bold'>No Assets</h1>
+  {% else %}
   {% for item in rows %}
-    {% print(item) %}
-    <p>something</p>
+  <div class="container my-3">
+    <!--Body part of layout started here-->
+        <div class="row">
+            <div class="col-sm-12 col-md-6 col-lg-4 d-flex flex-column justify-content-center">
+                <div class="card mt-3 ">
+                    <img src="{{item.Image}}" class="asset_img img-fluid card-img"/>
+                    <div class="card-header bg-dark text-light text-center">
+                        <strong style="letter-spacing: 5px;">Featured</strong>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-6 col-lg-8 pl-5 pt-0">
+                <div class="card-body">
+                    <p class="card-text">
+                        <table>
+                            <tr>
+                              <td>Uploaded Date: {{item.TimeStamp}}</td>
+                            </tr>
+                            <tr>
+                              <td><strong>Bidding Interval:</strong></td>
+                            </tr>
+                            <tr>
+                              <td><strong>Activation Time:</strong>{{item.AT if isActivated == 1 else ' Not activated yet'}}</td>
+                            </tr>
+                            <tr>
+                              <td><strong>Status:</strong><i> {{item.status}}</i></td>
+                            </tr>
+                          </table>
+                          <hr/>
+                          <strong>Start Bid: INR. {{item.startBid}}<br/>
+                          Target Bid: INR. {{item.tarBid}}<br/>
+                          Maximum Bid: INR. {{item.maxBid}}</strong>
+                          <hr/>
+                        <div>
+                          <button type="button" class="mt-2 btn btn-primary" value="edit">Edit</button>
+                        <button type="button" class="mt-2 btn btn-secondary" value="remove">Remove</button>
+                        </div>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <!--The body part ended here-->
+    </div>
   {% endfor %}
+{% endif %}
+
+
+  
 {% endblock %} 
