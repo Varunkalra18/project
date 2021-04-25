@@ -90,8 +90,8 @@
         overflow-x: hidden;
       }
       footer {
-        background-color: rgb(82, 82, 82);
-        color: rgb(163, 161, 161);
+        background-color: #1d3883;
+        color:white;
         left: 0%;
         bottom: 0%;
         width: 100%;
@@ -99,7 +99,7 @@
       }
       .f_link {
         text-decoration: none;
-        color: rgb(151, 151, 151);
+        color: white;
       }
       .f_link:hover {
         text-decoration: underline;
@@ -140,6 +140,7 @@
         margin-top: 30px;
       }
       .fa {
+        margin-top: 10px;
         padding: 10px;
         font-size: 30px;
         width: 30px;
@@ -152,32 +153,53 @@
       .fa-facebook {
         background: #3b5998;
         color: white;
-        border-radius: 50px;
+        height:50px;
+        width: 50px;
+        font-size: 30px;
+        border-radius: 30px;
       }
       .fa-twitter {
         background: #55acee;
         color: white;
-        border-radius: 50px;
+        height:50px;
+        width: 50px;
+        font-size: 30px;
+        border-radius: 30px;
       }
       .fa-linkedin {
         background: #007bb5;
         color: white;
-        border-radius: 50px;
+        height:50px;
+        width: 50px;
+        font-size: 30px;
+        border-radius: 30px;
       }
       .fa-youtube {
         background: #bb0000;
         color: white;
-        border-radius: 50px;
+        height:50px;
+        width: 50px;
+        font-size: 30px;
+        border-radius: 30px;
       }
       .fa-instagram {
         background: rgb(226, 108, 128);
         color: white;
-        border-radius: 50px;
+        height:50px;
+        width: 50px;
+        font-size: 30px;
+        border-radius: 30px;
       }
       .fa-google {
         background: #dd4b39;
         color: white;
-        border-radius: 50px;
+        height:50px;
+        width: 50px;
+        font-size: 30px;
+        border-radius: 30px;
+      }
+      nav{
+        background-color: #1d3883;
       }
     </style>
     <!-- PAGE WISE STYLE -->
@@ -187,7 +209,7 @@
     <!-- Image and text -->
     {% if session.first_land != 'true' %} {% if session.user_id %} {% if not
     session.user_id == "mlqerloqrlgqiuwzaqbg" %}
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed">
+    <nav class="navbar navbar-expand-lg navbar-dark fixed">
       <a class="navbar-brand" href="#"
         ><img class="logo" src="static/image/logo3.png" />
       </a>
