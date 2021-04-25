@@ -79,25 +79,24 @@ Best things ahead!!!!
                           Maximum Bid: INR. {{item.maxBid}}</strong>
                           <hr/>
                           <div>
-                          {% if item.status == 'Pending' %}
-                            <button type="button" class="mt-2 btn btn-primary" value="edit">Edit</button>
-                          {% endif %}
-  
-                          <div class='row'>
+                            <div class='row'>
                             <div class='col-md-5 d-flex justify-content-around'>
                               {% if item.isActivated == 0 %}
-                              <form action="/asset/activate" method="PUT">
+                              <form action="" method="DELETE">
                                 <input type='text' name='assetId' hidden value='{{item.Id}}' />
                                 <button type="submit" class="mt-2 btn btn-secondary" value="remove">Remove</button>
                               </form>
                               {% if item.status == 'Accepted' %}
-                                <form action="" method="DELETE">
+                                <form action="/asset/activate" method="POST">
                                   <input type='text' name='assetId' hidden value='{{item.Id}}' />
                                   <button type="submit" class="mt-2 btn btn-success" value="activate">Activate</button>
                                 </form>
                               {% endif %}
                             {% endif %}
                             </div>
+                            {% if item.status == 'Pending' %}
+                            <button type="button" class="mt-2 btn btn-primary" value="edit">Edit</button>
+                          {% endif %}
                           </div>
                         </div>
                     </p>
