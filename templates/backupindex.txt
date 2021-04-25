@@ -1,0 +1,139 @@
+  <!-- {% extends "layout.html" %} {% block title %} After Login {% endblock %} {%
+              block style %}
+              <style>
+                .asset-card {
+                  background-color: whitesmoke;
+                  width: 700px;
+                }
+                .user-avatar {
+                  height: 50px;
+                  width: 50px;
+                }
+                .asset-price {
+                  font-size: 23px;
+                }
+                .asset-desc > p {
+                  font-size: 18px;
+                }
+              
+                .note-first-bid {
+                  font-size: 13px;
+                }
+              
+                .bid__history {
+                  cursor: pointer;
+                  color: #1e3883;
+                }
+              </style>
+              {% endblock %} {%block script %}
+              <script>
+                const makeBid = async (id, lastBid, event) => {
+                  console.log(event);
+              
+                  console.log("Id and lastBid : ", id, " and ", lastBid);
+                  document.getElementById("assetId").value = id;
+                  const bidAmount = document.getElementById("bid_amount");
+                  const bidAmountError = document.getElementById("bid_amount_error");
+                  if (!bidAmount.value) {
+                    bidAmount.classList = bidAmount.classList + " is-invalid";
+                    event.preventDefault();
+                    error_toast("Amount is required");
+                    return false;
+                  }
+                  console.log(typeof lastBid);
+                  if (parseInt(bidAmount.value) <= parseInt(lastBid)) {
+                    error_toast("Amount cannot be equal or less than last maximum bid .. !!");
+                    event.preventDefault();
+                    return false;
+                  }
+                  console.log("Bid amount : ", bidAmount.value);
+              
+                  return true;
+                };
+              </script>
+              {% endblock %} {% block main %}
+              <div class="alert alert-primary" role="alert">
+                You're almost there .. Start bidding and get items .. !!!
+              </div>
+              <div class="container my-2 d-flex flex-column align-items-center">
+                {% for asset in row%}
+                <div class="asset-card my-3 rounded">
+                  <div class="card-header d-flex align-items-center">
+                    <div class="d-flex align-items-center">
+                      <img
+                        class="user-avatar rounded-circle"
+                        src="{{asset['profileImage'] if asset['profileImage'] else '../static/image/user-default.jpg'}}"
+                      />
+                      <p class="font-weight-bold ml-2 my-auto">{{asset["Username"]}}</p>
+                    </div>
+                    <div class="d-flex align-items-center ml-auto">
+                      <span
+                        class="bid__history"
+                        data-toggle="modal"
+                        data-target=".bd-example-modal-lg"
+                        >Bid History</span
+                      >
+                    </div>
+                  </div>
+                  <div
+                    class="modal fade bd-example-modal-lg"
+                    tabindex="-1"
+                    role="dialog"
+                    aria-labelledby="myLargeModalLabel"
+                    aria-hidden="true"
+                  >
+                    <div class="modal-dialog modal-lg">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h5 class="modal-title" id="exampleModalLongTitle">
+                            Bidding History
+                          </h5>
+                          <button
+                            type="button"
+                            class="close"
+                            data-dismiss="modal"
+                            aria-label="Close"
+                          >
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body">
+                          <h2>Maximum Bid : {{asset["maxBid"]}}</h2>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div>
+                    <img class="w-100" src="{{asset['Image']}}" alt="image not found" />
+                  </div>
+                  <div class="amt__bid__section my-2 d-flex align-items-center">
+                    <div class="d-flex">
+                      <p class="font-weight-bold asset-price ml-2 my-auto text-success">
+                        Start Price: INR {{asset["tarBid"]}}
+                      </p>
+                      <p class="font-weight-bold asset-price ml-2 my-auto text-primary">
+                        Target Price: INR {{asset["startBid"]}}
+                      </p>
+                    </div>
+                    <a
+                      href="#"
+                      class="btn btn-primary ml-auto mr-2 px-4 py-2"
+                      data-toggle="modal"
+                      data-target="#exampleModalLong"
+                      >Bid Now !!!</a
+                    >
+                  </div>
+                  <hr />
+                  <div class="asset-desc ml-2 pb-1">
+                    <p>
+                      <span class="font-weight-bold">Description :</span>
+                      {{asset["Description"]}}.
+                    </p>
+                  </div>
+                </div>
+                {% print('second : ', asset) %}
+                
+                {% endfor %}
+              </div>
+              {% endblock %} -->
+              

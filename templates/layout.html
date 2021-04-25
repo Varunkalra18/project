@@ -16,11 +16,18 @@
     <!-- BOOTSTRAP CDN -->
     <link
       rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+    <link
+      rel="stylesheet"
       href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
       integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
       crossorigin="anonymous"
     />
-
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
+    />
     <script
       src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
       integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -40,13 +47,37 @@
     <!-- CUSTOM STYLE -->
     <style>
       .bl-navbar-elements > li > a:hover {
-        background-color: rgba(255, 255, 255, 0.2);
+        background-color: rgb(82, 82, 82);
         transition: 0.4s all;
         border-radius: 5px;
       }
 
       .bl-navbar-elements > li {
         margin-right: 20px;
+      }
+
+      .logo {
+        height: 80px;
+        width: 100px;
+      }
+
+      .heading {
+        color: white;
+        font-size: 30px;
+        font-weight: 500;
+        font-style: oblique;
+        font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+      }
+
+      .toast {
+        min-height: 65px;
+        min-width: 450px;
+        position: absolute;
+        font-size: larger;
+        font-weight: 600;
+        bottom: 10px;
+        right: 10px;
+        z-index: 999;
       }
 
       /* .navbar{
@@ -58,27 +89,195 @@
         padding: 0px;
         overflow-x: hidden;
       }
+      footer {
+        background-color: #1d3883;
+        color:white;
+        left: 0%;
+        bottom: 0%;
+        width: 100%;
+        padding-bottom: 200px;
+      }
+      .f_link {
+        text-decoration: none;
+        color: white;
+      }
+      .f_link:hover {
+        text-decoration: underline;
+        color: rgb(209, 207, 207);
+      }
+      .back_to_top {
+        float: right;
+        background: black;
+        color: white;
+        padding: none;
+        text-decoration: none;
+      }
+      .d1 {
+        padding-top: 30px;
+        height: 150px;
+        width: 700px;
+        margin-left: 400px;
+      }
+      .d2 {
+        width: 20%;
+        float: left;
+        margin-left: 250px;
+        margin-top: 50px;
+      }
+      .d3 {
+        width: 20%;
+        float: left;
+        margin-top: 30px;
+      }
+      .d4 {
+        width: 20%;
+        float: left;
+        margin-top: 30px;
+      }
+      .d5 {
+        width: 20%;
+        float: left;
+        margin-top: 30px;
+      }
+      .fa {
+        margin-top: 10px;
+        padding: 10px;
+        font-size: 30px;
+        width: 30px;
+        text-align: center;
+        text-decoration: none;
+      }
+      .fa:hover {
+        opacity: 0.7;
+      }
+      .fa-facebook {
+        background: #3b5998;
+        color: white;
+        height:50px;
+        width: 50px;
+        font-size: 30px;
+        border-radius: 30px;
+      }
+      .fa-twitter {
+        background: #55acee;
+        color: white;
+        height:50px;
+        width: 50px;
+        font-size: 30px;
+        border-radius: 30px;
+      }
+      .fa-linkedin {
+        background: #007bb5;
+        color: white;
+        height:50px;
+        width: 50px;
+        font-size: 30px;
+        border-radius: 30px;
+      }
+      .fa-youtube {
+        background: #bb0000;
+        color: white;
+        height:50px;
+        width: 50px;
+        font-size: 30px;
+        border-radius: 30px;
+      }
+      .fa-instagram {
+        background: rgb(226, 108, 128);
+        color: white;
+        height:50px;
+        width: 50px;
+        font-size: 30px;
+        border-radius: 30px;
+      }
+      .fa-google {
+        background: #dd4b39;
+        color: white;
+        height:50px;
+        width: 50px;
+        font-size: 30px;
+        border-radius: 30px;
+      }
+      nav{
+        background-color: #1d3883;
+      }
     </style>
     <!-- PAGE WISE STYLE -->
     {% block style %}{% endblock %}
-
-    <!-- PAGE WISE SCRIPT -->
-    {% block script %}{% endblock %}
   </head>
-  <body>
+  <body id="body">
     <!-- Image and text -->
-    {% if session.user_id %}
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" >
+    {% if session.first_land != 'true' %} {% if session.user_id %} {% if not
+    session.user_id == "mlqerloqrlgqiuwzaqbg" %}
+    <nav class="navbar navbar-expand-lg navbar-dark fixed">
+      <a class="navbar-brand" href="#"
+        ><img class="logo" src="static/image/logo3.png" />
+      </a>
+      <!--data:image/png;base64,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-->
+      <ul class="bl-navbar-elements navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/">Home</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="/Assets">My Assets</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="/addAssets">Add Assets</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="/mybids">My Bids</a>
+        </li>
+      </ul>
+
+      <ul class="bl-navbar-elements navbar-nav ml-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/profile">Profile</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="/logout">Logout</a>
+        </li>
+      </ul>
+    </nav>
+    {% else %}
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed">
+      <a class="navbar-brand" href="#"
+        ><img class="logo" src="static/image/logo3.png" />
+      </a>
+      <ul class="bl-navbar-elements navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/admin">Users</a>
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="/admin/assets/pending"
+            >Pending Asset Logs</a
+          >
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="/admin/assets/accepted"
+            >Accepted Asset Logs</a
+          >
+        </li>
+        <li class="nav-item active">
+          <a class="nav-link" href="/admin/assets/active">Active Auctions</a>
+        </li>
+      </ul>
       <ul class="bl-navbar-elements navbar-nav ml-auto">
         <li class="nav-item active">
           <a class="nav-link" href="/logout">Logout</a>
         </li>
       </ul>
-    </nav>This is new navbar after login
-
-    {% else %}
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <a class="navbar-brand" href="#">Logo of Auction WebApp</a>
+    </nav>
+    {% endif %} {% else %}
+    <nav
+      class="navbar navbar-expand-lg navbar-dark bg-dark d-flex align-items-center fixed-top"
+    >
+      <a class="navbar-brand" href="#"
+        ><img
+          class="logo"
+          src="data:image/png;base64,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"
+        />
+      </a>
+      <p class="heading">APPRAISAL AUCTION HOUSE</p>
       <button
         class="navbar-toggler"
         type="button"
@@ -103,9 +302,90 @@
       </div>
     </nav>
 
-    
+    {% endif %} {% endif %} {% block main %}{% endblock %}
+
+    <script>
+      function error_toast(text) {
+        const color = "red";
+        toast(color, text);
+      }
+
+      function success_toast(text) {
+        const color = "yellowgreen";
+        toast(color, text);
+      }
+
+      function warning_toast(text) {
+        const color = "yellow";
+        toast(color, text);
+      }
+
+      function toast(color, text) {
+        // background-color: yellowgreen;
+        const toastContainer = document.createElement("div");
+        toastContainer.style.backgroundColor = color;
+        toastContainer.style.zIndex = "999"
+        toastContainer.className = "toast d-flex align-items-center px-3";
+        toastContainer.innerHTML = `Message : ${text}`;
+
+        const body_toast = document.getElementById("body");
+        body_toast.appendChild(toastContainer);
+
+        setTimeout(() => {
+          body_toast.removeChild(toastContainer);
+        }, 3000);
+      }
+    </script>
+
+    <!-- PAGE WISE SCRIPT -->
+    {% block script %}{% endblock %}
+    <!-- Footer Section -->
+    {% if session.user_id %}
+    <footer>
+      <a href="#" class="back_to_top">BACK TO TOP</a>
+      <div class="d1">
+        <strong>MORE ABOUT US</strong>
+        <p>
+          Our company motive is to provide best services for those who want sell
+          their asset and bid onto another ones at minimum cost with assurance
+          of the customer's requirement.<br /><br />
+          Copyright &copy; 2021 Auction Inc. All rights reserved.
+        </p>
+      </div>
+      <hr />
+      <div class="d2">
+        <a href="#" class="f_link">1800-600-600</a><br />
+        <a href="#" class="f_link">customer.services@auction.com</a>
+      </div>
+      <div class="d3">
+        <strong>BUYING AND SELLING</strong>
+        <br />
+        <a href="#" class="f_link">Sell Your Asset</a><br />
+        <a href="#" class="f_link">Bidding on Asset</a><br />
+        <a href="#" class="f_link">Bidding Information</a><br />
+        <a href="#" class="f_link">Purchased Assets</a>
+      </div>
+      <div class="d4">
+        <strong>CUSTOMER SUPPORT</strong>
+        <br />
+        <a href="#" class="f_link">FAQ and tutorials</a><br />
+        <a href="#" class="f_link">Contact Support Team</a><br />
+        <a href="#" class="f_link">Terms and Condition</a><br />
+        <a href="#" class="f_link">Privacy Policy</a><br />
+      </div>
+      <div class="d5">
+        <strong>CONNECT US ON</strong>
+        <br />
+        Appraisal Auction House<br />
+        <a href="#" class="fa fa-facebook"></a>
+        <a href="#" class="fa fa-twitter"></a>
+        <a href="#" class="fa fa-linkedin"></a><br />
+        <a href="#" class="fa fa-instagram"></a>
+        <a href="#" class="fa fa-youtube"></a>
+        <a href="#" class="fa fa-google"></a>
+      </div>
+      <hr />
+    </footer>
     {% endif %}
-    
-    {% block main %}{% endblock %}
   </body>
 </html>

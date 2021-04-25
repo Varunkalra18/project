@@ -1,0 +1,62 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    After Login
+{% endblock %}
+
+{% block style %}
+    <style>
+        .govIdImage, .profileImage{
+            height : 50px ;
+            width : 50px ;
+        }
+    </style>
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}
+
+
+{% block main %}
+    <hr/>
+    <h2 class="text-center">Users</h2>
+    <hr/>
+    {% if rows|length == 0 %}
+        <center><h2 class="text-muted my-2">No Users Till Date .. !!</h2></center>
+    {% else %}
+            
+            <table class="table text-center my-4">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">Username</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">PanNumber</th>
+                    <th scope="col">GovId</th>
+                    <th scope="col">ContactNumber</th>
+                    <th scope="col">DOB</th>
+                    <th scope="col">Occupation</th>
+                    <th scope="col">Profile Image</th>
+                    <th scope="col">Block User</th>
+                  </tr>
+                </thead>
+                <tbody>
+                {% for user in rows %}
+                  <tr>
+                    <th scope="row">{{user["Username"]}}</th>
+                    <td>{{user["Email"]}}</td>
+                    <td>{{user["PanNumber"]}}</td>
+                    <td><a href="{{ user['GovId'] }}" target="_blank"><img class="govIdImage" src="{{user['GovId']}}" /></a></td>
+                    <td>{{user["ContactNumber"] if user["ContactNumber"] else 'Not Updated'}}</td>
+                    <td>{{user["DOB"] if user["DOB"] else 'Not Updated'}}</td>
+                    <td>{{user["occupation"] if user["occupation"] else 'Not Updated'}}</td>
+                    <!-- Idhar user ki profile image dikhni hai agr user["profileImage"] exist kre toh aur use profile image class de dena  -->
+                    <td>{{user["profileImage"] if user["profileImage"] else 'No Image Selected'}}</td>
+                    <td><a class="btn btn-{{'danger' if user['isBlocked'] != 0 else 'primary'}} text-light" href="/admin/toggle/blockUser?user={{user['Id']}}&td={{user['isBlocked']}}">{{"Block" if user["isBlocked"] == 0 else "Unblock"}}</a></td>
+                  </tr>
+                {% endfor %}
+                </tbody>
+              </table>
+        
+    {% endif %}
+{% endblock %}

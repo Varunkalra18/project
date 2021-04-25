@@ -1,3 +1,273 @@
 {% extends "layout.html" %}
+{% block title %} After Login {% endblock %} {%
+block style %}
+<style>
+  .asset-card {
+    background-color: whitesmoke;
+    width: 700px;
+  }
+  .user-avatar {
+    height: 50px;
+    width: 50px;
+  }
+  .asset-price {
+    font-size: 23px;
+  }
+  .asset-desc > p {
+    font-size: 18px;
+  }
 
-{% block title %} Best Deals!! {% endblock %}
+  .note-first-bid {
+    font-size: 13px;
+  }
+
+  .bid__history {
+    cursor: pointer;
+    color: #1e3883;
+  }
+  
+</style>
+{% endblock %} {% block main %}
+<div class="alert alert-primary" role="alert">
+  You're almost there .. Start bidding and get items .. !!!
+</div>
+<div class="container my-2 d-flex flex-column align-items-center">
+  {% if row|length == 0 %}
+    <h1 class="font-weight-bold text-muted text-center">No Auctions Available</h1>
+  {% endif %}
+  {% for asset in row%}
+  <div class="asset-card my-3 rounded">
+    <div class="card-header d-flex align-items-center">
+      <div class="d-flex align-items-center">
+        <img
+          class="user-avatar rounded-circle"
+          src="{{asset['profileImage'] if asset['profileImage'] else '../static/image/user-default.jpg'}}"
+        />
+        <p class="font-weight-bold ml-2 my-auto">{{asset["Username"]}}</p>
+      </div>
+      <div class="d-flex align-items-center ml-auto">
+        <span
+          class="bid__history"
+          data-toggle="modal"
+          data-target=".bd-example-modal-lg"
+          onclick="bidHistoryModal('{{asset.Id}}')"
+          >Bid History</span
+        >
+      </div>
+    </div>
+    <div
+      class="modal fade bd-example-modal-lg"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myLargeModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">
+              Bidding History
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <h3>Asset Name : {{asset["Name"]}}</h3>
+            <h3>Maximum Bid : {{asset["maxBid"]}}</h3>
+            <div id="table_bid_history_content" class="mt-3">
+                <!-- Add username and amount to show bid history over here -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <img class="w-100" src="{{asset['Image']}}" alt="image not found" />
+    </div>
+    <div class="amt__bid__section my-2 d-flex align-items-center">
+      <div class="d-flex">
+        <p class="font-weight-bold asset-price ml-2 my-auto text-success">
+          Start Price: INR {{asset["tarBid"]}}
+        </p>
+        <p class="font-weight-bold asset-price ml-2 my-auto text-primary">
+          Target Price: INR {{asset["startBid"]}}
+        </p>
+      </div>
+      <button
+        href="#"
+        class="btn btn-primary ml-auto mr-2 px-4 py-2"
+        data-toggle="modal"
+        data-target="#exampleModalLong"
+        onclick="makeBidModal('{{asset.maxBid}}', '{{asset.startBid}}', '{{asset.Name}}')"
+      >
+        Bid Now !!!
+      </button>
+    </div>
+    <hr />
+    <div class="asset-desc ml-2 pb-1">
+      <p>
+        <span class="font-weight-bold">Description :</span>
+        {{asset["Description"]}}.
+      </p>
+    </div>
+  </div>
+  {% print('first : ', asset) %}
+  <div
+    class="modal fade"
+    id="exampleModalLong"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLongTitle"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <form
+          action="/bid"
+          method="POST"
+          onsubmit="return makeBid('{{asset.Id}}', '{{asset.maxBid}}', event)"
+        >
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">
+              Making a bid .. !! {{asset.tarBid}}
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Product : <span id="asset__name">{{asset.Name}}</span></p>
+            <p>
+              Start Price :
+              <span id="asset_start_price">{{asset["startBid"]}}</span>
+            </p>
+            <p>
+              Last Maximum Bid :
+              <span id="asset_max_bid">{{asset["maxBid"]}}</span>
+            </p>
+            {% if not asset["maxBid"] %}
+            <span class="text-danger note-first-bid"
+              >Note : First bid is always equal to Start bid .</span
+            >
+            {% endif %}
+            <p>
+              Enter Your Bid Amount<input
+                id="bid_amount"
+                name="bid_amount"
+                class="form-control"
+                type="number"
+                placeholder="Enter Amount"
+              />
+            </p>
+            <input type="hidden" id="assetId" name="assetId" />
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" data-dismiss="modal">
+              Close
+            </button>
+            <button type="submit" class="btn btn-primary">Save changes</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %} {%block script %}
+<script>
+  const bidHistoryModal = async (assetId) => {
+
+    let body = ``;
+    let i = 1;
+    const response_raw = await fetch(
+      `http://127.0.0.1:5000/get/bidHistory?assetId=${assetId}`
+    );
+    const response = await response_raw.json();
+    if (response.length != 0) {
+      const table = document.createElement('table') ;
+      table.classList = 'table' ;
+      const tableContent = `
+      <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Amount</th>
+                  </tr>
+                </thead>
+      `;
+      const bidHistoryTBody = document.createElement("tbody");
+      for (var trans_details of response) {
+        bidHistoryTBody.innerHTML = bidHistoryTBody.innerHTML + `<tr>
+           <th scope="row">${i}</th>
+           <td>${trans_details.Username}</td>
+           <td>INR. ${trans_details.Amount}</td>
+          </tr>` ;
+        i = i + 1;
+      }
+      table.innerHTML = tableContent ;
+      table.appendChild(bidHistoryTBody) ;
+      document.getElementById('table_bid_history_content').innerHTML = "" ;
+      return document.getElementById('table_bid_history_content').append(table) ;
+
+    }
+    return (document.getElementById(
+      "table_bid_history_content"
+    ).innerHTML = `<hr/><center><h2 class='my-3 font-weight-bold text-muted'>No bids till date .. !!</h2></center><hr/>`);
+  };
+
+  const makeBidModal = (maxBid, startBid, assetName) => {
+    document.getElementById("asset__name").innerHTML = assetName;
+    document.getElementById("asset_start_price").innerHTML = startBid;
+    document.getElementById("asset_max_bid").innerHTML = maxBid;
+  };
+
+  const makeBid = async (id, lastBid, event) => {
+    document.getElementById("assetId").value = id;
+    const bidAmount = document.getElementById("bid_amount");
+    const bidAmountError = document.getElementById("bid_amount_error");
+    if (!bidAmount.value) {
+      bidAmount.classList = bidAmount.classList + " is-invalid";
+      event.preventDefault();
+      error_toast("Amount is required");
+      return false;
+    }
+    if (parseInt(bidAmount.value) <= parseInt(lastBid)) {
+      error_toast("Amount cannot be equal or less than last maximum bid .. !!");
+      event.preventDefault();
+      return false;
+    }
+
+    return true;
+  };
+</script>
+{% endblock %}
+
+<!-- <div class="col-4">
+                <div class="card" style="width: 18rem;">
+                    <img class="card-img-top" src="{{ asset['Image'] }}" alt="Card image cap">
+                    <div class="card-body">
+                      <h5 class="card-title">{{asset.Name}}</h5>
+                      <p class="card-text">{{asset.Description}}</p>
+                    </div>
+                    <ul class="list-group list-group-flush">
+                      <li class="list-group-item">{{asset.TimeStamp}}</li>
+                      <li class="list-group-item">{{asset.tarBid}}</li>
+                      <li class="list-group-item">Seller Id: {{asset.SellerId}}</li>
+                    </ul>
+                    <div class="card-body">
+                      <a href="#" class="btn btn-primary">Bid Now</a>
+                      <a href="#" class="btn btn-success">Save for Later</a>
+                    </div>
+                  </div>    
+            </div> -->

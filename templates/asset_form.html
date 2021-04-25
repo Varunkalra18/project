@@ -1,0 +1,130 @@
+{% extends "layout.html" %}
+{% block title %}
+    Assets
+{% endblock %}
+{% block main %}
+<div class="container mt-5">
+<div class="row">
+    <div class="col-md register-form d-flex flex-column justify-content-center">
+      <div class="d-flex justify-content-center border-bottom mb-3"> 
+        <h2 class="text-muted"><em>Just one step away from best deals</em></h2>
+        
+      </div>
+      <form action="/addAssets" method="POST" onsubmit="addAsset(event)">
+      <div>
+          <p class="display-4">Add Your Assets Here</p>
+        <div class="mb-3">
+          <h5 class="">Asset Name 
+            (<span class="note-symbol">* This name will be directly visible to client</span> )
+          </p>
+          <input
+            type="text"
+            name = "Name"
+            class="form-control"
+            id="name"
+            placeholder="Asset Name"
+          />
+        </div>
+        <div class="mb-3">
+          <h5>Describe your asset </h5>
+          <input
+            type="text"
+            name = "Description"
+            class="form-control"
+            id="description"
+            placeholder="Description...."
+          />
+        </div>
+        <div class="mb-3">
+          <input type="hidden" name="assetImage" value="default" id="assetimagevalue" />
+          <h5>Upload image of your asset</h5>
+          <input type="file" id="assetimage" name="image" onchange="return updateImage(event)">
+        </div>
+        <div class="mb-4">
+          <h5>Start Bid</h5>
+          <input
+            type="number"
+            name = "startBid"
+            class="form-control"
+            id="startBid"
+            placeholder="Start Bid"
+          />
+        </div>  
+        <div class="mb-4">
+          <h5>Target Bid</h5>
+          <input
+            type="number"
+            name = "tarBid"
+            class="form-control"
+            id="tarBid"
+            placeholder="Target Bid"
+          />
+        </div>        
+        <div class="mb-3 d-flex">
+            <button class="btn btn-primary ml-auto mr-2 px-3">
+              Add Asset
+            </button>
+        </div>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+  const addAsset = (event) => {
+    console.log("Calling before submit ") ;
+    const assetImage = document.getElementById("assetimage").files[0] ;
+    console.log('assetImage: ', assetImage);
+    const assetName = document.getElementById("name").value ;
+    console.log('assetName: ', assetName);
+    const description = document.getElementById("description").value ;
+    console.log('description: ', description);
+    const startBid = document.getElementById("startBid").value ;
+    console.log('startBid : ', startBid) ;
+    const targetBid = document.getElementById("tarBid").value ;
+    console.log('targetBid: ', targetBid);
+    if(!(assetName && description && targetBid && assetImage && startBid)){
+      error_toast("All fields are mandatory .. !!") ;
+      event.preventDefault() ;
+      return false ;
+    }
+    if(description.length >= 20 && description.length <= 60){
+      error_toast("Description should be 20-60 words") ;
+      event.preventDefault() ;
+      return false ;
+    }
+    console.log("Coming here") ;
+    return true ;
+  }
+
+  const updateImage = async (e) => {
+    const assetImage = document.getElementById("assetimage").files[0] ;
+    console.log('assetImage: ', assetImage);
+
+    const CLOUDINARY_UPLOAD_PRESET = "d5sdp4u8";
+    const CLOUDINARY_URL =
+      "https://api.cloudinary.com/v1_1/blog-zone/image/upload";
+
+    const formData = new FormData();
+    formData.append("file", assetImage);
+    formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+    formData.append("cloud_name", "dyw6pifnj");
+
+    const response = await fetch(CLOUDINARY_URL, {
+      method: "POST",
+      body: formData,
+    });
+    const final_res = await response.json();
+    if (!final_res) {
+      error_toast("Error occured while uploading image internally .. !!");
+      return false;
+    }
+
+    document.getElementById("assetimagevalue").value = final_res.secure_url;
+  };
+
+</script>
+{% endblock %}

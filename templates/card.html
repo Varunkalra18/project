@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+{% block title%}
+ASSET CARD
+{% endblock %}
+
+{% block style %}
+    <style>
+      .container{
+            border: 1px solid black;
+        }
+        .asset_img{
+            height: 250px;
+            width: 400px;
+        }
+        button{
+            border-radius: 10px;
+            height: 35px;
+        }
+    </style>
+{% endblock %}
+
+{% block main %}
+<div class="container mt-3 w-50">
+      <div class="row">
+          <div class="col-sm-12 col-md-6 col-lg-4 pt-2">
+              <div class="card mt-3">
+                  <img src="images/shirt-1.jpg" class="asset_img img-fluid card-img"/>
+                  <div class="card-header bg-dark text-light text-center">
+                      <strong style="letter-spacing: 5px;">Featured</strong>
+                  </div>
+              </div>
+          </div>
+          <div class="col-sm-12 col-md-6 col-lg-3 pt-0">
+              <div class="card-body">
+                  <p class="card-text">
+                      <table>
+                          <tr>
+                            <td><strong>Uploaded Date:</strong></td>
+                          </tr>
+                          <tr>
+                            <td><strong>Bidding Interval:</strong></td>
+                          </tr>
+                          <tr>
+                            <td><strong>Activation Time:</strong></td>
+                          </tr>
+                          <tr>
+                            <td><strong>Status:</strong><i>Pending/Approved/Disapprove</i></td>
+                          </tr>
+                        </table>
+                        <hr/>
+                        <strong>Start Bid:<br/>
+                        Target Bid:<br/>
+                        Maximum Bid:</strong>
+                        <hr/>
+                      <button type="button" class="mt-2" value="edit">Edit</button>
+                      <button type="button" class="mt-2" value="remove">Remove</button>
+                  </p>
+              </div>
+          </div>
+      </div>
+  </div>    
+{% endif %}
+{% endblock %} 
+
+
+<!--
+  asset name                  activate deactivate 
+                              button: activate
+  uploaded date:    
+  bidding interval:
+  activation time: 
+  status: pending/approved/disapprove
+  button: edit, remove
+
+  start bid :
+  target bid:
+  maximum bid:
+-->

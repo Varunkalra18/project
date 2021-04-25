@@ -1,97 +1,156 @@
 {% extends "layout.html" %} {% block style %}
 <style>
   .row {
-    height: 95vh;
+    height: 100vh;
   }
 
   .register-form {
     background-color: whitesmoke;
   }
   .register-text {
-    font-size: 25px;
+    font-size: 22px;
     font-weight: 600;
   }
-  .note-symbol{
-      color : red ;
+  .note-symbol {
+    color: red;
   }
 </style>
-
-{% block script %}
-    <!--<script>
-        const submitRegister = () => {
-            console.log("calling submit register") ;
-        }
-    </script>-->
-{% endblock %}
-
 {% endblock %} {% block main %}
 <div class="row">
   <div class="col-md-9 bg-dark image-col p-0 h-100">
     <img
       class="w-100 h-100"
-      src="https://media.istockphoto.com/photos/gavel-on-auction-word-picture-id917901978?k=6&m=917901978&s=612x612&w=0&h=xCylR78onIYx2mU-as2L3PBEADDeFqGFP5U6rJJhwu8="
+      src="https://thumbs.dreamstime.com/b/business-man-use-finger-touch-interface-screen-auction-modern-wireless-network-g-technologies-background-hammer-retro-alarm-151494697.jpg"
       alt="No image found"
     />
   </div>
   <div class="col-md register-form d-flex flex-column justify-content-center">
-    <div class="d-flex justify-content-center border-bottom mb-3"> 
-      <h2 class="text-muted">Hello Visitor(s) .. !!</h2>
-      
+    <div class="d-flex justify-content-center border-bottom mb-3">
+      <h2 class="text-muted"><em>Welcome!</em></h2>
     </div>
-    <form action="/register" method="POST">
-    <div>
+    <form method="POST" action="/register" onsubmit="return waitingForSubmit()">
+      <div>
         <p class="register-text">Register Here</p>
-      <div class="mb-3">
-        <label for="username" class="form-label">Username (<span class="note-symbol">* This username will be directly visible to client</span></label> )
-        <input
-          type="text"
-          name = "username"
-          class="form-control"
-          id="username"
-          placeholder="Your Username"
-        />
+        <div class="mb-3">
+          <label for="username" class="form-label"
+            >Username (<span class="note-symbol"
+              >* This username will be directly visible to client</span
+            >
+            )</label
+          >
+          <input
+            type="text"
+            name="username"
+            class="form-control"
+            id="username"
+            placeholder="Your Username"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email ID</label>
+          <input
+            type="email"
+            name="emailId"
+            class="form-control"
+            id="email"
+            placeholder="name@example.com"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">PAN Number</label>
+          <input
+            type="text"
+            name="PanNo"
+            class="form-control"
+            id="PanNo"
+            placeholder="Enter PAN Number"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Govt Id Proof</label>
+          <input type="hidden" name="Govid" value="default" id="govidvalue" />
+          <input  type="file" class="form-control" id="govid" multiple onchange = "updateImage();" />
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input
+            type="password"
+            name="password"
+            class="form-control"
+            id="password"
+            placeholder="Enter password"
+          />
+        </div>
+        <div class="mb-3">
+          <label for="password" class="form-label">Confirm Password</label>
+          <input
+            type="password"
+            name="confirmation"
+            class="form-control"
+            id="cpassword"
+            placeholder="confirm your password"
+          />
+        </div>
+        <div class="mb-3 d-flex">
+          <span class="d-flex align-items-center">
+            <p class="m-0 mr-2">
+              Already have an account? <br/><a href="/login">Click Here</a>
+            </p>
+          </span>
+          <button class="btn btn-primary ml-auto mr-2 px-3">Register</button>
+        </div>
       </div>
-      <div class="mb-3">
-        <label for="email" class="form-label">Email ID</label>
-        <input
-          type="email"
-          name = "emailId"
-          class="form-control"
-          id="email"
-          placeholder="name@example.com"
-        />
-      </div>
-      <div class="mb-3">
-        <label for="password" class="form-label">Password</label>
-        <input
-          type="password"
-          name = "password"
-          class="form-control"
-          id="password"
-          placeholder="Enter password"
-        />
-      </div>
-      <div class="mb-3">
-        <label for="email" class="form-label">Confirm Password</label>
-        <input
-          type="password"
-          name = "confirm"
-          class="form-control"
-          id="cpassword"
-          placeholder="Confirm Password"
-        />
-      </div>
-      <div class="mb-3 d-flex">
-        <span class='d-flex align-items-center'>
-          <p class="m-0 mr-2">Already have an account?</p>
-          <a href='/login'>Click Here</a>
-        </span>
-          <button class="btn btn-primary ml-auto mr-2 px-3">
-            register
-          </button>
-      </div>
-    </div>
     </form>
   </div>
 </div>
-{% endblock %}
+{% block script %}
+
+<script>
+  const waitingForSubmit = () => {
+    const username = document.getElementById("username").value;
+    const email = document.getElementById("email").value;
+    const adharno = document.getElementById("PanNo").value;
+    const pass = document.getElementById("password").value;
+    const cpass = document.getElementById("cpassword").value;
+
+    if (
+      !(username && email && adharno && govtproof && pass && cpass)
+    ) {
+      // Apply toast here
+      error_toast("All fields are Mandatory");
+      return false;
+    }
+
+    if (pass != cpass) {
+      error_toast("Password doesn't match .. Please check !!");
+      return false;
+    }
+    return true;
+  };
+
+  const updateImage = async () => {
+    const govtproof = document.getElementById("govid").files[0];
+
+    const CLOUDINARY_UPLOAD_PRESET = "d5sdp4u8";
+    const CLOUDINARY_URL =
+      "https://api.cloudinary.com/v1_1/blog-zone/image/upload";
+
+    const formData = new FormData();
+    formData.append("file", govtproof);
+    formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+    formData.append("cloud_name", "dyw6pifnj");
+
+    const response = await fetch(CLOUDINARY_URL, {
+      method: "POST",
+      body: formData,
+    });
+    const final_res = await response.json();
+    if (!final_res) {
+      error_toast("Error occured while uploading image internally .. !!");
+      return false;
+    }
+
+    document.getElementById("govidvalue").value = final_res.secure_url;
+  };
+</script>
+{% endblock %} {% endblock %}
