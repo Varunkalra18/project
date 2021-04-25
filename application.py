@@ -42,7 +42,8 @@ def home() :
     print('User id in index.html is : ', user_id)
     rows = db.execute("SELECT U.Username, U.profileImage, A.* FROM Assets AS A INNER JOIN User AS U on U.Id = A.SellerId AND A.SellerId != :user_id AND A.status = 'Accepted'", user_id=user_id)
     print('Index.html data : ', rows)
-    book = db.execute("SELECT * FROM bookmark WHERE userId is :userid", userid = session["user_id"])
+    book = db.execute("SELECT assetId FROM bookmark WHERE userId is :userid", userid = session["user_id"])
+    print(book)
     return render_template("index.html", row=rows, books = book) 
 
 @app.route('/register', methods=['GET', 'POST']) 

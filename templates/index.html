@@ -51,10 +51,9 @@ block style %}
           onclick="bidHistoryModal('{{asset.Id}}')"
           >Bid History</span
         >
-        {% if asset["Id"] in books %}
-        <form action="">
-          <span class="books"><i class="bi bi-bookmark"></i></span>
-        </form>
+        {% if asset.Id in books %}
+        {% print("true") %}
+          <span class="books"><i class="bi bi-bookmark-filled"></i></span>
         {% else %}
         <span class="books"><i class="bi bi-bookmark"></i></span>
         {% endif %}
