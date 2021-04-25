@@ -28,7 +28,6 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css"
     />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
     <script
       src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
       integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -78,7 +77,6 @@
         font-weight: 600;
         bottom: 10px;
         right: 10px;
-        z-index: 999;
       }
 
       /* .navbar{
@@ -91,7 +89,7 @@
         overflow-x: hidden;
       }
       footer {
-        background-color: #1d3883;
+        background-color: rgb(82, 82, 82);
         color: rgb(163, 161, 161);
         left: 0%;
         bottom: 0%;
@@ -100,12 +98,11 @@
       }
       .f_link {
         text-decoration: none;
-        color: white;
+        color: rgb(151, 151, 151);
       }
       .f_link:hover {
         text-decoration: underline;
-        background-color: white;
-        color: black;
+        color: rgb(209, 207, 207);
       }
       .back_to_top {
         float: right;
@@ -143,9 +140,8 @@
       }
       .fa {
         padding: 10px;
-        font-size: 22px;
-        width: 40px;
-        height:40px;
+        font-size: 30px;
+        width: 30px;
         text-align: center;
         text-decoration: none;
       }
@@ -155,43 +151,33 @@
       .fa-facebook {
         background: #3b5998;
         color: white;
-        border-radius: 20px;
+        border-radius: 50px;
       }
       .fa-twitter {
         background: #55acee;
         color: white;
-        border-radius: 20px;
+        border-radius: 50px;
       }
       .fa-linkedin {
         background: #007bb5;
         color: white;
-        border-radius: 20px;
+        border-radius: 50px;
       }
       .fa-youtube {
         background: #bb0000;
         color: white;
-        border-radius: 20px;
+        border-radius: 50px;
       }
       .fa-instagram {
         background: rgb(226, 108, 128);
         color: white;
-        border-radius: 20px;
+        border-radius: 50px;
       }
       .fa-google {
         background: #dd4b39;
         color: white;
-        border-radius: 20px;
+        border-radius: 50px;
       }
-      nav{
-        background-color: #1d3883;
-      }
-      li:hover{
-        background-color: aqua;
-      }
-      .ic{
-        padding-right: 5px;
-        padding-left: 5px;
-        font-size: 20px;
     </style>
     <!-- PAGE WISE STYLE -->
     {% block style %}{% endblock %}
@@ -200,7 +186,7 @@
     <!-- Image and text -->
     {% if session.first_land != 'true' %} {% if session.user_id %} {% if not
     session.user_id == "mlqerloqrlgqiuwzaqbg" %}
-    <nav class="navbar navbar-expand-lg navbar-dark  fixed">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed">
       <a class="navbar-brand" href="#"
         ><img class="logo" src="static/image/logo3.png" />
       </a>
@@ -210,7 +196,7 @@
           <a class="nav-link" href="/">Home</a>
         </li>
         <li class="nav-item active">
-          <a class="nav-link" href="/Assets">My Assets</a>
+          <a class="nav-link" href="/Assets">Assets</a>
         </li>
         <li class="nav-item active">
           <a class="nav-link" href="/addAssets">Add Assets</a>
@@ -223,9 +209,6 @@
       <ul class="bl-navbar-elements navbar-nav ml-auto">
         <li class="nav-item active">
           <a class="nav-link" href="/profile">Profile</a>
-        </li>
-        <li class="nav-item active">
-          <a class="nav-link" href="/bookmark">Cart<i class="bi bi-cart-check-fill ic"></i></a>
         </li>
         <li class="nav-item active">
           <a class="nav-link" href="/logout">Logout</a>
@@ -318,7 +301,6 @@
         // background-color: yellowgreen;
         const toastContainer = document.createElement("div");
         toastContainer.style.backgroundColor = color;
-        toastContainer.style.zIndex = "999"
         toastContainer.className = "toast d-flex align-items-center px-3";
         toastContainer.innerHTML = `Message : ${text}`;
 
