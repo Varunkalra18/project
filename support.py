@@ -46,7 +46,9 @@ def user_first_land(f) :
             print('user_id while rendering index.html : ', user_id)
             rows = db.execute("SELECT U.Username, U.profileImage, A.* FROM Assets AS A INNER JOIN User AS U on A.isActivated = True AND U.Id = A.SellerId AND A.SellerId != :user_id AND A.status = 'Accepted'", user_id=user_id)
             print('rows in index.html : ', rows)
-            return render_template("index.html", row=rows) 
+            book = db.execute("SELECT assetId FROM bookmark WHERE userId = :userid", userid = session["user_id"])
+            print(book)
+            return render_template("index.html", row=rows, books=book) 
         return f(*args, **kwargs)
     return decorated_function
 

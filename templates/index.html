@@ -54,6 +54,28 @@ block style %}
           >Bid History</span
         >
       </div>
+      <div class="bookmark">
+        {% if not books %}
+        <form action="/bookmark" method="POST">
+          <input type="hidden" name ="assetid" value = "{{asset.Id}}">
+          <button type="submit" style="border: none;"><i class="bi bi-bookmark"></i></button>
+        </form>
+        {% endif %}
+        {% for bo in books %}
+        {% if asset.Id == bo.assetId %}
+        <form action="/removeBookmark" method="POST">
+          <input type="hidden" name ="assetid" value = "{{asset.Id}}">
+          <button type="submit" style="border: none;"><i class="bi bi-bookmark-fill"></i></button>
+        </form>
+        {% else %} 
+        <form action="/bookmark" method="POST">
+          <input type="hidden" name ="assetid" value = "{{asset.Id}}">
+          <button type="submit" style="border: none;"><i class="bi bi-bookmark"></i></button>
+        </form>
+        
+        {% endif %}
+        {% endfor %}
+      </div>
     </div>
     <div
       class="modal fade bd-example-modal-lg"
@@ -116,6 +138,7 @@ block style %}
         {{asset["Description"]}}.
       </p>
     </div>
+    
   </div>
   <div
     class="modal fade"

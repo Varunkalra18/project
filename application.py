@@ -41,8 +41,9 @@ def home() :
     user_id = session["user_id"]
     print('User id in index.html is : ', user_id)
     rows = db.execute("SELECT U.Username, U.profileImage, A.* FROM Assets AS A INNER JOIN User AS U on A.isActivated = True AND U.Id = A.SellerId AND A.SellerId != :user_id AND A.status = 'Accepted'", user_id=user_id)
-    print('Index.html data : ', rows)
-    return render_template("index.html", row=rows) 
+    book = db.execute("SELECT assetId FROM bookmark WHERE userId = :userid", userid = session["user_id"])
+    print(book)
+    return render_template("index.html", row=rows, books = book) 
 
 @app.route('/register', methods=['GET', 'POST']) 
 def register() : 
@@ -122,6 +123,35 @@ def assets():
     rows = db.execute("SELECT * FROM Assets WHERE SellerId=:id ", id=user_id) 
     return render_template("assets.html", rows=rows)
 
+
+@app.route("/bookmark", methods=["GET", "POST"])
+@login_required
+def bookmark():
+    if request.method == "GET":
+        row = db.execute("SELECT * FROM bookmark WHERE userId = :userid", userid = session["user_id"])
+        assets = []
+        for asset in row:
+            assd = db.execute("SELECT *FROM Assets WHERE Id = :assetid", assetid = asset["assetId"])
+            assets.append(assd)
+        print(assets)
+        print("")
+        return render_template("bookmark.html", row = assets)
+    else:
+        assetid = request.form.get("assetid")
+        check_asset = db.execute("SELECT * FROM bookmark WHERE assetId = :assetid AND userId = :userid", assetid = assetid, userid = session["user_id"])
+        if not check_asset:
+            db.execute("INSERT INTO bookmark (assetId, userId) VALUES (:assetid, :userid)", assetid = assetid, userid = session["user_id"])
+            return redirect("/bookmark")
+        return redirect("/bookmark")
+
+@app.route("/removeBookmark", methods=["POST"])
+def removeBookmarks():
+    assetid = request.form.get("assetid")
+    check_asset = db.execute("SELECT * FROM bookmark WHERE assetId = :assetid AND userId = :userid", assetid = assetid, userid = session["user_id"] )
+    if not check_asset:
+        return render_template("sorry.html", text = "Asset does not exist")
+    db.execute("DELETE FROM bookmark WHERE assetId = :assetid AND userId = :userid", assetid = assetid, userid = session["user_id"])
+    return redirect("/")
 
 @app.route("/mybids",methods=['GET', 'POST']) 
 @login_required
