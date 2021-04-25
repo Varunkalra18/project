@@ -175,6 +175,12 @@ def getHistory() :
 def activateAsset() : 
     asset_id = request.form.get('assetId')
     print('This is asset to be activated : ', asset_id)
+    
+@app.route('/asset/delete', methods=['DELETE'])
+@login_required
+def assetDelete() : 
+    asset_id = request.form.get('assetId')  
+    
 
 
 # Admin Routes

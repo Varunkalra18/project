@@ -78,21 +78,24 @@ Best things ahead!!!!
                           Target Bid: INR. {{item.tarBid}}<br/>
                           Maximum Bid: INR. {{item.maxBid}}</strong>
                           <hr/>
-                        <form action="/asset/activate" method="PUT">
-                          <input type='text' name='assetId' hidden value='{{item.Id}}' />
                           <div>
-                            {% if item.status == 'Pending' %}
-                              <button type="button" class="mt-2 btn btn-primary" value="edit">Edit</button>
-                            {% endif %}
+                          {% if item.status == 'Pending' %}
+                            <button type="button" class="mt-2 btn btn-primary" value="edit">Edit</button>
+                          {% endif %}
   
-                            {% if item.isActivated == 0 %}
-                              <button type="button" class="mt-2 btn btn-secondary" value="remove">Remove</button>
-                                {% if item.status == 'Accepted' %}
-                              <button type="button" class="mt-2 btn btn-success" value="activate">Activate</button>
-                              {% endif %}
+                          {% if item.isActivated == 0 %}
+                            <form action="/asset/activate" method="PUT">
+                              <input type='text' name='assetId' hidden value='{{item.Id}}' />
+                              <button type="submit" class="mt-2 btn btn-secondary" value="remove">Remove</button>
+                            </form>
+                            {% if item.status == 'Accepted' %}
+                              <form action="" method="DELETE">
+                                <input type='text' name='assetId' hidden value='{{item.Id}}' />
+                                <button type="submit" class="mt-2 btn btn-success" value="activate">Activate</button>
+                              </form>
                             {% endif %}
-                          </div>
-                        </form>
+                          {% endif %}
+                        </div>
                     </p>
                 </div>
             </div>
