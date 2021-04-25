@@ -77,7 +77,6 @@
         font-weight: 600;
         bottom: 10px;
         right: 10px;
-        z-index: 999;
       }
 
       /* .navbar{
@@ -197,7 +196,7 @@
           <a class="nav-link" href="/">Home</a>
         </li>
         <li class="nav-item active">
-          <a class="nav-link" href="/Assets">My Assets</a>
+          <a class="nav-link" href="/Assets">Assets</a>
         </li>
         <li class="nav-item active">
           <a class="nav-link" href="/addAssets">Add Assets</a>
@@ -302,7 +301,6 @@
         // background-color: yellowgreen;
         const toastContainer = document.createElement("div");
         toastContainer.style.backgroundColor = color;
-        toastContainer.style.zIndex = "999"
         toastContainer.className = "toast d-flex align-items-center px-3";
         toastContainer.innerHTML = `Message : ${text}`;
 

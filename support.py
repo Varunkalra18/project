@@ -36,17 +36,14 @@ def user_first_land(f) :
     def decorated_function(*args, **kwargs):
         user_id = session.get('user_id')
         print('user_id : ', user_id)
-        user = db.execute("SELECT * FROM User WHERE Id=:id", id=user_id)
+        user = db.execute("SELECT * FROM User WHERE Id=:id", id=1)
         print(user[0])
         if int(user[0]["firstLand"]) == 1 : 
             # Redirect to middle page
             print('I am here in middle page')
-            return render_template("midDetailsPage.html")
+            return redirect('/midpagedetails')
         else : 
-            print('user_id while rendering index.html : ', user_id)
-            rows = db.execute("SELECT U.Username, U.profileImage, A.* FROM Assets AS A INNER JOIN User AS U on U.Id = A.SellerId AND A.SellerId != :user_id AND A.status = 'Accepted'", user_id=user_id)
-            print('rows in index.html : ', rows)
-            return render_template("index.html", row=rows) 
+            return redirect("/") 
         return f(*args, **kwargs)
     return decorated_function
 
