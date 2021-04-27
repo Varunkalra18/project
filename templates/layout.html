@@ -51,6 +51,10 @@
         transition: 0.4s all;
         border-radius: 5px;
       }
+      .user-avatar {
+        height: 50px;
+        width: 50px;
+      }
 
       .bl-navbar-elements > li {
         margin-right: 20px;
@@ -229,13 +233,19 @@
         </li>
       </ul>
 
-      <ul class="bl-navbar-elements navbar-nav ml-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="/profile">Profile</a>
-        </li>
-        <li class="nav-item active">
-          <a class="nav-link" href="/logout">Logout</a>
-        </li>
+      <ul class="bl-navbar-elements navbar-nav ml-auto">        
+        <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#drop" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="True">
+        <img
+          class="user-avatar rounded-circle"
+          src="{{session['user_image'] if session['user_image'] else '../static/image/user-default.jpg'}}"
+        />
+        </a>
+        <div class="dropdown-menu" id = "drop" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="/profile">Profile</a>
+            <a class="dropdown-item" href="/logout">Logout</a>
+        </div>
+      </li>
       </ul>
     </nav>
     {% else %}
