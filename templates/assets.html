@@ -37,12 +37,15 @@ Best things ahead!!!!
     
   </nav>
 
+{% if rows|length != 0 %}
   <hr/>
   <h1 class='text-center text-muted font-weight-bold'>Your Assets</h1>
   <hr/>
+{% endif %}
+  
 
 {% if rows|length == 0 %}
-  <h1 class='text-center text-muted font-weight-bold'>No Assets</h1>
+  <h1 class='text-center text-muted font-weight-bold my-3'>No Assets</h1>
   {% else %}
   {% for item in rows %}
   <div class="container my-3">

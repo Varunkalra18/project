@@ -10,7 +10,7 @@
         <h2 class="text-muted"><em>Just one step away from best deals</em></h2>
         
       </div>
-      <form action="/addAssets" method="POST" onsubmit="addAsset(event)">
+      <form action="/addAssets" method="POST" onsubmit="return addAsset(event)">
       <div>
           <p class="display-4">Add Your Assets Here</p>
         <div class="mb-3">
@@ -95,6 +95,9 @@
       error_toast("Description should be 20-60 words") ;
       event.preventDefault() ;
       return false ;
+    }
+    if(startBid <= targetBid){
+      error_toast("Start bid should be less than target bid .") ;
     }
     console.log("Coming here") ;
     return true ;

@@ -48,6 +48,9 @@
       crossorigin="anonymous"
     ></script>
     <style>
+      html, body {
+        height : 100vh ;
+      }
       body {
         background-color: whitesmoke;
       }
@@ -77,9 +80,20 @@
         height: 40px;
         width: 400px;
       }
+
+      .toast {
+        min-height: 65px;
+        min-width: 450px;
+        position: absolute;
+        font-size: larger;
+        font-weight: 600;
+        bottom: 10px;
+        right: 10px;
+        z-index: 999;
+      }
     </style>
   </head>
-  <body>
+  <body id='body'>
     <fieldset class="mid">
       <center>
         <h1 class="head font-weight-bold">To Know You Better .. !!</h1>
@@ -195,17 +209,49 @@
         document.getElementById("image-upload").click();
       };
       const updateProfile = (event) => {
-        const image = document.getElementById("image-upload-url");
-        const dob = document.getElementById("dob");
-        const mobileNum = document.getElementById("mob");
-        const occupation = document.getElementById("occupation");
-        if (!(image && dob && occupation && mobileNum )) {
+        const image = document.getElementById("image-upload-url").value;
+        const dob = document.getElementById("dob").value;
+        const mobileNum = document.getElementById("mob").value;
+        const occupation = document.getElementById("occupation").value;
+        if (!(image && dob && occupation && mobileNum)) {
           event.preventDefault();
           error_toast("All fields are mandatory .. Either Skip .. !!");
           return false;
         }
-        return true ;
+        return true;
       };
+    </script>
+    <script>
+      function error_toast(text) {
+        const color = "red";
+        toast(color, text);
+      }
+
+      function success_toast(text) {
+        const color = "yellowgreen";
+        toast(color, text);
+      }
+
+      function warning_toast(text) {
+        const color = "yellow";
+        toast(color, text);
+      }
+
+      function toast(color, text) {
+        // background-color: yellowgreen;
+        const toastContainer = document.createElement("div");
+        toastContainer.style.backgroundColor = color;
+        toastContainer.style.zIndex = "999";
+        toastContainer.className = "toast d-flex align-items-center px-3";
+        toastContainer.innerHTML = `Message : ${text}`;
+
+        const body_toast = document.getElementById("body");
+        body_toast.appendChild(toastContainer);
+
+        setTimeout(() => {
+          body_toast.removeChild(toastContainer);
+        }, 3000);
+      }
     </script>
   </body>
 </html>
