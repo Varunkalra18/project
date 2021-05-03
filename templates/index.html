@@ -64,12 +64,12 @@ block style %}
         >
       </div>
       <div class="bookmark">
-        {% if not books %}
+        <!-- {% if not books %}
         <form action="/bookmark" method="POST">
           <input type="hidden" name ="assetid" value = "{{asset.Id}}">
           <button type="submit" style="border: none;"><i class="bi bi-bookmark"></i></button>
         </form>
-        {% endif %}
+        {% endif %} -->
         {% if asset.Id in books|map(attribute="assetId")%}
         <form action="/removeBookmark" method="POST" id="fill">
           <input type="hidden" name ="assetid" value = "{{asset.Id}}">

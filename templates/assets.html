@@ -53,7 +53,7 @@ Best things ahead!!!!
         <div class="row">
             <div class="col-sm-12 col-md-6 col-lg-4 d-flex flex-column justify-content-center">
                 <div class="card mt-3 ">
-                    <img src="{{item.Image}}" class="asset_img img-fluid card-img"/>
+                    <a href="{{item.Image}}" target="_blank"><img src="{{item.Image}}" class="asset_img img-fluid card-img"/></a>
                     <div class="card-header bg-dark text-light text-center">
                         <strong style="letter-spacing: 5px;">{{item.Name}}</strong>
                     </div>
@@ -64,13 +64,13 @@ Best things ahead!!!!
                     <p class="card-text">
                         <table>
                             <tr>
-                              <td>Uploaded Date: {{item.TimeStamp}}</td>
+                              <strong><td>Uploaded Date</strong>: {{item.TimeStamp}}</td>
                             </tr>
                             <tr>
-                              <td><strong>Bidding Interval:</strong></td>
+                              <td><strong>Bidding Interval: {{"%.3f"|format(item.bidTime/3600) }} hrs</strong></td>
                             </tr>
                             <tr>
-                              <td><strong>Activation Time:</strong>{{item.AT if isActivated == 1 else ' Not activated yet'}}</td>
+                              <td><strong>Activation Time:</strong> {{item.AT if item.isActivated == 1 else ' Not activated yet'}}</td>
                             </tr>
                             <tr>
                               <td><strong>Status:</strong><i> {{item.status}}</i></td>

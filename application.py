@@ -7,6 +7,7 @@ import json
 from tempfile  import mkdtemp
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from werkzeug.security import check_password_hash, generate_password_hash
+import schedule
 
 
 from support import login_required, admin_login_required, user_first_land
@@ -112,8 +113,9 @@ def addassets():
         image = request.form.get("assetImage")
         startBid = request.form.get("startBid")
         tarBid = request.form.get("tarBid")
+        bidTime = request.form.get("bidTime")
         today = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
-        db.execute("INSERT INTO Assets ( sellerId, Name, Description, Image, TimeStamp, tarBid, startBid, maxBid) VALUES (:id, :name, :description, :image, :timestamp, :tarBid, :startBid, :maxBid)", id = session["user_id"], name = name, description = description, image = image, timestamp = today, tarBid = tarBid, startBid = startBid, maxBid = int(startBid))
+        inserted_data_id = db.execute("INSERT INTO Assets ( sellerId, Name, Description, Image, TimeStamp, tarBid, startBid, maxBid, bidTime) VALUES (:id, :name, :description, :image, :timestamp, :tarBid, :startBid, :maxBid, :bidTime)", id = session["user_id"], name = name, description = description, image = image, timestamp = today, tarBid = tarBid, startBid = startBid, maxBid = int(startBid) , bidTime = float(bidTime)*60*60)
         return redirect('/Assets') 
     return render_template("sorry.html")
 
@@ -136,14 +138,15 @@ def bookmark():
             assets.append(assd)
         print(assets)
         print("")
+        # return redirect('/')
         return render_template("bookmark.html", row = assets)
     else:
         assetid = request.form.get("assetid")
         check_asset = db.execute("SELECT * FROM bookmark WHERE assetId = :assetid AND userId = :userid", assetid = assetid, userid = session["user_id"])
         if not check_asset:
             db.execute("INSERT INTO bookmark (assetId, userId) VALUES (:assetid, :userid)", assetid = assetid, userid = session["user_id"])
-            return redirect("/bookmark")
-        return redirect("/bookmark")
+            return redirect("/")
+        return redirect("/")
 
 @app.route("/removeBookmark", methods=["POST"])
 def removeBookmarks():
@@ -205,9 +208,18 @@ def getHistory() :
 @login_required
 def activateAsset() : 
     asset_id = request.form.get('assetId')
+    def setBidTime() : 
+        db.execute("UPDATE Assets SET isSold=True, status='Closed' WHERE Id=:id", id=inserted_data_id)
+        print('Executed setBidTime')
+        return schedule.CancelJob   
+    asset = db.execute("SELECT * FROM Assets WHERE Id=:id", id=asset_id)
+    print('This is the asset : ', asset[0]['bidTime'])
+    print('Here is the bidding time at the time of activation : ', float(asset[0]['bidTime']))
+    schedule.every(float(asset[0]['bidTime'])).seconds.do(setBidTime) 
     print('This is asset to be activated : ', asset_id)
-    # timestamp = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
-    db.execute('UPDATE Assets SET isActivated=True WHERE Id=:id', id=asset_id) 
+    activationTime = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+    print('This is the activation time to be inserted : ', activationTime)
+    db.execute('UPDATE Assets SET isActivated=True, AT=:at WHERE Id=:id', id=asset_id, at=activationTime) 
     return redirect('/Assets')
     
 @app.route('/asset/delete', methods=['DELETE'])
