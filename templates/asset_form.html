@@ -40,7 +40,7 @@
           <h5>Upload image of your asset</h5>
           <input type="file" id="assetimage" name="image" onchange="return updateImage(event)">
         </div>
-        <div class="mb-4">
+        <div class="mb-3">
           <h5>Start Bid</h5>
           <input
             type="number"
@@ -50,7 +50,7 @@
             placeholder="Start Bid"
           />
         </div>  
-        <div class="mb-4">
+        <div class="mb-3">
           <h5>Target Bid</h5>
           <input
             type="number"
@@ -60,6 +60,17 @@
             placeholder="Target Bid"
           />
         </div>        
+        <div class="mb-3">
+          <h5>Bidding time (in hours)</h5>
+          <input
+            step="any"
+            type="number"
+            name = "bidTime"
+            class="form-control"
+            id="bidTime"
+            placeholder="Bidding Time"
+          />
+        </div>  
         <div class="mb-3 d-flex">
             <button class="btn btn-primary ml-auto mr-2 px-3">
               Add Asset
@@ -76,6 +87,8 @@
 <script>
   const addAsset = (event) => {
     console.log("Calling before submit ") ;
+    const bidTime = document.getElementById('bidTime').value ;
+    console.log(bidTime) ;
     const assetImage = document.getElementById("assetimage").files[0] ;
     console.log('assetImage: ', assetImage);
     const assetName = document.getElementById("name").value ;
@@ -86,7 +99,7 @@
     console.log('startBid : ', startBid) ;
     const targetBid = document.getElementById("tarBid").value ;
     console.log('targetBid: ', targetBid);
-    if(!(assetName && description && targetBid && assetImage && startBid)){
+    if(!(assetName && description && targetBid && assetImage && startBid && bidTime)){
       error_toast("All fields are mandatory .. !!") ;
       event.preventDefault() ;
       return false ;
@@ -96,9 +109,14 @@
       event.preventDefault() ;
       return false ;
     }
-    if(startBid <= targetBid){
+    console.log('Tar bid : ', targetBid, ' and start bid : ', startBid) ;
+    if(startBid > targetBid){
+      event.preventDefault() ;
       error_toast("Start bid should be less than target bid .") ;
     }
+    // if(!(bidTime >= 6 && bidTime <= 48)){
+    //   error_toast("Bid time should be atleast 6 hour or atmax 48 hour(2 days)")
+    // }
     console.log("Coming here") ;
     return true ;
   }
