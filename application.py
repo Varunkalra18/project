@@ -1,22 +1,32 @@
 import os
 from cs50 import SQL
 from flask import Flask, flash, redirect, render_template, request, session, jsonify
-from datetime import datetime
+import datetime
+from flask_mail import Mail, Message
 from flask_session import Session
 import json
 from tempfile  import mkdtemp
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from werkzeug.security import check_password_hash, generate_password_hash
-import schedule
 
 
 from support import login_required, admin_login_required, user_first_land
 # Check empty function can be used to check weather the passed dictionary has some None value or not
-from utility import getUser, checkEmpty
 
 app = Flask(__name__)
 
+from utility import getUser, checkEmpty, getAssetVerifiedTimestamp, sendMail, closeExpiredAssets
+
 app.config["TEMPLATES_AUTO_RELOAD"] = True
+
+
+app.config["MAIL_SERVER"] = 'smtp.gmail.com'
+app.config["MAIL_PORT"] = 465
+app.config["MAIL_USERNAME"] = "management.appraisal2021@gmail.com"
+app.config["MAIL_PASSWORD"] = "AppraisalAuction@2021"
+app.config["MAIL_USE_TLS"] = False
+app.config["MAIL_USE_SSL"] = True
+mail = Mail(app)
 
 
 @app.after_request
@@ -43,7 +53,9 @@ def home() :
     print('User id in index.html is : ', user_id)
     rows = db.execute("SELECT U.Username, U.profileImage, A.* FROM Assets AS A INNER JOIN User AS U on A.isActivated = True AND U.Id = A.SellerId AND A.SellerId != :user_id AND A.status = 'Accepted'", user_id=user_id)
     book = db.execute("SELECT assetId FROM bookmark WHERE userId = :userid", userid = session["user_id"])
-    print(book)
+    rows = getAssetVerifiedTimestamp(rows) 
+    for asset in rows : 
+        print('asset : ', asset)
     return render_template("index.html", row=rows, books = book) 
 
 @app.route('/register', methods=['GET', 'POST']) 
@@ -56,7 +68,7 @@ def register() :
         password = request.form.get("password")
         an = request.form.get("PanNo")
         govid = request.form.get("Govid")
-        timestamp = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+        timestamp = datetime.datetime.now()
         user = db.execute("SELECT * FROM User WHERE username=:username", username = username)
         
         if len(user) != 0:
@@ -100,7 +112,6 @@ def updateProfile() :
     # Add functionality to update user profile and redirect to profile page with respective data
     return redirect('/profile')
 
-
 @app.route("/addAssets", methods=["GET", "POST"])
 @login_required
 def addassets():
@@ -114,7 +125,7 @@ def addassets():
         startBid = request.form.get("startBid")
         tarBid = request.form.get("tarBid")
         bidTime = request.form.get("bidTime")
-        today = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+        today = datetime.datetime.now()
         inserted_data_id = db.execute("INSERT INTO Assets ( sellerId, Name, Description, Image, TimeStamp, tarBid, startBid, maxBid, bidTime) VALUES (:id, :name, :description, :image, :timestamp, :tarBid, :startBid, :maxBid, :bidTime)", id = session["user_id"], name = name, description = description, image = image, timestamp = today, tarBid = tarBid, startBid = startBid, maxBid = int(startBid) , bidTime = float(bidTime)*60*60)
         return redirect('/Assets') 
     return render_template("sorry.html")
@@ -139,6 +150,7 @@ def bookmark():
         print(assets)
         print("")
         # return redirect('/')
+        assets = getAssetVerifiedTimestamp(assets)
         return render_template("bookmark.html", row = assets)
     else:
         assetid = request.form.get("assetid")
@@ -191,7 +203,7 @@ def bidAsset() :
     db.execute('UPDATE Assets SET maxBid=:maxBid, maxBidUser=:maxBidUser WHERE Id=:id', maxBid=maxBid, id=assetId, maxBidUser=loggedInUser)
     asset = db.execute('SELECT * FROM Assets WHERE Id=:id', id=assetId)
     print('This is the asset to get bidded : ', asset)
-    timestamp = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
+    timestamp = datetime.datetime.now()
     db.execute('INSERT INTO Transactions (SellerId, BuyerId, Amount, AssetId, TimeStamp) VALUES (:sellerid, :buyerid, :amount, :assetId, :timestamp)', sellerid=asset[0]["SellerId"], buyerid=loggedInUser, amount=maxBid, assetId=asset[0]["Id"], timestamp=timestamp)
     print('Here in assets')
     return redirect('/') 
@@ -208,17 +220,8 @@ def getHistory() :
 @login_required
 def activateAsset() : 
     asset_id = request.form.get('assetId')
-    def setBidTime() : 
-        db.execute("UPDATE Assets SET isSold=True, status='Closed' WHERE Id=:id", id=inserted_data_id)
-        print('Executed setBidTime')
-        return schedule.CancelJob   
     asset = db.execute("SELECT * FROM Assets WHERE Id=:id", id=asset_id)
-    print('This is the asset : ', asset[0]['bidTime'])
-    print('Here is the bidding time at the time of activation : ', float(asset[0]['bidTime']))
-    schedule.every(float(asset[0]['bidTime'])).seconds.do(setBidTime) 
-    print('This is asset to be activated : ', asset_id)
-    activationTime = datetime.now().strftime("%m/%d/%Y, %H:%M:%S")
-    print('This is the activation time to be inserted : ', activationTime)
+    activationTime = datetime.datetime.now()
     db.execute('UPDATE Assets SET isActivated=True, AT=:at WHERE Id=:id', id=asset_id, at=activationTime) 
     return redirect('/Assets')
     
@@ -300,6 +303,7 @@ def logout():
     return redirect("/")
 
 if __name__ == "__main__":
+    mail = Mail(app)
     app.run(debug = True)
 
 #source venv/scripts/activate

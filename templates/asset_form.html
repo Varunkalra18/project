@@ -109,9 +109,14 @@
       event.preventDefault() ;
       return false ;
     }
-    if(startBid <= targetBid){
+    console.log('Tar bid : ', targetBid, ' and start bid : ', startBid) ;
+    if(startBid > targetBid){
+      event.preventDefault() ;
       error_toast("Start bid should be less than target bid .") ;
     }
+    // if(!(bidTime >= 6 && bidTime <= 48)){
+    //   error_toast("Bid time should be atleast 6 hour or atmax 48 hour(2 days)")
+    // }
     console.log("Coming here") ;
     return true ;
   }

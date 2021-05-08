@@ -2,6 +2,9 @@ import os
 from flask import *
 from functools import wraps
 from cs50 import SQL
+from threading import *
+
+from utility import getAssetVerifiedTimestamp, closeExpiredAssets, sendMail
 
 db = SQL("sqlite:///test.db")
 
@@ -43,11 +46,20 @@ def user_first_land(f) :
             print('I am here in middle page')
             return render_template("midDetailsPage.html")
         else : 
+            
             print('user_id while rendering index.html : ', user_id)
             rows = db.execute("SELECT U.Username, U.profileImage, A.* FROM Assets AS A INNER JOIN User AS U on A.isActivated = True AND U.Id = A.SellerId AND A.SellerId != :user_id AND A.status = 'Accepted'", user_id=user_id)
             print('rows in index.html : ', rows)
             book = db.execute("SELECT assetId FROM bookmark WHERE userId = :userid", userid = session["user_id"])
-            print(book)
+            (rows, expired_rows) = getAssetVerifiedTimestamp(rows) 
+            print('Expired rows in support py : ', expired_rows)
+            # sendMail("prasheetp@gmail.com", "hello this is testing mail", "testing mail") 
+            # closeExpiredAssets(expired_rows) 
+            try : 
+                closingAssetsThread = Thread(target=closeExpiredAssets, args=(expired_rows,))
+                closingAssetsThread.start() 
+            except error : 
+                print('Error in thread : ', error)
             return render_template("index.html", row=rows, books=book) 
         return f(*args, **kwargs)
     return decorated_function

@@ -4,9 +4,14 @@ My Bids
 {% endblock %}
 {% block main %}
 
-
+{% if rows|length == 0 %}
+  <h2 class="text-center text-muted font-size-bold my-3">No bids Yet</h2>
+  {% else %}
   {% for item in rows %}
     {% print(item) %}
     <p>something</p>
   {% endfor %}
+
+{% endif %}
+
 {% endblock %} 
