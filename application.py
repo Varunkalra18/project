@@ -97,6 +97,7 @@ def login() :
         if rows[0]["isBlocked"] == 1 : 
             return render_template("sorry.html", text="This user has been blocked by ADMIN") 
         session["user_id"] = rows[0]["Id"]
+        session["username"] = rows[0]["Username"]
         session["user_image"] = rows[0]["profileImage"]
         return redirect("/")
 
