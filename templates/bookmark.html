@@ -3,10 +3,10 @@
     Bookmarks!!
 {% endblock %}
 {% block main %}
-{% for ro in row %}
-{{ro[0]["Id"]}}<br>
-{{ro[0]["Name"]}}<br>
-{{ro[0]["Description"]}}<br>
-{{ro[0]["tarBid"]}}
-{% endfor %}
+{%if not row%}
+    <h2 class="text-muted text-center">No bookmarks</h2>
+{%else%}
+    {%print(row)%}
+{%endif%}
+
 {% endblock %}

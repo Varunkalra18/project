@@ -5,7 +5,7 @@ import datetime
 from flask_mail import Mail, Message
 from flask_session import Session
 import json
-from tempfile  import mkdtemp
+from tempfile import mkdtemp
 from werkzeug.exceptions import default_exceptions, HTTPException, InternalServerError
 from werkzeug.security import check_password_hash, generate_password_hash
 
@@ -45,17 +45,23 @@ Session(app)
 db = SQL("sqlite:///test.db")
 
 # User Routes
-@app.route('/', methods=['GET']) 
+
+
+
+# @app.route('/', methods=['GET']) 
+# def landing() : 
+#     return render_template("landing.html") 
+    
+
+@app.route('/')
 @login_required
 @user_first_land
 def home() : 
     user_id = session["user_id"]
-    print('User id in index.html is : ', user_id)
     rows = db.execute("SELECT U.Username, U.profileImage, A.* FROM Assets AS A INNER JOIN User AS U on A.isActivated = True AND U.Id = A.SellerId AND A.SellerId != :user_id AND A.status = 'Accepted'", user_id=user_id)
     book = db.execute("SELECT assetId FROM bookmark WHERE userId = :userid", userid = session["user_id"])
     rows = getAssetVerifiedTimestamp(rows) 
     for asset in rows : 
-        print('asset : ', asset)
     return render_template("index.html", row=rows, books = book) 
 
 @app.route('/register', methods=['GET', 'POST']) 
@@ -147,11 +153,12 @@ def bookmark():
         assets = []
         for asset in row:
             assd = db.execute("SELECT *FROM Assets WHERE Id = :assetid", assetid = asset["assetId"])
+            tmp_assd = getAssetVerifiedTimestamp(assd)
+            if (len(tmp_assd) == 0) : 
+                continue 
             assets.append(assd)
-        print(assets)
-        print("")
         # return redirect('/')
-        assets = getAssetVerifiedTimestamp(assets)
+        # assets = 
         return render_template("bookmark.html", row = assets)
     else:
         assetid = request.form.get("assetid")
@@ -181,7 +188,6 @@ def getMyBids() :
 @login_required
 def midPageRender() : 
     user = session["user_id"]
-    print('User in mid page : ', user)
     profileImage = request.form.get('profile-image-url')
     dob = request.form.get('dob')
     mob = request.form.get('mob')
@@ -200,13 +206,10 @@ def bidAsset() :
     assetId = request.form.get('assetId')
     maxBid = request.form.get('bid_amount') 
     loggedInUser = session["user_id"]
-    print('asset id : ', assetId, ' and bid amount : ', maxBid)
     db.execute('UPDATE Assets SET maxBid=:maxBid, maxBidUser=:maxBidUser WHERE Id=:id', maxBid=maxBid, id=assetId, maxBidUser=loggedInUser)
     asset = db.execute('SELECT * FROM Assets WHERE Id=:id', id=assetId)
-    print('This is the asset to get bidded : ', asset)
     timestamp = datetime.datetime.now()
     db.execute('INSERT INTO Transactions (SellerId, BuyerId, Amount, AssetId, TimeStamp) VALUES (:sellerid, :buyerid, :amount, :assetId, :timestamp)', sellerid=asset[0]["SellerId"], buyerid=loggedInUser, amount=maxBid, assetId=asset[0]["Id"], timestamp=timestamp)
-    print('Here in assets')
     return redirect('/') 
     
 @app.route('/get/bidHistory', methods=['GET'])
@@ -214,7 +217,6 @@ def bidAsset() :
 def getHistory() : 
     asset_id = request.args.get('assetId')
     rows = db.execute("SELECT U.Username, T.* FROM Transactions AS T INNER JOIN User AS U ON U.Id=T.BuyerId AND T.AssetId=:assetId", assetId=asset_id)
-    print('This is bid history in backend : ', rows)
     return jsonify(rows)
 
 @app.route('/asset/activate', methods=['POST'])
@@ -230,7 +232,6 @@ def activateAsset() :
 @login_required
 def assetDelete() : 
     asset_id = request.form.get('assetId')  
-    print('This is asset to be deleted : ', asset_id)
     
 
 
@@ -280,9 +281,7 @@ def getAcceptedAssets() :
 @admin_login_required
 def blockUser() : 
     td = request.args.get("td")
-    print('This is before td : ', td)
     todo = not bool(int(td))
-    print('This is after td : ', todo)
     user_id = request.args.get("user")
     db.execute("UPDATE User SET isBlocked=:td WHERE Id=:id", id=user_id, td=todo) 
     return redirect('/admin')
@@ -292,7 +291,6 @@ def blockUser() :
 def changeAssetStatus() : 
     status = request.args.get("status")
     assetId = request.args.get("assetId")
-    print('This is status and id : ', status, assetId)
     db.execute("UPDATE Assets SET status=:status WHERE Id=:id", status=status, id=assetId)
     return redirect("/admin/assets/pending")
     
