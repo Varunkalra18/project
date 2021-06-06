@@ -85,7 +85,7 @@ Best things ahead!!!!
                             <div class='row'>
                             <div class='col-md-5 d-flex justify-content-around'>
                               {% if item.isActivated == 0 %}
-                              <form action="" method="DELETE">
+                              <form action="/asset/delete" method="POST">
                                 <input type='text' name='assetId' hidden value='{{item.Id}}' />
                                 <button type="submit" class="mt-2 btn btn-secondary" value="remove">Remove</button>
                               </form>
