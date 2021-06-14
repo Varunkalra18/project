@@ -41,7 +41,7 @@ block style %}
 <div class="container my-2 d-flex flex-column align-items-center">
   {% if row|length == 0 %}
   <h1 class="font-weight-bold text-muted text-center">No Auctions Available</h1>
-  {% endif %} {% for asset in row%}
+  {% endif %} {% for asset in row | reverse%}
   <div class="asset-card my-3 rounded">
     <div class="card-header d-flex align-items-center">
       <div class="d-flex align-items-center">
@@ -97,7 +97,6 @@ block style %}
           <div class="modal-header">
             <h5 class="modal-title" id="exampleModalLongTitle">
               Bidding History
-              {% print(asset) %}
             </h5>
             <button
               type="button"
@@ -161,7 +160,7 @@ block style %}
           >
             <div class="modal-header">
               <h5 class="modal-title" id="exampleModalLongTitle">
-                {% print(asset) %}
+              
                 Making a bid .. !!
               </h5>
               <button
@@ -174,7 +173,7 @@ block style %}
               </button>
             </div>
             <div class="modal-body">
-              {{asset.Name}}
+              
               <p>Product : <span id="asset__name">{{asset.Name}}</span></p>
               <p>
                 Start Price :

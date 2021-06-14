@@ -97,15 +97,16 @@
       event.preventDefault() ;
       return false ;
     }
-    if(description.length >= 20 && description.length <= 60){
+    if(description.length >= 10 && description.length <= 50){
       error_toast("Description should be 20-60 words") ;
       event.preventDefault() ;
       return false ;
     }
     console.log('Tar bid : ', targetBid, ' and start bid : ', startBid) ;
-    if(startBid > targetBid){
+    if(parseInt(startBid) > parseInt(targetBid)){
       event.preventDefault() ;
       error_toast("Start bid should be less than target bid .") ;
+      return false ;
     }
     console.log("Coming here") ;
     return true ;

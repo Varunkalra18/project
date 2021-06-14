@@ -64,7 +64,7 @@ def closeExpiredAssets(rows) :
                     print('This is buyer id in utility.p7y : ', asset["maxBidUser"])
                     user_buyer = db.execute("SELECT Email, Username from User WHERE Id = :id", id=asset["maxBidUser"])
                     print('Buyer of the closing asset : ', user_buyer)
-                    sendMail(rows_user[0]["Email"],"Product Purchase reminder .. !!" , "Your Product {} has been Purchased by {} ({}). Maximum Bid was : {}".format(asset["Name"], user_buyer[0]["Username"], user_buyer[0]["Email"], asset["maxBid"]))
+                    sendMail(rows_user[0]["Email"],"Product Purchase reminder .. !!" , "Your Product {} has been Purchased by {} ({}). Maximum Bid was : Rs. {}".format(asset["Name"], user_buyer[0]["Username"], user_buyer[0]["Email"], asset["maxBid"]))
                     
                 print('Coming here to close asset and assetId : ', asset['Name'], asset["Id"])
                 db.execute("UPDATE Assets SET isSold=True WHERE Id=:id", id=asset["Id"])

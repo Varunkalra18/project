@@ -60,7 +60,7 @@
           />
         </div>
         <div class="mb-3">
-          <label for="password" class="form-label">PAN Number</label>
+          <label for="pan_num" class="form-label">PAN Number</label>
           <input
             type="text"
             name="PanNo"
@@ -85,7 +85,7 @@
           />
         </div>
         <div class="mb-3">
-          <label for="password" class="form-label">Confirm Password</label>
+          <label for="cpassword" class="form-label">Confirm Password</label>
           <input
             type="password"
             name="confirmation"
@@ -122,6 +122,11 @@
       // Apply toast here
       error_toast("All fields are Mandatory");
       return false;
+    }
+
+    if (pass == '' || cpass == ''){
+      error_toast("All fields are Mandatory") ;
+      return false ;
     }
 
     if (pass != cpass) {

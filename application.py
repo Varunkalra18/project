@@ -75,7 +75,7 @@ def register() :
         an = request.form.get("PanNo")
         govid = request.form.get("Govid")
         timestamp = datetime.datetime.now()
-        user = db.execute("SELECT * FROM User WHERE username=:username", username = username)
+        user = db.execute("SELECT * FROM User WHERE username=:username and Email=:email", username = username, email = emailId)
         
         if len(user) != 0:
             return render_template("register.html", error="Username already exist .. !!")
@@ -272,6 +272,7 @@ def adminLogin() :
 @admin_login_required
 def getActiveAssets() : 
     rows = db.execute("SELECT * FROM Assets WHERE status='Accepted' and isActivated=True")
+    rows = getAssetVerifiedTimestamp(rows)
     return render_template("admin.activeassets.html",rows=rows)
 
 @app.route("/admin/assets/pending")
