@@ -20,16 +20,13 @@
   <div class="col-md-9 bg-light image-col h-100">
     <img
       class="w-100 h-100"
-      
       src="static/image/banner1.png"
       alt="No image found"
     />
   </div>
   <div class="col-md register-form d-flex flex-column justify-content-center">
-    
     <div class="d-flex justify-content-center border-bottom mb-3">
-      <img class="w-50 h-100" src="static/image/finlogo.png">
-      
+      <img class="w-50 h-100" src="static/image/finlogo.png" />
     </div>
     <form method="POST" action="/register" onsubmit="return waitingForSubmit()">
       <div>
@@ -47,6 +44,7 @@
             class="form-control"
             id="username"
             placeholder="Your Username"
+            required
           />
         </div>
         <div class="mb-3">
@@ -57,6 +55,7 @@
             class="form-control"
             id="email"
             placeholder="name@example.com"
+            required
           />
         </div>
         <div class="mb-3">
@@ -67,12 +66,26 @@
             class="form-control"
             id="PanNo"
             placeholder="Enter PAN Number"
+            required
           />
         </div>
         <div class="mb-3">
           <label for="email" class="form-label">Govt Id Proof</label>
-          <input type="hidden" name="Govid" value="default" id="govidvalue" />
-          <input  type="file" class="form-control" id="govid" multiple onchange = "updateImage();" />
+          <input
+            type="hidden"
+            name="Govid"
+            value="default"
+            id="govidvalue"
+            required
+          />
+          <input
+            type="file"
+            class="form-control"
+            id="govid"
+            multiple
+            onchange="updateImage();"
+            required
+          />
         </div>
         <div class="mb-3">
           <label for="password" class="form-label">Password</label>
@@ -82,6 +95,7 @@
             class="form-control"
             id="password"
             placeholder="Enter password"
+            required
           />
         </div>
         <div class="mb-3">
@@ -92,12 +106,13 @@
             class="form-control"
             id="cpassword"
             placeholder="confirm your password"
+            required
           />
         </div>
         <div class="mb-3 d-flex">
           <span class="d-flex align-items-center">
             <p class="m-0 mr-2">
-              Already have an account? <br/><a href="/login">Click Here</a>
+              Already have an account? <br /><a href="/login">Click Here</a>
             </p>
           </span>
           <button class="btn btn-primary ml-auto mr-2 px-3">Register</button>
@@ -116,17 +131,15 @@
     const pass = document.getElementById("password").value;
     const cpass = document.getElementById("cpassword").value;
 
-    if (
-      !(username && email && adharno && govtproof && pass && cpass)
-    ) {
+    if (!(username && email && adharno && govtproof && pass && cpass)) {
       // Apply toast here
       error_toast("All fields are Mandatory");
       return false;
     }
 
-    if (pass == '' || cpass == ''){
-      error_toast("All fields are Mandatory") ;
-      return false ;
+    if (pass == "" || cpass == "") {
+      error_toast("All fields are Mandatory");
+      return false;
     }
 
     if (pass != cpass) {
